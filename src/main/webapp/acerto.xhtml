@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta charset="UTF-8" />
+	<h:outputScript name="layout.js" library="js" />
+
+</h:head>
+<h:body>
+	<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+	<h:form>
+		<p:commandButton value="Vale" type="button" icon="pi pi-external-link"
+			onclick="PF('dlgVale').show()" />
+
+		<p:commandButton value="Acerto" type="button" icon="pi pi-search"
+			onclick="PF('dlgAcerto').show()" />
+
+	</h:form>
+
+	<p:dialog header="Acerto" widgetVar="dlgAcerto" showEffect="fade"
+		modal="true" blockScroll="false" width="800" height="500">
+		<h:form>
+			<h:panelGrid columns="6" id="pngAcerto">
+
+				<p:outputLabel value="Data Inicio:" for="@next" />
+				<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}"
+					required="true" />
+
+				<p:outputLabel value="Data Fim:" for="dtFim" />
+				<p:datePicker id="dtFim" value="#{entregaView.dataFim}"
+					required="true" />
+				<p:commandButton action="#{entregaView.buscarEntregadoresAcerto}"
+					update="msgs pngAcerto pngAcerto2" icon="pi pi-search" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="3" id="pngAcerto2">
+				<p:outputLabel for="@next" value="Entregador" />
+				<p:selectOneMenu id="somEntregadores"
+					value="#{entregaView.entregadorSelecionado}" effect="fold">
+					<f:selectItem itemLabel="Selecione" itemValue="" />
+					<f:selectItems value="#{entregaView.entregadores}" />
+				</p:selectOneMenu>
+
+				<p:commandButton action="#{entregaView.realizarAcerto}"
+					update="msgs acertoList pngAcerto3" icon="pi pi-dollar" />
+			</h:panelGrid>
+
+			<h:panelGrid columns="2" id="pngAcerto3">
+				<p:outputLabel value="Entregador:" />
+				<p:outputLabel value="#{entregaView.entregadorSelecionado}" />
+
+				<p:outputLabel value="Total de entregas:" />
+				<p:outputLabel value="#{entregaView.qtdeEntregas}" />
+
+				<p:outputLabel value="Qtde de Diárias:" />
+				<p:outputLabel value="#{entregaView.qtdeTotalDias}" />
+
+			</h:panelGrid>
+
+			<p:dataTable id="acertoList" var="acerto"
+				value="#{entregaView.acertos}" style="font-size:12px" lazy="true">
+
+				<p:column headerText="Data da Entrega">
+					<p:outputLabel value="#{acerto.dataFormatada}" />
+				</p:column>
+
+				<p:column headerText="Qtde Entregas">
+					<p:outputLabel value="#{acerto.qtdeEntregasDia}" />
+				</p:column>
+
+				<p:column headerText="Valor Diária">
+					<h:outputText value="#{acerto.valorDiaria}">
+						<f:convertNumber type="currency" currencySymbol="R$" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Qtde de IFood">
+					<p:outputLabel value="#{acerto.qtdeIFood}" />
+				</p:column>
+
+				<p:column>
+					<p:outputLabel value="" />
+				</p:column>
+				<p:column headerText="Valor Vale">
+					<h:outputText value="#{acerto.valorValeDia}">
+						<f:convertNumber type="currency" currencySymbol="R$" />
+					</h:outputText>
+				</p:column>
+
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column colspan="1" style="text-align:right"
+							footerText="Totais:" />
+
+						<p:column>
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalEntregas}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column>
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalDiarias}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column>
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalIfood}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column>
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalSemDesconto}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+
+						<p:column style="color:red">
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalVales}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="5" style="text-align:right" footerText="Saldo:" />
+
+						<p:column style="color: red">
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorSaldo}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="5" style="text-align:right"
+							footerText="Receber:" />
+
+						<p:column style="color: green">
+							<f:facet name="footer">
+								<h:outputText value="#{entregaView.valorTotalComDesconto}">
+									<f:convertNumber type="currency" currencySymbol="R$" />
+								</h:outputText>
+							</f:facet>
+						</p:column>
+					</p:row>
+
+				</p:columnGroup>
+
+			</p:dataTable>
+
+		</h:form>
+	</p:dialog>
+
+	<p:dialog header="Vale" widgetVar="dlgVale" showEffect="fade"
+		id="dlgVale" modal="true" width="1100" height="500">
+		<h:form>
+			<h:panelGrid id="pngVales">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Data do Vale" />
+					<p:datePicker id="dtVale" value="#{entregaView.dataSelecionada}"
+						required="true">
+						<p:ajax event="dateSelect" listener="#{entregaView.onDateSelect}"
+							update="somEntregadores" />
+					</p:datePicker>
+				</h:panelGrid>
+
+				<h:panelGrid columns="3">
+					<p:outputLabel for="@next" value="Entregador" />
+					<p:selectOneMenu id="somEntregadores"
+						value="#{entregaView.vale.entregador}" effect="fold"
+						required="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{entregaView.entregadores}" />
+					</p:selectOneMenu>
+					<p:commandButton action="#{entregaView.buscarVales}"
+						update="msgs valeList" icon="pi pi-search" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:outputLabel for="@next" value="Valor" />
+					<p:inputNumber value="#{entregaView.valorVale}" decimalPlaces="2" 
+						thousandSeparator="." decimalSeparator="," placeholder="0,00"/>
+
+
+					<p:outputLabel for="@next" value="Tipo de Vale" />
+					<p:selectOneMenu id="valeTipo" value="#{entregaView.vale.tipoVale}"
+						effect="fold" required="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItems value="#{entregaView.tipoVale}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+
+
+				<p:commandButton value="Salvar" action="#{entregaView.salvarVale}"
+					update="msgs pngVales valeList" />
+			</h:panelGrid>
+			<p:dataTable id="valeList" var="vale" value="#{entregaView.vales}"
+				lazy="true">
+
+				<p:column headerText="Data do Vale">
+					<p:outputLabel value="#{vale.dataFormatada}" />
+				</p:column>
+
+				<p:column headerText="Entregador">
+					<p:outputLabel value="#{vale.entregador}" />
+				</p:column>
+
+				<p:column headerText="Valor">
+					<h:outputText value="#{vale.valor}">
+						<f:convertNumber type="currency" currencySymbol="R$" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Tipo">
+					<p:outputLabel value="#{vale.tipoVale}" />
+				</p:column>
+
+				<p:column exportable="false">
+
+					<p:commandButton class="ui-button-warning rounded-button"
+						icon="pi pi-trash" process="@this"
+						oncomplete="PF('deleteProductDialog').show()">
+						<f:setPropertyActionListener value="#{vale}"
+							target="#{entregaView.valeSelecionado}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+			<p:confirmDialog widgetVar="deleteProductDialog" width="300"
+				message="Apagar o vale?" header="Confirmação" severity="warn"
+				appendTo="@(body)">
+				<p:commandButton value="Sim" icon="pi pi-check"
+					action="#{entregaView.apagarVale}" process="@this"
+					oncomplete="PF('deleteProductDialog').hide()" update="valeList" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('deleteProductDialog').hide()" />
+			</p:confirmDialog>
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

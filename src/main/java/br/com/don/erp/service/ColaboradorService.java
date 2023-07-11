@@ -1,0 +1,33 @@
+package br.com.don.erp.service;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import br.com.don.erp.model.Colaborador;
+import br.com.don.erp.repository.Colaboradores;
+
+public class ColaboradorService implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private Colaboradores colaboradores;
+	
+	public List<Colaborador> listar(){
+		return colaboradores.listar();
+	}
+	
+	public void salvar(Colaborador colaborador) {
+		colaboradores.salvar(colaborador);
+	}
+	
+	public Integer deletar(Colaborador colaborador) {
+		return colaboradores.deletar(colaborador);
+	}
+	
+	public Colaborador buscar(Colaborador colaborador){
+		return colaboradores.buscar(colaborador);
+	}
+}
