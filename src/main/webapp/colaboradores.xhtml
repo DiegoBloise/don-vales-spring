@@ -47,7 +47,7 @@
 
 					<p:rowExpansion>
 
-						<p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.vales}" lazy="true">
+						<p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.valesDoColaborador(colaborador)}" lazy="true">
 
 							<p:column headerText="Colaborador">
 								<p:outputLabel value="#{vale.entregador}" />
@@ -83,7 +83,7 @@
 
 									<p:column style="color: red">
 										<f:facet name="footer">
-											<h:outputText value="#{gestaoColaboradorView.totalVales}">
+											<h:outputText value="#{gestaoColaboradorView.totalDoColaborador(colaborador)}">
 												<f:convertNumber type="currency" currencySymbol="R$" />
 											</h:outputText>
 										</f:facet>

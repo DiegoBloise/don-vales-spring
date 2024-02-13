@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -28,7 +28,7 @@ import lombok.Setter;
 
 
 @Named
-@SessionScoped
+@ViewScoped
 public class GestaoColaboradorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -82,7 +82,7 @@ public class GestaoColaboradorView implements Serializable {
 	@Getter
 	private StreamedContent file;
 
-	private InputStream is;;
+	private InputStream is;
 
 
 	@PostConstruct
@@ -204,13 +204,36 @@ public class GestaoColaboradorView implements Serializable {
 	public void vales(){
 		vale.setEntregador(colaboradorSelecionado.getNome());
 
-		totalVales = new BigDecimal(0);
+		vales = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
 
-		vales  = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
+		calcularTotalVale(vales);
+	}
+
+
+	public void calcularTotalVale(List<Vale> vales) {
+		this.totalVales = new BigDecimal(0);
 
 		for (Vale vale : vales) {
-			totalVales = vale.getValor().add(totalVales);
+			this.totalVales = vale.getValor().add(this.totalVales);
 		}
+	}
+
+
+	public List<Vale>valesDoColaborador(Colaborador colaborador) {
+		return valeService.buscarPorEntregador(colaborador.getNome());
+	}
+
+
+	public BigDecimal totalDoColaborador(Colaborador colaborador) {
+		BigDecimal total = new BigDecimal(0);
+
+		List<Vale> vales = valeService.buscarPorEntregador(colaborador.getNome());
+
+		for (Vale vale : vales) {
+			total = vale.getValor().add(total);
+		}
+
+		return total;
 	}
 
 
