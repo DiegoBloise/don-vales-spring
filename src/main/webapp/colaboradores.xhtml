@@ -15,37 +15,6 @@
 
 			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
-			<p:outputPanel id="pngColaboradores">
-
-				<h:panelGrid columns="2">
-					<p:outputLabel for="@next" value="Nome" />
-					<p:inputText value="#{gestaoColaboradorView.nome}" required="true"/>
-
-					<p:outputLabel for="@next" value="Tefefone" />
-					<p:inputMask value="#{gestaoColaboradorView.colaborador.telefone}" mask="(99)99999-9999" required="true"/>
-
-					<p:outputLabel for="@next" value="Dt Nascimento" />
-					<p:datePicker id="navigator" value="#{gestaoColaboradorView.colaborador.dataNascimento}"
-								pattern="dd/MM/yyyy" mask="true" required="true"/>
-
-					<p:outputLabel for="@next" value="Tipo de Colaborador" />
-					<p:selectOneMenu id="tipoColaborador"
-							value="#{gestaoColaboradorView.colaborador.tipoColaborador}"
-							effect="fold" required="true">
-						<f:selectItem itemLabel="Selecione" itemValue="" />
-						<f:selectItems value="#{gestaoColaboradorView.tipoColaborador}" />
-					</p:selectOneMenu>
-
-					<p:commandButton value="Salvar"
-								action="#{gestaoColaboradorView.salvar}"
-								update="msgs colaboradores @form pngColaboradores" icon="pi pi-save">
-						<p:resetInput target=":principal:pngColaboradores" />
-					</p:commandButton>
-
-				</h:panelGrid>
-
-			</p:outputPanel>
-
 			<p:card>
 				<p:dataTable id="colaboradores" var="colaborador" value="#{gestaoColaboradorView.colaboradores}"
 							widgetVar="customersTable" multiViewState="true" selectionMode="single"

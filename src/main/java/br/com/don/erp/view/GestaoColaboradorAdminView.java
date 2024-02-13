@@ -2,6 +2,7 @@ package br.com.don.erp.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,8 +15,10 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import br.com.don.erp.model.Colaborador;
+import br.com.don.erp.model.TipoColaborador;
 import br.com.don.erp.service.ColaboradorService;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @Named
@@ -30,6 +33,9 @@ public class GestaoColaboradorAdminView implements Serializable {
     private Colaborador colaboradorSelecionado;
     private List<Colaborador> colaboradoresSelecionados;
 
+    @Getter
+	private List<TipoColaborador> tipoColaborador;
+
     @Inject
     private ColaboradorService colaboradorService;
 
@@ -41,6 +47,7 @@ public class GestaoColaboradorAdminView implements Serializable {
 
 
     public void inicializarObjetos() {
+        tipoColaborador = Arrays.asList(TipoColaborador.values());
         colaboradores = colaboradorService.getColaboradores();
         colaboradorSelecionado = new Colaborador();
         colaboradoresSelecionados = new ArrayList<>();

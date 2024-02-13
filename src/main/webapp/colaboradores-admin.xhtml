@@ -109,7 +109,34 @@
                             <div class="field mb-5">
                                 <span class="ui-float-label">
                                     <p:inputText value="#{gestaoColaboradorAdminView.colaboradorSelecionado.nome}" required="true"/>
-                                    <p:outputLabel for="@previous" value="Nome do Colaborador"/>
+                                    <p:outputLabel for="@previous" value="Nome" />
+                                </span>
+                            </div>
+
+                            <div class="field mb-5">
+                                <span class="ui-float-label">
+                                    <p:inputMask value="#{gestaoColaboradorAdminView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
+                                    <p:outputLabel for="@previous" value="Tefefone kkkk" />
+                                </span>
+                            </div>
+
+                            <div class="field mb-5">
+                                <span class="ui-float-label">
+                                    <p:datePicker id="navigator" value="#{gestaoColaboradorAdminView.colaboradorSelecionado.dataNascimento}"
+                                                    pattern="dd/MM/yyyy" mask="true" required="true"/>
+                                    <p:outputLabel for="@previous" value="Dt Nascimento" />
+                                </span>
+                            </div>
+
+                            <div class="field mb-5">
+                                <span class="ui-float-label">
+                                    <p:selectOneMenu id="tipoColaborador"
+                                                    value="#{gestaoColaboradorAdminView.colaboradorSelecionado.tipoColaborador}"
+                                                    effect="fold" required="true">
+                                        <f:selectItem itemLabel="Selecione" itemValue="" />
+                                        <f:selectItems value="#{gestaoColaboradorAdminView.tipoColaborador}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="@previous" value="Tipo" />
                                 </span>
                             </div>
 
