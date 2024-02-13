@@ -118,7 +118,7 @@ public class EntregaView implements Serializable {
 	@Getter
 	private Vale valeSelecionado;
 	
-	private final String QUEBRALINHA ="\n";
+	private final String QUEBRALINHA = System.lineSeparator();
 
 	@PostConstruct
 	public void init() {
@@ -280,8 +280,10 @@ public class EntregaView implements Serializable {
 			.append("Total de Vales: R$ ").append(valorTotalVales)
 			.append(QUEBRALINHA)
 			.append("Saldo: R$ ").append(valorSaldo)
-			.append(QUEBRALINHA).
-			append("*RECEBER* R$: ").append(valorTotalComDesconto);
+			.append(QUEBRALINHA)
+			.append("*RECEBER* R$: ")
+			.append(valorTotalComDesconto)
+			.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
 			
 			
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

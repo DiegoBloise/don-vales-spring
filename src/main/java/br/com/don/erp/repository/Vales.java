@@ -38,7 +38,7 @@ public class Vales implements Serializable {
 	}
 	
 	public List<Vale> buscarPorEntregador(String entregador){
-		String jpql = "select e from Vale e where e.entregador = :entregador";
+		String jpql = "select e from Vale e where e.entregador = :entregador order by e.data desc";
 		return manager.createQuery(jpql, Vale.class).setParameter("entregador", entregador)
 				.getResultList();
 	}

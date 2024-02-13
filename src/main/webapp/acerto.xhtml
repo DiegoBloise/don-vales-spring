@@ -56,6 +56,11 @@
 
 				<p:outputLabel value="Qtde de Diárias:" />
 				<p:outputLabel value="#{entregaView.qtdeTotalDias}" />
+			
+				<p:outputLabel value="Total Receber:" />
+				<h:outputText value="#{entregaView.valorTotalComDesconto}">
+					<f:convertNumber type="currency" currencySymbol="R$" />
+				</h:outputText>
 
 			</h:panelGrid>
 
@@ -188,12 +193,12 @@
 						<f:selectItems value="#{entregaView.entregadores}" />
 					</p:selectOneMenu>
 					<p:commandButton action="#{entregaView.buscarVales}"
-						update="msgs valeList" icon="pi pi-search" />
+						update="msgs valeList somEntregadores" icon="pi pi-search" process="somEntregadores @this"/>
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:outputLabel for="@next" value="Valor" />
 					<p:inputNumber value="#{entregaView.valorVale}" decimalPlaces="2" 
-						thousandSeparator="." decimalSeparator="," placeholder="0,00"/>
+						thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 
 					<p:outputLabel for="@next" value="Tipo de Vale" />

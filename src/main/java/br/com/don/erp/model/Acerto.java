@@ -39,15 +39,18 @@ public class Acerto {
 				this.valorDiaria = new BigDecimal("45.00");
 			}else if(qtdeEntregasDia > 20) {
 				this.valorDiaria = new BigDecimal("40.00");
-			}else if(qtdeEntregasDia > 10) {
+			}else if(qtdeEntregasDia > 9) {
 				this.valorDiaria = new BigDecimal("35.00");
 			}else {
 				this.valorDiaria = new BigDecimal("0.00");
 			}
 		}else {
-			this.valorDiaria = new BigDecimal("35.00");
+			if(qtdeEntregasDia > 9) {
+				this.valorDiaria = new BigDecimal("35.00");
+			}else {
+				this.valorDiaria = new BigDecimal("0.00");
+			}
 		}
-		
 		
 		return this.valorDiaria;
 	}

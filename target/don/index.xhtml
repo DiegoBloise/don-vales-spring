@@ -10,6 +10,14 @@
 <h:body>
 
 	<h:form>
+	<div class="card">
+		 <p:panelMenu style="width:300px">
+            <p:submenu label="Navegação">
+                <p:menuitem value="Colaboradores" outcome="colaboradores" icon="pi pi-external-link"/>
+                <p:menuitem value="Vales" outcome="acerto" icon="pi pi-upload"/>
+            </p:submenu>
+        </p:panelMenu>
+	</div>
 		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
 
 		<p:panel header="Pagamento de Entregadores" id="panel">

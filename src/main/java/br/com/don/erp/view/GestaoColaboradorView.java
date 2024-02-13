@@ -1,8 +1,7 @@
 package br.com.don.erp.view;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,12 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -28,8 +27,9 @@ import br.com.don.erp.service.ValeService;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Named
-@ViewScoped
+@SessionScoped
 public class GestaoColaboradorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -56,7 +56,7 @@ public class GestaoColaboradorView implements Serializable {
 	
 	@Getter
 	@Setter
-	private Double valorVale;
+	private String valorVale;
 	
 	@Getter
 	@Setter
@@ -75,7 +75,16 @@ public class GestaoColaboradorView implements Serializable {
 	@Getter
 	@Setter
 	private BigDecimal totalVales = new BigDecimal(0);
-
+	
+	@Getter
+	@Setter
+	private Vale valeSelecionado;
+	
+	@Getter
+	private StreamedContent file;
+	
+	private InputStream is;;
+	
 	@PostConstruct
 	public void init() {
 		tipoColaborador = Arrays.asList(TipoColaborador.values());
@@ -85,6 +94,7 @@ public class GestaoColaboradorView implements Serializable {
 		dataVale = LocalDate.now();
 	}
 	
+		
 	public void salvar() {
 		
 		colaborador.setNome(nome);
@@ -106,43 +116,94 @@ public class GestaoColaboradorView implements Serializable {
 	}
 	
 	
-	public StreamedContent getSalvarVale() {
+	public void salvarVale() {
 		
-		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-		String path = servletContext.getRealPath("/") + "vale.txt";
+		try { 
 		
-		
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write(vale.getEntregador() + "\n" + vale.getValor() +  "\n" + vale.getDataFormatada());
-            vale.setValor(new BigDecimal(valorVale)); 
-            valeService.salvar(vale);
-            vales();
-            
-            System.out.println("Arquivo gerado com sucesso.");
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao gerar o arquivo: " + e.getMessage());
-        }
+			vale.setEntregador(colaboradorSelecionado.getNome());
+	        vale.setValor(new BigDecimal(valorVale)); 
+	        valeService.salvar(vale);
+	        vales();
+	        
+	        StringBuilder conteudo = new StringBuilder()
+					.append(vale.getEntregador())
+					.append(System.lineSeparator())
+					.append(vale.getValor())
+					.append(System.lineSeparator())
+					.append(vale.getDataFormatada());
+	    	is = new ByteArrayInputStream(conteudo.toString().getBytes());
+	    	
+	        vale = new Vale();
+			valorVale = new String();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 
-        FacesContext.getCurrentInstance() .getExternalContext().getRequestServletPath();
-
-		
-		 StreamedContent  file = DefaultStreamedContent.builder()
-		 .name("vale.txt").contentType("text/plain") .stream(()->
-		 FacesContext.getCurrentInstance() .getExternalContext().getResourceAsStream(path)).build();
-		 
-        return file;
+        
     }
+	
+	public void download() {
+		file = DefaultStreamedContent.builder()
+                .name("vale.txt")
+                .contentType("text/plain")
+                .stream(() -> is)
+                .build();
+       
+		System.out.println("Imprimindo...");
+	}
+	
+	public void teste() {
+	        
+		
+		 vale.setEntregador(colaboradorSelecionado.getNome()); 
+		 vale.setValor(new
+		 BigDecimal(valorVale));
+		 valeService.salvar(vale);
+		 vales();
+		 
+		/* StringBuffer fileContent = new StringBuffer() .append(vale.getEntregador())
+		 .append(Util.QUEBRA_LINHA) .append(vale.getValor())
+		 .append(Util.QUEBRA_LINHA) .append(vale.getDataFormatada());
+		 
+		 // Configurar o cabeçalho da resposta HTTP para indicar o download do arquivo
+		 FacesContext facesContext = FacesContext.getCurrentInstance();
+		 ExternalContext externalContext = facesContext.getExternalContext();
+		 //externalContext.responseReset();
+		 externalContext.setResponseContentType("text/plain");
+		 externalContext.setResponseHeader("Content-Disposition",
+		 "attachment; filename=\"vale.txt\"");
+		 
+		 try (OutputStream outputStream = externalContext.getResponseOutputStream()) {
+		 outputStream.write(fileContent.toString().getBytes()); outputStream.flush();
+		 PrimeFaces.current().ajax().update("dialogs:vales");
+		 facesContext.responseComplete();
+		 
+		
+		  } catch (IOException e) { e.printStackTrace(); }
+
+		*/
+	
+		 //PrimeFaces.current().ajax().update("dialogs:vales");
+	       
+	}
+	
+	
+	public void deletarVale() {
+		valeService.deletarVale(valeSelecionado);
+		vales();
+	}
 	
 	private void listarColaboradores() {
 		colaboradores = colaboradorService.listar();
 	}
 	
 	public void vales(){
-		System.out.println("Listando vales " + colaboradorSelecionado.getNome());
+		
 		vale.setEntregador(colaboradorSelecionado.getNome());
 		totalVales = new BigDecimal(0);
 		vales  = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
-		
 		
 		for (Vale vale : vales) {
 			totalVales = vale.getValor().add(totalVales);

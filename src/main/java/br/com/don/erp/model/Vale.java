@@ -21,6 +21,10 @@ import lombok.ToString;
 @ToString
 public class Vale {
 	
+	public Vale() {
+		this.valor = new BigDecimal(0);
+	}
+	
 	@Id
 	@GeneratedValue
 	@Getter
