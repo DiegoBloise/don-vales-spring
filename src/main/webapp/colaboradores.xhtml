@@ -134,44 +134,16 @@
 				</p:outputPanel>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar" icon="pi pi-check" 
-						actionListener="#{gestaoColaboradorView.salvarVale}" 
+					<p:commandButton value="Salvar" icon="pi pi-check"
+						actionListener="#{gestaoColaboradorView.salvarVale}"
 						update="@root:@id(vales)"
-						oncomplete="PF('imprimeValeDialog').show()"/>
+						oncomplete="PF('imprimeValeDialog').show(); PF('dlgColaborador').hide();"/>
 
 					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('dlgColaborador').hide()"
 						class="ui-button-secondary" type="button" />
 				</f:facet>
 
 			</p:dialog>
-
-
-			<p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
-							message="Apagar Colaborador?" header="Confirmação" severity="warn">
-				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorView.deletar}"
-								process="@this"
-								update="principal"
-								oncomplete="PF('deleteProductDialog').hide()">
-					<p:resetInput target="principal" />
-				</p:commandButton>
-
-				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-								onclick="PF('deleteProductDialog').hide()" />
-			</p:confirmDialog>
-
-
-			<p:confirmDialog widgetVar="deleteValeDialog" showEffect="fade" width="300"
-				message="Apagar Vale?" header="Confirmação" severity="warn">
-				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorView.deletarVale}"
-								process="@this"
-								update="@root:@id(vales)"
-								oncomplete="PF('deleteValeDialog').hide()">
-					<p:resetInput target="principal" />
-				</p:commandButton>
-
-				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-								onclick="PF('deleteValeDialog').hide()" />
-			</p:confirmDialog>
 
 
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
