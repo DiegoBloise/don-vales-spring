@@ -19,34 +19,34 @@ import lombok.ToString;
 @Entity
 @ToString
 public class Colaborador {
-	
+
 	@Id
 	@GeneratedValue
 	@Getter
 	@Setter
 	@EqualsAndHashCode.Include
 	private Long id;
-		
+
 	@Getter
 	@Setter
 	private String nome;
-	
+
 	@Getter
 	@Setter
 	private String telefone;
-	
+
 	@Getter
 	@Setter
 	private LocalDate dataNascimento;
-	
+
 	@Getter
 	@Setter
 	@Enumerated(EnumType.STRING)
 	private TipoColaborador tipoColaborador;
-	
+
+
 	@Transient
 	public String getDataNascimentoFormatada() {
 		return Util.localDateFormatado(this.dataNascimento);
 	}
-	
 }

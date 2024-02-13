@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -33,58 +32,59 @@ import lombok.Setter;
 public class GestaoColaboradorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Getter
 	private List<TipoColaborador> tipoColaborador;
-	
+
 	@Getter
 	@Setter
 	private Colaborador colaborador;
-	
+
 	@Getter
 	@Setter
 	private Colaborador colaboradorSelecionado;
-	
+
 	@Getter
 	private List<Colaborador> colaboradores;
-	
+
 	@Inject
 	private ColaboradorService colaboradorService;
-	
+
 	@Inject
 	private ValeService valeService;
-	
+
 	@Getter
 	@Setter
 	private String valorVale;
-	
+
 	@Getter
 	@Setter
 	private List<Vale> vales;
-	
+
 	@Getter
 	@Setter
 	private LocalDate dataVale;
-	
+
 	@Getter
 	@Setter
 	private Vale vale;
-	
+
 	private String nome;
-	
+
 	@Getter
 	@Setter
 	private BigDecimal totalVales = new BigDecimal(0);
-	
+
 	@Getter
 	@Setter
 	private Vale valeSelecionado;
-	
+
 	@Getter
 	private StreamedContent file;
-	
+
 	private InputStream is;;
-	
+
+
 	@PostConstruct
 	public void init() {
 		tipoColaborador = Arrays.asList(TipoColaborador.values());
@@ -93,38 +93,39 @@ public class GestaoColaboradorView implements Serializable {
 		listarColaboradores();
 		dataVale = LocalDate.now();
 	}
-	
-		
+
+
 	public void salvar() {
-		
 		colaborador.setNome(nome);
+
 		if(colaboradorService.buscar(colaborador)!= null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Colaborador", "Colaborador já cadastrador"));
-		}else {
+		} else {
 			colaboradorService.salvar(colaborador);
 			listarColaboradores();
 			colaborador = new Colaborador();
 			nome = new String();
 		}
 	}
-	
+
+
 	public void deletar() {
 		System.out.println(colaboradorSelecionado.getNome());
 		colaboradorService.deletar(colaboradorSelecionado);
 		listarColaboradores();
 	}
-	
-	
+
+
 	public void salvarVale() {
-		
-		try { 
-		
+		try {
 			vale.setEntregador(colaboradorSelecionado.getNome());
 	        vale.setValor(new BigDecimal(valorVale)); 
-	        valeService.salvar(vale);
-	        vales();
-	        
+
+			valeService.salvar(vale);
+
+			vales();
+
 	        StringBuilder conteudo = new StringBuilder()
 					.append(vale.getEntregador())
 					.append(System.lineSeparator())
@@ -132,41 +133,40 @@ public class GestaoColaboradorView implements Serializable {
 					.append(System.lineSeparator())
 					.append(vale.getDataFormatada());
 	    	is = new ByteArrayInputStream(conteudo.toString().getBytes());
-	    	
+
 	        vale = new Vale();
 			valorVale = new String();
-			
-			
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
-        
     }
-	
+
+
 	public void download() {
 		file = DefaultStreamedContent.builder()
                 .name("vale.txt")
                 .contentType("text/plain")
                 .stream(() -> is)
                 .build();
-       
+
 		System.out.println("Imprimindo...");
 	}
-	
+
+
 	public void teste() {
-	        
-		
-		 vale.setEntregador(colaboradorSelecionado.getNome()); 
-		 vale.setValor(new
-		 BigDecimal(valorVale));
-		 valeService.salvar(vale);
-		 vales();
-		 
+		vale.setEntregador(colaboradorSelecionado.getNome()); 
+		vale.setValor(new
+
+		BigDecimal(valorVale));
+
+		valeService.salvar(vale);
+
+		vales();
+
 		/* StringBuffer fileContent = new StringBuffer() .append(vale.getEntregador())
 		 .append(Util.QUEBRA_LINHA) .append(vale.getValor())
 		 .append(Util.QUEBRA_LINHA) .append(vale.getDataFormatada());
-		 
+
 		 // Configurar o cabeçalho da resposta HTTP para indicar o download do arquivo
 		 FacesContext facesContext = FacesContext.getCurrentInstance();
 		 ExternalContext externalContext = facesContext.getExternalContext();
@@ -174,45 +174,50 @@ public class GestaoColaboradorView implements Serializable {
 		 externalContext.setResponseContentType("text/plain");
 		 externalContext.setResponseHeader("Content-Disposition",
 		 "attachment; filename=\"vale.txt\"");
-		 
+
 		 try (OutputStream outputStream = externalContext.getResponseOutputStream()) {
 		 outputStream.write(fileContent.toString().getBytes()); outputStream.flush();
 		 PrimeFaces.current().ajax().update("dialogs:vales");
 		 facesContext.responseComplete();
-		 
-		
+
+
 		  } catch (IOException e) { e.printStackTrace(); }
 
 		*/
-	
+
 		 //PrimeFaces.current().ajax().update("dialogs:vales");
-	       
 	}
-	
-	
+
+
 	public void deletarVale() {
 		valeService.deletarVale(valeSelecionado);
+
 		vales();
 	}
-	
+
+
 	private void listarColaboradores() {
 		colaboradores = colaboradorService.listar();
 	}
-	
+
+
 	public void vales(){
-		
 		vale.setEntregador(colaboradorSelecionado.getNome());
+
 		totalVales = new BigDecimal(0);
+
 		vales  = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
-		
+
 		for (Vale vale : vales) {
 			totalVales = vale.getValor().add(totalVales);
 		}
 	}
 
+
 	public String getNome() {
 		return nome;
 	}
+
 
 	public void setNome(String nome) {
 		this.nome = nome.toUpperCase().trim();
