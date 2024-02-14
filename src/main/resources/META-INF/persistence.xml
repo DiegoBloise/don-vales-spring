@@ -6,7 +6,7 @@
 	<persistence-unit name="don">
 
 		<properties>
-					
+
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/don?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />
             <property name="javax.persistence.jdbc.user" value="user" />
             <property name="javax.persistence.jdbc.password" value="Gust@vo2020" />
@@ -15,7 +15,7 @@
 			<property name="javax.persistence.schema-generation.create-source" value="metadata" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			
+
 		</properties>
 
 	</persistence-unit>

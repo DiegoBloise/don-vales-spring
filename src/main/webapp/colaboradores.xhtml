@@ -1,104 +1,99 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
 
-	<h:head>
-		<meta charset="UTF-8" />
-		<h:outputScript name="layout.js" library="js" />
-	</h:head>
+	<ui:define name="head">
+		<h:outputScript name="layout.js" library="js"/>
+	</ui:define>
 
-	<h:body>
+    <ui:define name="content">
 
 		<h:form id="principal">
 
-			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+			<p:dataTable id="colaboradores" var="colaborador" value="#{gestaoColaboradorView.colaboradores}"
+						widgetVar="customersTable" multiViewState="true" selectionMode="single"
+						selection="#{gestaoColaboradorView.colaboradorSelecionado}"
+						rowKey="#{colaborador.id}"
+						emptyMessage="Sem colaboradores cadastrados">
 
-			<p:card>
-				<p:dataTable id="colaboradores" var="colaborador" value="#{gestaoColaboradorView.colaboradores}"
-							widgetVar="customersTable" multiViewState="true" selectionMode="single"
-							selection="#{gestaoColaboradorView.colaboradorSelecionado}"
-							rowKey="#{colaborador.id}"
-							emptyMessage="Sem colaboradores cadastrados">
+				<p:ajax event="rowSelect" update="@root:@id(manage-product-content)" oncomplete="PF('dlgColaborador').show()"/>
 
-					<p:ajax event="rowSelect" update="@root:@id(manage-product-content)" oncomplete="PF('dlgColaborador').show()"/>
+				<p:column style="width:2rem">
+					<p:rowToggler/>
+				</p:column>
 
-					<p:column style="width:2rem">
-						<p:rowToggler/>
-					</p:column>
+				<p:column headerText="Name" filterBy="#{colaborador.nome}" sortBy="#{colaborador.nome}"
+						filterMatchMode="contains">
+					<h:outputText value="#{colaborador.nome}"/>
+				</p:column>
 
-					<p:column headerText="Name" filterBy="#{colaborador.nome}" sortBy="#{colaborador.nome}"
-							filterMatchMode="contains">
-						<h:outputText value="#{colaborador.nome}"/>
-					</p:column>
+				<p:column headerText="Tipo Colaborador" filterBy="#{colaborador.tipoColaborador}" sortBy="#{colaborador.tipoColaborador}"
+						filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('customersTable').filter()"
+										style="width:100%; box-sizing: border-box;">
+							<f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{gestaoColaboradorView.tipoColaborador}"/>
+						</p:selectOneMenu>
+					</f:facet>
+					<span>#{colaborador.tipoColaborador}</span>
+				</p:column>
 
-					<p:column headerText="Tipo Colaborador" filterBy="#{colaborador.tipoColaborador}" sortBy="#{colaborador.tipoColaborador}"
-							filterMatchMode="exact">
-						<f:facet name="filter">
-							<p:selectOneMenu onchange="PF('customersTable').filter()"
-											style="width:100%; box-sizing: border-box;">
-								<f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
-								<f:selectItems value="#{gestaoColaboradorView.tipoColaborador}"/>
-							</p:selectOneMenu>
-						</f:facet>
-						<span>#{colaborador.tipoColaborador}</span>
-					</p:column>
+				<p:rowExpansion>
 
-					<p:rowExpansion>
+					<p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.valesDoColaborador(colaborador)}" lazy="true">
 
-						<p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.valesDoColaborador(colaborador)}" lazy="true">
+						<p:column headerText="Colaborador">
+							<p:outputLabel value="#{vale.entregador}" />
+						</p:column>
 
-							<p:column headerText="Colaborador">
-								<p:outputLabel value="#{vale.entregador}" />
-							</p:column>
+						<p:column headerText="Data do Vale">
+							<p:outputLabel value="#{vale.dataFormatada}" />
+						</p:column>
 
-							<p:column headerText="Data do Vale">
-								<p:outputLabel value="#{vale.dataFormatada}" />
-							</p:column>
+						<p:column headerText="Tipo">
+							<p:outputLabel value="#{vale.tipoVale}" />
+						</p:column>
 
-							<p:column headerText="Tipo">
-								<p:outputLabel value="#{vale.tipoVale}" />
-							</p:column>
+						<p:column headerText="Valor">
+							<h:outputText value="#{vale.valor}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
+						</p:column>
 
-							<p:column headerText="Valor">
-								<h:outputText value="#{vale.valor}">
-									<f:convertNumber type="currency" currencySymbol="R$" />
-								</h:outputText>
-							</p:column>
+						<!-- <p:column exportable="false">
+							<p:commandButton class="ui-button-warning rounded-button"
+								icon="pi pi-trash" process="@this"
+								oncomplete="PF('deleteValeDialog').show()">
+								<f:setPropertyActionListener value="#{vale}"
+									target="#{gestaoColaboradorView.valeSelecionado}" />
+							</p:commandButton>
+						</p:column> -->
 
-							<!-- <p:column exportable="false">
-								<p:commandButton class="ui-button-warning rounded-button"
-									icon="pi pi-trash" process="@this"
-									oncomplete="PF('deleteValeDialog').show()">
-									<f:setPropertyActionListener value="#{vale}"
-										target="#{gestaoColaboradorView.valeSelecionado}" />
-								</p:commandButton>
-							</p:column> -->
+						<p:columnGroup type="footer">
 
-							<p:columnGroup type="footer">
+							<p:row>
+								<p:column colspan="3" style="text-align:right" footerText="Total:" />
 
-								<p:row>
-									<p:column colspan="3" style="text-align:right" footerText="Total:" />
+								<p:column style="color: red">
+									<f:facet name="footer">
+										<h:outputText value="#{gestaoColaboradorView.totalDoColaborador(colaborador)}">
+											<f:convertNumber type="currency" currencySymbol="R$" />
+										</h:outputText>
+									</f:facet>
+								</p:column>
+							</p:row>
 
-									<p:column style="color: red">
-										<f:facet name="footer">
-											<h:outputText value="#{gestaoColaboradorView.totalDoColaborador(colaborador)}">
-												<f:convertNumber type="currency" currencySymbol="R$" />
-											</h:outputText>
-										</f:facet>
-									</p:column>
-								</p:row>
+						</p:columnGroup>
 
-							</p:columnGroup>
+					</p:dataTable>
 
-						</p:dataTable>
+				</p:rowExpansion>
 
-					</p:rowExpansion>
-
-				</p:dataTable>
-
-			</p:card>
+			</p:dataTable>
 
 		</h:form>
 
@@ -169,6 +164,6 @@
 
 		</h:form>
 
-	</h:body>
+	</ui:define>
 
-</html>
+</ui:composition>

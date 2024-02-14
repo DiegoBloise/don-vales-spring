@@ -1,178 +1,173 @@
-<!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
 
-    <h:head>
-        <meta charset="UTF-8" />
-        <h:outputScript name="layout.js" library="js" />
-    </h:head>
+	<ui:define name="head">
+		<h:outputScript name="layout.js" library="js"/>
+	</ui:define>
 
-    <h:body>
+    <ui:define name="content">
 
-        <p:card styleClass="m-3 crud-demo">
+        <h:form id="form">
 
-            <h:form id="form">
+            <p:toolbar>
 
-                <p:toolbar>
+                <p:toolbarGroup>
 
-                    <p:toolbarGroup>
+                    <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{gestaoColaboradorAdminView.adicionar}"
+                                        update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
+                                        styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:resetInput target="@root:@id(manage-colaborador-content)" />
+                    </p:commandButton>
 
-                        <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{gestaoColaboradorAdminView.adicionar}"
-                                         update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
-                                         styleClass="ui-button-success" style="margin-right: .5rem">
-                            <p:resetInput target="@root:@id(manage-colaborador-content)" />
-                        </p:commandButton>
+                    <p:commandButton id="delete-colaboradores-button" value="#{gestaoColaboradorAdminView.deleteButtonMessage}"
+                                        icon="pi pi-trash" actionListener="#{gestaoColaboradorAdminView.deletarColaboradoresSelecionados}"
+                                        styleClass="ui-button-danger" disabled="#{!gestaoColaboradorAdminView.hasColaboradoresSelecionados()}" update="@this">
+                        <p:confirm header="Confirmação" message="Remover os colaboradores selecionados?"
+                                    icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
 
-                        <p:commandButton id="delete-colaboradores-button" value="#{gestaoColaboradorAdminView.deleteButtonMessage}"
-                                         icon="pi pi-trash" actionListener="#{gestaoColaboradorAdminView.deletarColaboradoresSelecionados}"
-                                         styleClass="ui-button-danger" disabled="#{!gestaoColaboradorAdminView.hasColaboradoresSelecionados()}" update="@this">
-                            <p:confirm header="Confirmação" message="Remover os colaboradores selecionados?"
-                                       icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
+                </p:toolbarGroup>
 
-                    </p:toolbarGroup>
+                <p:toolbarGroup align="right">
 
-                    <p:toolbarGroup align="right">
+                    <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
 
-                        <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
+                    <p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                        <p:dataExporter type="pdf" target="dt-colaboradores" fileName="colaboradores" />
+                    </p:commandButton>
 
-                        <p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
-                            <p:dataExporter type="pdf" target="dt-colaboradores" fileName="colaboradores" />
-                        </p:commandButton>
+                </p:toolbarGroup>
 
-                    </p:toolbarGroup>
+            </p:toolbar>
 
-                </p:toolbar>
+            <p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{gestaoColaboradorAdminView.colaboradores}"
+                            reflow="true" styleClass="products-table" selection="#{gestaoColaboradorAdminView.colaboradoresSelecionados}"
+                            rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
 
-                <p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{gestaoColaboradorAdminView.colaboradores}"
-                             reflow="true" styleClass="products-table" selection="#{gestaoColaboradorAdminView.colaboradoresSelecionados}"
-                             rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                <f:facet name="header">
+                    <div class="products-table-header">
+                        <span style="font-weight: bold">Colaboradores</span>
+                        <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                            <p:inputText id="globalFilter" onkeyup="PF('dtColaboradores').filter()" placeholder="Buscar"/>
+                        </span>
+                    </div>
+                </f:facet>
 
-                    <f:facet name="header">
-                        <div class="products-table-header">
-                            <span style="font-weight: bold">Colaboradores</span>
-                            <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtColaboradores').filter()" placeholder="Buscar"/>
+                <p:ajax event="rowSelect" update="@root:@id(delete-colaboradores-button)" />
+                <p:ajax event="rowUnselect" update="@root:@id(delete-colaboradores-button)" />
+                <p:ajax event="rowSelectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+                <p:ajax event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+                <p:ajax event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
+
+                <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                <p:column headerText="ID" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
+                    <h:outputText value="#{colaborador.id}" />
+                </p:column>
+
+                <p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
+                    <h:outputText value="#{colaborador.nome}" />
+                </p:column>
+
+                <p:column exportable="false">
+
+                    <p:commandButton icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
+                                        oncomplete="PF('ColaboradorDialog').show()"
+                                        styleClass="edit-button rounded-button ui-button-success" process="@this">
+                        <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
+                        <p:resetInput target="@root:@id(manage-colaborador-content)" />
+                    </p:commandButton>
+
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                        process="@this"
+                                        oncomplete="PF('deletarColaboradorDialog').show()">
+                        <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
+                    </p:commandButton>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <h:form id="dialogs">
+
+            <p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog"
+                        responsive="true">
+
+                <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
+
+                    <p:outputPanel rendered="#{not empty gestaoColaboradorAdminView.colaboradorSelecionado}">
+
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:inputText value="#{gestaoColaboradorAdminView.colaboradorSelecionado.nome}" required="true"/>
+                                <p:outputLabel for="@previous" value="Nome" />
                             </span>
                         </div>
-                    </f:facet>
 
-                    <p:ajax event="rowSelect" update="@root:@id(delete-colaboradores-button)" />
-                    <p:ajax event="rowUnselect" update="@root:@id(delete-colaboradores-button)" />
-                    <p:ajax event="rowSelectCheckbox" update="@root:@id(delete-colaboradores-button)" />
-                    <p:ajax event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
-                    <p:ajax event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:inputMask value="#{gestaoColaboradorAdminView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
+                                <p:outputLabel for="@previous" value="Tefefone kkkk" />
+                            </span>
+                        </div>
 
-                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:datePicker id="navigator" value="#{gestaoColaboradorAdminView.colaboradorSelecionado.dataNascimento}"
+                                                pattern="dd/MM/yyyy" mask="true" required="true"/>
+                                <p:outputLabel for="@previous" value="Dt Nascimento" />
+                            </span>
+                        </div>
 
-                    <p:column headerText="ID" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
-                        <h:outputText value="#{colaborador.id}" />
-                    </p:column>
-
-                    <p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
-                        <h:outputText value="#{colaborador.nome}" />
-                    </p:column>
-
-                    <p:column exportable="false">
-
-                        <p:commandButton icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
-                                         oncomplete="PF('ColaboradorDialog').show()"
-                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
-                            <p:resetInput target="@root:@id(manage-colaborador-content)" />
-                        </p:commandButton>
-
-                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                         process="@this"
-                                         oncomplete="PF('deletarColaboradorDialog').show()">
-                            <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
-                        </p:commandButton>
-
-                    </p:column>
-
-                </p:dataTable>
-
-            </h:form>
-
-            <h:form id="dialogs">
-
-                <p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog"
-                          responsive="true">
-
-                    <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
-
-                        <p:outputPanel rendered="#{not empty gestaoColaboradorAdminView.colaboradorSelecionado}">
-
-                            <div class="field mb-5">
-                                <span class="ui-float-label">
-                                    <p:inputText value="#{gestaoColaboradorAdminView.colaboradorSelecionado.nome}" required="true"/>
-                                    <p:outputLabel for="@previous" value="Nome" />
-                                </span>
-                            </div>
-
-                            <div class="field mb-5">
-                                <span class="ui-float-label">
-                                    <p:inputMask value="#{gestaoColaboradorAdminView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
-                                    <p:outputLabel for="@previous" value="Tefefone kkkk" />
-                                </span>
-                            </div>
-
-                            <div class="field mb-5">
-                                <span class="ui-float-label">
-                                    <p:datePicker id="navigator" value="#{gestaoColaboradorAdminView.colaboradorSelecionado.dataNascimento}"
-                                                    pattern="dd/MM/yyyy" mask="true" required="true"/>
-                                    <p:outputLabel for="@previous" value="Dt Nascimento" />
-                                </span>
-                            </div>
-
-                            <div class="field mb-5">
-                                <span class="ui-float-label">
-                                    <p:selectOneMenu id="tipoColaborador"
-                                                    value="#{gestaoColaboradorAdminView.colaboradorSelecionado.tipoColaborador}"
-                                                    effect="fold" required="true">
-                                        <f:selectItem itemLabel="Selecione" itemValue="" />
-                                        <f:selectItems value="#{gestaoColaboradorAdminView.tipoColaborador}" />
-                                    </p:selectOneMenu>
-                                    <p:outputLabel for="@previous" value="Tipo" />
-                                </span>
-                            </div>
-
-                        </p:outputPanel>
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:selectOneMenu id="tipoColaborador"
+                                                value="#{gestaoColaboradorAdminView.colaboradorSelecionado.tipoColaborador}"
+                                                effect="fold" required="true">
+                                    <f:selectItem itemLabel="Selecione" itemValue="" />
+                                    <f:selectItems value="#{gestaoColaboradorAdminView.tipoColaborador}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="@previous" value="Tipo" />
+                            </span>
+                        </div>
 
                     </p:outputPanel>
 
-                    <f:facet name="footer">
-                        <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.salvar}"
-                                         update="manage-colaborador-content" process="manage-colaborador-content @this" />
-                        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ColaboradorDialog').hide()"
-                                         class="ui-button-secondary" type="button" />
-                    </f:facet>
+                </p:outputPanel>
 
-                </p:dialog>
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.salvar}"
+                                        update="manage-colaborador-content" process="manage-colaborador-content @this" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ColaboradorDialog').hide()"
+                                        class="ui-button-secondary" type="button" />
+                </f:facet>
+
+            </p:dialog>
 
 
-                <p:confirmDialog widgetVar="deletarColaboradorDialog" showEffect="fade" width="300"
-                                 message="Remover o colaborador?" header="Confirmar" severity="warn">
-                    <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.deletarSelecionado}"
-                                     process="@this" update="@root:@id(delete-colaboradores-button)"
-                                     oncomplete="PF('deletarColaboradorDialog').hide()" />
-                    <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                     onclick="PF('deletarColaboradorDialog').hide()" />
-                </p:confirmDialog>
+            <p:confirmDialog widgetVar="deletarColaboradorDialog" showEffect="fade" width="300"
+                                message="Remover o colaborador?" header="Confirmar" severity="warn">
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.deletarSelecionado}"
+                                    process="@this" update="@root:@id(delete-colaboradores-button)"
+                                    oncomplete="PF('deletarColaboradorDialog').hide()" />
+                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                    onclick="PF('deletarColaboradorDialog').hide()" />
+            </p:confirmDialog>
 
-                <p:confirmDialog global="true" showEffect="fade" width="300">
-                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                     icon="pi pi-times" />
-                </p:confirmDialog>
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                    icon="pi pi-times" />
+            </p:confirmDialog>
 
-            </h:form>
+        </h:form>
 
-        </p:card>
+	</ui:define>
 
-    </h:body>
-
-</html>
+</ui:composition>
