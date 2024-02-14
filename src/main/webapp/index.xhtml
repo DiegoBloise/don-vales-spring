@@ -11,6 +11,28 @@
 
     <ui:define name="content">
 
+        <p:dataTable id="vales-do-dia" var="vale" value="#{gestaoColaboradorView.valesDoDia}" lazy="true">
+
+            <p:column headerText="Colaborador">
+                <p:outputLabel value="#{vale.entregador}" />
+            </p:column>
+
+            <p:column headerText="Data do Vale">
+                <p:outputLabel value="#{vale.dataFormatada}" />
+            </p:column>
+
+            <p:column headerText="Tipo">
+                <p:outputLabel value="#{vale.tipoVale}" />
+            </p:column>
+
+            <p:column headerText="Valor">
+                <h:outputText value="#{vale.valor}">
+                    <f:convertNumber type="currency" currencySymbol="R$" />
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
 	</ui:define>
 
 </ui:composition>

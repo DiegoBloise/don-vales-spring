@@ -210,6 +210,11 @@ public class GestaoColaboradorView implements Serializable {
 	}
 
 
+	public List<Vale> getValesDoDia() {
+		return valeService.listar();
+	}
+
+
 	public void calcularTotalVale(List<Vale> vales) {
 		this.totalVales = new BigDecimal(0);
 
