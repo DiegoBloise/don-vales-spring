@@ -19,15 +19,15 @@
 
                     <p:toolbarGroup>
 
-                        <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{gestaoColaboradorAdminView.adicionar}"
+                        <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{colaboradorView.adicionar}"
                                             update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
                                             styleClass="ui-button-success" style="margin-right: .5rem">
                             <p:resetInput target="@root:@id(manage-colaborador-content)" />
                         </p:commandButton>
 
-                        <p:commandButton id="delete-colaboradores-button" value="#{gestaoColaboradorAdminView.deleteButtonMessage}"
-                                            icon="pi pi-trash" actionListener="#{gestaoColaboradorAdminView.deletarColaboradoresSelecionados}"
-                                            styleClass="ui-button-danger" disabled="#{!gestaoColaboradorAdminView.hasColaboradoresSelecionados()}" update="@this">
+                        <p:commandButton id="delete-colaboradores-button" value="#{colaboradorView.deleteButtonMessage}"
+                                            icon="pi pi-trash" actionListener="#{colaboradorView.deletarColaboradoresSelecionados}"
+                                            styleClass="ui-button-danger" disabled="#{!colaboradorView.hasColaboradoresSelecionados()}" update="@this">
                             <p:confirm header="Confirmação" message="Remover os colaboradores selecionados?"
                                         icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
@@ -46,8 +46,8 @@
 
                 </p:toolbar>
 
-                <p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{gestaoColaboradorAdminView.colaboradores}"
-                                reflow="true" styleClass="products-table" selection="#{gestaoColaboradorAdminView.colaboradoresSelecionados}"
+                <p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{colaboradorView.colaboradores}"
+                                reflow="true" styleClass="products-table" selection="#{colaboradorView.colaboradoresSelecionados}"
                                 rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
 
                     <f:facet name="header">
@@ -84,14 +84,14 @@
                         <p:commandButton icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
                                             oncomplete="PF('ColaboradorDialog').show()"
                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
+                            <f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
                             <p:resetInput target="@root:@id(manage-colaborador-content)" />
                         </p:commandButton>
 
                         <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                             process="@this"
                                             oncomplete="PF('deletarColaboradorDialog').show()">
-                            <f:setPropertyActionListener value="#{colaborador}" target="#{gestaoColaboradorAdminView.colaboradorSelecionado}" />
+                            <f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
                         </p:commandButton>
 
                     </p:column>
@@ -102,7 +102,7 @@
 
                             <h5>Vales de #{colaborador.nome}</h5>
 
-                            <p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.valesDoColaborador(colaborador)}" lazy="true">
+                            <p:dataTable id="vales" var="vale" value="#{colaboradorView.valesDoColaborador(colaborador)}" lazy="true">
 
                                 <p:column headerText="Data do Vale">
                                     <p:outputLabel value="#{vale.dataFormatada}" />
@@ -127,7 +127,7 @@
                                         icon="pi pi-trash" process="@this"
                                         oncomplete="PF('deleteValeDialog').show()">
                                         <f:setPropertyActionListener value="#{vale}"
-                                            target="#{gestaoColaboradorView.valeSelecionado}" />
+                                            target="#{colaboradorView.valeSelecionado}" />
                                     </p:commandButton>
                                 </p:column> -->
 
@@ -138,7 +138,7 @@
 
                                         <p:column colspan="2" style="color: red">
                                             <f:facet name="footer">
-                                                <h:outputText value="#{gestaoColaboradorView.totalDoColaborador(colaborador)}">
+                                                <h:outputText value="#{colaboradorView.totalDoColaborador(colaborador)}">
                                                     <f:convertNumber type="currency" currencySymbol="R$" />
                                                 </h:outputText>
                                             </f:facet>
@@ -166,25 +166,25 @@
 
                 <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
 
-                    <p:outputPanel rendered="#{not empty gestaoColaboradorAdminView.colaboradorSelecionado}">
+                    <p:outputPanel rendered="#{not empty colaboradorView.colaboradorSelecionado}">
 
                         <div class="field mb-5">
                             <span class="ui-float-label">
-                                <p:inputText value="#{gestaoColaboradorAdminView.colaboradorSelecionado.nome}" required="true"/>
+                                <p:inputText value="#{colaboradorView.colaboradorSelecionado.nome}" required="true"/>
                                 <p:outputLabel for="@previous" value="Nome" />
                             </span>
                         </div>
 
                         <div class="field mb-5">
                             <span class="ui-float-label">
-                                <p:inputMask value="#{gestaoColaboradorAdminView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
+                                <p:inputMask value="#{colaboradorView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
                                 <p:outputLabel for="@previous" value="Tefefone kkkk" />
                             </span>
                         </div>
 
                         <div class="field mb-5">
                             <span class="ui-float-label">
-                                <p:datePicker value="#{gestaoColaboradorAdminView.colaboradorSelecionado.dataNascimento}"
+                                <p:datePicker value="#{colaboradorView.colaboradorSelecionado.dataNascimento}"
                                                 pattern="dd/MM/yyyy" mask="true" required="true"/>
                                 <p:outputLabel for="@previous" value="Dt Nascimento" />
                             </span>
@@ -193,10 +193,10 @@
                         <div class="field mb-5">
                             <span class="ui-float-label">
                                 <p:selectOneMenu id="tipoColaborador"
-                                                value="#{gestaoColaboradorAdminView.colaboradorSelecionado.tipoColaborador}"
+                                                value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}"
                                                 effect="fold" required="true">
                                     <f:selectItem itemLabel="Selecione" itemValue="" />
-                                    <f:selectItems value="#{gestaoColaboradorAdminView.tipoColaborador}" />
+                                    <f:selectItems value="#{colaboradorView.tipoColaborador}" />
                                 </p:selectOneMenu>
                                 <p:outputLabel for="@previous" value="Tipo" />
                             </span>
@@ -207,7 +207,7 @@
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.salvar}"
+                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvar}"
                                         update="manage-colaborador-content" process="manage-colaborador-content @this" />
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ColaboradorDialog').hide()"
                                         class="ui-button-secondary" type="button" />
@@ -224,18 +224,18 @@
 				<p:outputPanel id="manage-vale-content">
 					<h:panelGrid columns="2">
 						<p:outputLabel for="@next" value="Nome: "/>
-						<p:outputLabel value="#{gestaoColaboradorView.colaboradorSelecionado.nome}"/>
+						<p:outputLabel value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
 						<p:outputLabel for="@next" value="Data do Vale:"/>
-						<p:datePicker value="#{gestaoColaboradorView.vale.data}"
+						<p:datePicker value="#{colaboradorView.vale.data}"
 							pattern="dd/MM/yyyy" mask="true" required="true"/>
 
 						<p:outputLabel for="@next" value="Valor:"/>
-						<p:inputNumber value="#{gestaoColaboradorView.valorVale}" decimalPlaces="2" 
+						<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2" 
 							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 						<p:outputLabel for="@next" value="Tipo de Vale:" />
-						<p:selectOneMenu id="valeTipo" value="#{gestaoColaboradorView.vale.tipoVale}"
+						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.vale.tipoVale}"
 							effect="fold" required="true">
 							<f:selectItem itemLabel="Selecione:" itemValue="" />
 							<f:selectItems value="#{entregaView.tipoVale}" />
@@ -246,7 +246,7 @@
 
 				<f:facet name="footer">
 					<p:commandButton value="Salvar" icon="pi pi-check"
-						actionListener="#{gestaoColaboradorView.salvarVale}"
+						actionListener="#{colaboradorView.salvarVale}"
 						update="@root:@id(vales)"
 						oncomplete="PF('imprimeValeDialog').show(); PF('dlgColaborador').hide();"/>
 
@@ -258,7 +258,7 @@
 
             <p:confirmDialog widgetVar="deletarColaboradorDialog" showEffect="fade" width="300"
                                 message="Remover o colaborador?" header="Confirmar" severity="warn">
-                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorAdminView.deletarSelecionado}"
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarSelecionado}"
                                     process="@this" update="@root:@id(delete-colaboradores-button)"
                                     oncomplete="PF('deletarColaboradorDialog').hide()" />
                 <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"

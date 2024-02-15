@@ -11,115 +11,198 @@
 
     <ui:define name="content">
 
-		<h:form id="principal">
+		<h:form id="form">
 
-			<p:dataTable id="colaboradores" var="colaborador" value="#{gestaoColaboradorView.colaboradores}"
-						widgetVar="customersTable" multiViewState="true" selectionMode="single"
-						selection="#{gestaoColaboradorView.colaboradorSelecionado}"
-						rowKey="#{colaborador.id}"
-						emptyMessage="Sem colaboradores cadastrados">
+			<div class="crud-demo">
 
-				<p:ajax event="rowSelect" update="@root:@id(manage-vale-content)" oncomplete="PF('dlgColaborador').show()"/>
+				<p:toolbar rendered="#{authView.isAdmin}">
 
-				<p:column style="width:2rem">
-					<p:rowToggler/>
-				</p:column>
+					<p:toolbarGroup>
 
-				<p:column headerText="Name" filterBy="#{colaborador.nome}" sortBy="#{colaborador.nome}"
-						filterMatchMode="contains">
-					<h:outputText value="#{colaborador.nome}"/>
-				</p:column>
+						<p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{colaboradorView.adicionar}"
+											update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
+											styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target="@root:@id(manage-colaborador-content)" />
+						</p:commandButton>
 
-				<p:column headerText="Tipo Colaborador" filterBy="#{colaborador.tipoColaborador}" sortBy="#{colaborador.tipoColaborador}"
-						filterMatchMode="exact">
-					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('customersTable').filter()"
-										style="width:100%; box-sizing: border-box;">
-							<f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
-							<f:selectItems value="#{gestaoColaboradorView.tipoColaborador}"/>
-						</p:selectOneMenu>
+						<p:commandButton id="delete-colaboradores-button" value="#{colaboradorView.deleteButtonMessage}"
+											icon="pi pi-trash" actionListener="#{colaboradorView.deletarColaboradoresSelecionados}"
+											styleClass="ui-button-danger" disabled="#{!colaboradorView.hasColaboradoresSelecionados()}" update="@this">
+							<p:confirm header="Confirmação" message="Remover os colaboradores selecionados?"
+										icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+
+					<p:toolbarGroup align="right">
+
+						<p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
+
+						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-colaboradores" fileName="colaboradores" />
+						</p:commandButton>
+
+					</p:toolbarGroup>
+
+				</p:toolbar>
+
+				<p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{colaboradorView.colaboradores}"
+								reflow="true" styleClass="products-table" selection="#{colaboradorView.colaboradoresSelecionados}"
+								rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+					<f:facet name="header">
+						<div class="products-table-header">
+							<span style="font-weight: bold">Colaboradores</span>
+							<span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+								<p:inputText id="globalFilter" onkeyup="PF('dtColaboradores').filter()" placeholder="Buscar"/>
+							</span>
+						</div>
 					</f:facet>
-					<span>#{colaborador.tipoColaborador}</span>
-				</p:column>
 
-				<p:rowExpansion>
+					<p:ajax disabled="#{not authView.isAdmin}" event="rowSelect" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not authView.isAdmin}" event="rowUnselect" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not authView.isAdmin}" event="rowSelectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not authView.isAdmin}" event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not authView.isAdmin}" event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
 
-					<p:dataTable id="vales" var="vale" value="#{gestaoColaboradorView.valesDoColaborador(colaborador)}" lazy="true">
+					<p:column selectionMode="multiple" exportable="false"></p:column>
 
-						<p:column headerText="Colaborador">
-							<p:outputLabel value="#{vale.entregador}" />
-						</p:column>
+					<p:column exportable="false">
+						<p:rowToggler />
+					</p:column>
 
-						<p:column headerText="Data do Vale">
-							<p:outputLabel value="#{vale.dataFormatada}" />
-						</p:column>
+					<p:column headerText="ID" sortBy="#{colaborador.id}" filterBy="#{colaborador.id}">
+						<h:outputText value="#{colaborador.id}" />
+					</p:column>
 
-						<p:column headerText="Tipo">
-							<p:outputLabel value="#{vale.tipoVale}" />
-						</p:column>
+					<p:column headerText="Nome" sortBy="#{colaborador.nome}" filterBy="#{colaborador.nome}">
+						<h:outputText value="#{colaborador.nome}" />
+					</p:column>
 
-						<p:column headerText="Valor">
-							<h:outputText value="#{vale.valor}">
-								<f:convertNumber type="currency" currencySymbol="R$" />
-							</h:outputText>
-						</p:column>
+					<p:column headerText="Telefone" sortBy="#{colaborador.telefone}" filterBy="#{colaborador.telefone}">
+						<p:outputLabel value="#{colaborador.telefone}" />
+					</p:column>
 
-						<!-- <p:column exportable="false">
-							<p:commandButton class="ui-button-warning rounded-button"
-								icon="pi pi-trash" process="@this"
-								oncomplete="PF('deleteValeDialog').show()">
-								<f:setPropertyActionListener value="#{vale}"
-									target="#{gestaoColaboradorView.valeSelecionado}" />
-							</p:commandButton>
-						</p:column> -->
+					<p:column headerText="Tipo" sortBy="#{colaborador.tipoColaborador}" filterBy="#{colaborador.tipoColaborador}">
+						<p:outputLabel value="#{colaborador.tipoColaborador}" />
+					</p:column>
 
-						<p:columnGroup type="footer">
+					<p:column exportable="false">
 
-							<p:row>
-								<p:column colspan="3" style="text-align:right" footerText="Total:" />
+						<p:commandButton icon="pi pi-plus" update="@root:@id(manage-vale-content)"
+											oncomplete="PF('valeDialog').show()"
+											styleClass="edit-button rounded-button ui-button-success" process="@this" action="#{colaboradorView.setDate}">
+							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
+							<p:resetInput target="@root:@id(manage-vale-content)" />
+						</p:commandButton>
 
-								<p:column style="color: red">
-									<f:facet name="footer">
-										<h:outputText value="#{gestaoColaboradorView.totalDoColaborador(colaborador)}">
-											<f:convertNumber type="currency" currencySymbol="R$" />
-										</h:outputText>
-									</f:facet>
+						<p:commandButton rendered="#{authView.isAdmin}" icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
+											oncomplete="PF('ColaboradorDialog').show()"
+											styleClass="edit-button rounded-button ui-button-warning" process="@this">
+							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
+							<p:resetInput target="@root:@id(manage-colaborador-content)" />
+						</p:commandButton>
+
+						<p:commandButton rendered="#{authView.isAdmin}" class="ui-button-danger rounded-button" icon="pi pi-trash"
+											process="@this"
+											oncomplete="PF('deletarColaboradorDialog').show()">
+							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
+						</p:commandButton>
+
+					</p:column>
+
+					<p:rowExpansion>
+
+						<div class="orders-subtable">
+
+							<h5>Vales de #{colaborador.nome}</h5>
+
+							<p:dataTable id="vales" var="vale" value="#{colaboradorView.valesDoColaborador(colaborador)}">
+
+								<p:column headerText="Data do Vale">
+									<p:outputLabel value="#{vale.dataFormatada}" />
 								</p:column>
-							</p:row>
 
-						</p:columnGroup>
+								<p:column headerText="Tipo">
+									<p:outputLabel value="#{vale.tipoVale}" />
+								</p:column>
 
-					</p:dataTable>
+								<p:column headerText="Valor">
+									<h:outputText value="#{vale.valor}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</p:column>
 
-				</p:rowExpansion>
+								<p:column exportable="false" rendered="#{authView.isAdmin}">
 
-			</p:dataTable>
+									<p:commandButton icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
+														oncomplete="PF('valeDialog').show()"
+														styleClass="edit-button rounded-button ui-button-warning" process="@this">
+										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}" />
+										<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
+										<f:setPropertyActionListener value="#{vale.valor}" target="#{colaboradorView.valorVale}" />
+										<p:resetInput target="@root:@id(manage-vale-content)" />
+									</p:commandButton>
+
+									<p:commandButton class="ui-button-danger rounded-button" icon="pi pi-trash"
+														process="@this"
+														oncomplete="PF('deletarValeDialog').show()">
+										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}" />
+									</p:commandButton>
+
+								</p:column>
+
+								<p:columnGroup type="footer">
+
+									<p:row>
+										<p:column colspan="2" style="text-align:right" footerText="Total:" />
+
+										<p:column colspan="#{authView.isAdmin ? 2 : ''}" style="color: red">
+											<f:facet name="footer">
+												<h:outputText value="#{colaboradorView.totalDoColaborador(colaborador)}">
+													<f:convertNumber type="currency" currencySymbol="R$" />
+												</h:outputText>
+											</f:facet>
+										</p:column>
+									</p:row>
+
+								</p:columnGroup>
+
+							</p:dataTable>
+
+						</div>
+
+					</p:rowExpansion>
+
+				</p:dataTable>
+
+			</div>
 
 		</h:form>
 
 		<h:form id="dialogs">
 
-			<p:dialog header="Vales" widgetVar="dlgColaborador"
+			<p:dialog header="Lançamento de Vale" widgetVar="valeDialog"
 						showEffect="fade"
-						modal="true"
+						modal="true" 
 						blockScroll="false"
 						id="dialog">
 
-				<p:outputPanel id="manage-vale-content">
+				<p:outputPanel id="manage-vale-content" styleClass="ui-fluid">
 					<h:panelGrid columns="2">
 						<p:outputLabel for="@next" value="Nome: "/>
-						<p:outputLabel value="#{gestaoColaboradorView.colaboradorSelecionado.nome}"/>
+						<p:outputLabel styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
 						<p:outputLabel for="@next" value="Data do Vale:"/>
-						<p:datePicker value="#{gestaoColaboradorView.vale.data}"
+						<p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
 							pattern="dd/MM/yyyy" mask="true" required="true"/>
 
 						<p:outputLabel for="@next" value="Valor:"/>
-						<p:inputNumber value="#{gestaoColaboradorView.valorVale}" decimalPlaces="2" 
+						<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2" 
 							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 						<p:outputLabel for="@next" value="Tipo de Vale:" />
-						<p:selectOneMenu id="valeTipo" value="#{gestaoColaboradorView.vale.tipoVale}"
+						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipoVale}"
 							effect="fold" required="true">
 							<f:selectItem itemLabel="Selecione:" itemValue="" />
 							<f:selectItems value="#{entregaView.tipoVale}" />
@@ -129,25 +212,78 @@
 				</p:outputPanel>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar" icon="pi pi-check"
-						actionListener="#{gestaoColaboradorView.salvarVale}"
-						update="@root:@id(vales)"
-						oncomplete="PF('imprimeValeDialog').show(); PF('dlgColaborador').hide();"/>
-
-					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('dlgColaborador').hide()"
+					<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
+									update="manage-vale-content" process="manage-vale-content @this"
+									oncomplete="PF('imprimeValeDialog').show(); PF('valeDialog').hide();"/>
+					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('valeDialog').hide()"
 						class="ui-button-secondary" type="button" />
 				</f:facet>
 
 			</p:dialog>
 
 
+			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog"
+                        responsive="true">
+
+                <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
+
+                    <p:outputPanel rendered="#{not empty colaboradorView.colaboradorSelecionado}">
+
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:inputText value="#{colaboradorView.colaboradorSelecionado.nome}" required="true"/>
+                                <p:outputLabel for="@previous" value="Nome" />
+                            </span>
+                        </div>
+
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:inputMask value="#{colaboradorView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
+                                <p:outputLabel for="@previous" value="Tefefone kkkk" />
+                            </span>
+                        </div>
+
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:datePicker value="#{colaboradorView.colaboradorSelecionado.dataNascimento}"
+                                                pattern="dd/MM/yyyy" mask="true" required="true"/>
+                                <p:outputLabel for="@previous" value="Dt Nascimento" />
+                            </span>
+                        </div>
+
+                        <div class="field mb-5">
+                            <span class="ui-float-label">
+                                <p:selectOneMenu id="tipoColaborador"
+                                                value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}"
+                                                effect="fold" required="true">
+                                    <f:selectItem itemLabel="Selecione" itemValue="" />
+                                    <f:selectItems value="#{colaboradorView.tipoColaborador}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="@previous" value="Tipo" />
+                            </span>
+                        </div>
+
+                    </p:outputPanel>
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvar}"
+                                        update="manage-colaborador-content" process="manage-colaborador-content @this" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ColaboradorDialog').hide()"
+                                        class="ui-button-secondary" type="button" />
+                </f:facet>
+
+            </p:dialog>
+
+
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
 				message="Imprimir Vale?" header="Confirmação" severity="warn">
-				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{gestaoColaboradorView.download}"
+				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.download}"
 								process="@this"
-								update="principal"
+								update="@root:@id(dt-colaboradores)"
 								oncomplete="PF('imprimeValeDialog').hide()">
-					<p:fileDownload value="#{gestaoColaboradorView.file}"/>
+					<p:fileDownload value="#{colaboradorView.file}"/>
 				</p:commandButton>
 
 				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
@@ -155,12 +291,28 @@
 			</p:confirmDialog>
 
 
-			<p:confirmDialog global="true" showEffect="fade" width="300">
-				<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-				<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-					icon="pi pi-times" />
-			</p:confirmDialog>
+			<p:confirmDialog widgetVar="deletarColaboradorDialog" showEffect="fade" width="300"
+                                message="Remover o colaborador?" header="Confirmar" severity="warn">
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarSelecionado}"
+                                    process="@this" update="@root:@id(delete-colaboradores-button)"
+                                    oncomplete="PF('deletarColaboradorDialog').hide()" />
+                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                    onclick="PF('deletarColaboradorDialog').hide()" />
+            </p:confirmDialog>
 
+			<p:confirmDialog widgetVar="deletarValeDialog" showEffect="fade" width="300"
+                                message="Remover o vale?" header="Confirmar" severity="warn">
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarValeSelecionado}"
+                                    process="@this" oncomplete="PF('deletarValeDialog').hide()" />
+                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                    onclick="PF('deletarValeDialog').hide()" />
+            </p:confirmDialog>
+
+            <p:confirmDialog global="true" showEffect="fade" width="300">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                    icon="pi pi-times" />
+            </p:confirmDialog>
 
 		</h:form>
 

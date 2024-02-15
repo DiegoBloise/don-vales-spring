@@ -28,6 +28,7 @@ public class GestaoColaboradorAdminView implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Colaborador colaborador;
+
     private List<Colaborador> colaboradores;
 
     private Colaborador colaboradorSelecionado;

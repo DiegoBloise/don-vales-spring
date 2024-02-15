@@ -20,35 +20,35 @@ import lombok.ToString;
 @Entity
 @ToString
 public class Vale {
-	
+
 	public Vale() {
 		this.valor = new BigDecimal(0);
 	}
-	
+
 	@Id
 	@GeneratedValue
 	@Getter
 	@Setter
 	@EqualsAndHashCode.Include
 	private Long id;
-		
+
 	@Getter
 	@Setter
 	private String entregador;
-	
+
 	@Getter
 	@Setter
 	private BigDecimal valor;
-	
+
 	@Getter
 	@Setter
 	private LocalDate data;
-	
+
 	@Getter
 	@Setter
 	@Enumerated(EnumType.STRING)
 	private TipoVale tipoVale;
-			
+
 	@Transient
 	public String getDataFormatada() {
 		return Util.localDateFormatado(data);
