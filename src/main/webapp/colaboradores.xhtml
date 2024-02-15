@@ -19,7 +19,7 @@
 						rowKey="#{colaborador.id}"
 						emptyMessage="Sem colaboradores cadastrados">
 
-				<p:ajax event="rowSelect" update="@root:@id(manage-product-content)" oncomplete="PF('dlgColaborador').show()"/>
+				<p:ajax event="rowSelect" update="@root:@id(manage-vale-content)" oncomplete="PF('dlgColaborador').show()"/>
 
 				<p:column style="width:2rem">
 					<p:rowToggler/>
@@ -101,17 +101,17 @@
 
 			<p:dialog header="Vales" widgetVar="dlgColaborador"
 						showEffect="fade"
-						modal="true" 
+						modal="true"
 						blockScroll="false"
 						id="dialog">
 
-				<p:outputPanel id="manage-product-content">
+				<p:outputPanel id="manage-vale-content">
 					<h:panelGrid columns="2">
 						<p:outputLabel for="@next" value="Nome: "/>
 						<p:outputLabel value="#{gestaoColaboradorView.colaboradorSelecionado.nome}"/>
 
 						<p:outputLabel for="@next" value="Data do Vale:"/>
-						<p:datePicker id="navigator" value="#{gestaoColaboradorView.vale.data}"
+						<p:datePicker value="#{gestaoColaboradorView.vale.data}"
 							pattern="dd/MM/yyyy" mask="true" required="true"/>
 
 						<p:outputLabel for="@next" value="Valor:"/>
