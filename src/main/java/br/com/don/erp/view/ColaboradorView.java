@@ -77,9 +77,10 @@ public class ColaboradorView implements Serializable {
 
 		filterBy = new ArrayList<>();
 
+		//.filterValue(new ArrayList<>(Arrays.asList(LocalDate.now().minusDays(7), LocalDate.now().plusDays(7))))
         filterBy.add(FilterMeta.builder()
                 .field("data")
-                .filterValue(new ArrayList<>(Arrays.asList(LocalDate.now().minusDays(7), LocalDate.now().plusDays(7))))
+                .filterValue(new ArrayList<>(Arrays.asList(LocalDate.now(), LocalDate.now())))
                 .matchMode(MatchMode.BETWEEN)
                 .build());
 	}

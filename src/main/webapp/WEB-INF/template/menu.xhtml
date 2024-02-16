@@ -20,7 +20,7 @@
                     <p:menuitem value="Upload de Arquivo" outcome="/entrega" icon="pi pi-fw pi-upload" rendered="#{authView.isAdmin}">
                         <f:param name="i" value="2"/>
                     </p:menuitem>
-                    <p:menuitem value="Vales" outcome="/acerto" icon="pi pi-fw pi-calendar">
+                    <p:menuitem value="Vales" outcome="/acerto" icon="pi pi-fw pi-calendar" rendered="#{authView.isAdmin}">
                         <f:param name="i" value="3"/>
                     </p:menuitem>
                     <!-- <p:menuitem value="Colaboradores Admin" outcome="/admin/colaboradores-admin" icon="pi pi-fw pi-user-edit" rendered="#{authView.isAdmin}" disabled="#{not authView.isAdmin}">

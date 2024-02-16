@@ -13,12 +13,10 @@
 
         <h:form>
 
-            <h5 class="mt-5 ml-2">Vales do Dia</h5>
-
             <p:dataTable id="vales-do-dia" var="vale" value="#{colaboradorView.valesDoDia}" lazy="true" widgetVar="valesDoDia"
-                    filteredValue="#{colaboradorView.filteredVales}" filterBy="#{colaboradorView.filterBy}">
+                    filteredValue="#{colaboradorView.filteredVales}" filterBy="#{colaboradorView.filterBy}" styleClass="mt-3">
 
-                <p:column headerText="Colaborador">
+                <p:column headerText="Colaborador" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
                     <p:outputLabel value="#{vale.entregador}" />
                 </p:column>
 
@@ -28,11 +26,11 @@
                     </f:facet>
                 </p:column>
 
-                <p:column headerText="Tipo">
+                <p:column headerText="Tipo" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
                     <p:outputLabel value="#{vale.tipoVale}" />
                 </p:column>
 
-                <p:column headerText="Valor">
+                <p:column headerText="Valor" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
                     <h:outputText value="#{vale.valor}">
                         <f:convertNumber type="currency" currencySymbol="R$" />
                     </h:outputText>
