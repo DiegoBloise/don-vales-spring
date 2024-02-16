@@ -34,13 +34,15 @@
                 </p:growl>
             </h:form>
 
-            <div class="layout-main p-0">
+            <div class="layout-main p-0" style="background-image: linear-gradient(#ff6e6c, white);">
 
                 <div class="layout-content p-5">
-                    <p:card id="app">
+                    <p:card id="app" style="min-height: 80vh;">
                         <ui:include src="menu.xhtml"/>
 
-                        <ui:insert name="content"/>
+                        <div class="fadein animation-duration-200">
+                            <ui:insert name="content"/>
+                        </div>
                     </p:card>
                 </div>
 

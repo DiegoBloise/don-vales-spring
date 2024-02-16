@@ -32,9 +32,9 @@ import br.com.don.erp.model.Vale;
 import br.com.don.erp.service.EntregaService;
 import br.com.don.erp.service.ValeService;
 import br.com.don.erp.util.Util;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+@Data
 @Named
 @ViewScoped
 public class EntregaView implements Serializable {
@@ -45,52 +45,36 @@ public class EntregaView implements Serializable {
 
 	private Integer qtdeEntregas;
 
-	@Getter
 	private BigDecimal valorTotalEntregas = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorSaldo = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorTotalDiarias = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorTotalIfood = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorTotalVales = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorTotalSemDesconto = new BigDecimal("0.00");
 
-	@Getter
 	private BigDecimal valorTotalComDesconto = new BigDecimal("0.00");
 
 	private Integer qtdeTotalIFood = 0;
 
-	@Getter
-	@Setter
 	private String entregadorSelecionado;
 
 	private Date dataSelecionada;
 
 	private LocalDate dataMovimento;
 
-	@Getter
 	private List<String> entregadores;
 
-	@Getter
 	private Integer qtdeTotalDias;
 
-	@Getter
-	@Setter
 	private Double valorVale;
 
-	@Getter
-	@Setter
 	private List<Vale> vales;
 
-	@Getter
 	private List<TipoVale> tipoVale;
 
 	@Inject
@@ -99,26 +83,18 @@ public class EntregaView implements Serializable {
 	@Inject
 	private ValeService valeService;
 
-	@Getter
-	@Setter
 	private Vale vale;
 
-	@Setter
-	@Getter
 	private Date dataInicio;
 
-	@Setter
-	@Getter
 	private Date dataFim;
 
-	@Getter
 	private List<Acerto> acertos;
-	
-	@Setter
-	@Getter
+
 	private Vale valeSelecionado;
-	
+
 	private final String QUEBRALINHA = System.lineSeparator();
+
 
 	@PostConstruct
 	public void init() {
@@ -133,6 +109,7 @@ public class EntregaView implements Serializable {
 		dataFim = new Date();
 	}
 
+
 	public void fileUpload(FileUploadEvent event) {
 
 		try {
@@ -146,7 +123,7 @@ public class EntregaView implements Serializable {
 			} else {
 				UploadedFile file = event.getFile();
 				List<Entrega> salvar = entregaService.trataXML2(file.getInputStream());
-				
+
 				entregaService.salvarLote(salvar);
 				entregas = entregaService.buscarPorData(dataMovimento);
 				entregadores = entregaService.listarEntregadoresporData(dataMovimento);
@@ -158,6 +135,7 @@ public class EntregaView implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
 
 	public void onDateSelect(SelectEvent<Date> event) {
 		dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -177,6 +155,7 @@ public class EntregaView implements Serializable {
 
 	}
 
+
 	public void salvarVale() {
 		vale.setData(Util.converteLocalDate(dataSelecionada));
 		vale.setValor(new BigDecimal(valorVale));
@@ -187,11 +166,12 @@ public class EntregaView implements Serializable {
 		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
 	}
 
+
 	public void realizarAcerto() {
-		
+
 		if (entregadorSelecionado != null && !entregadorSelecionado.isEmpty()) {
-		
-		try {	
+
+		try {
 			entregas = new ArrayList<>();
 			entregas = entregaService.buscarPorEntregadorDataInicioDataFim(entregadorSelecionado,
 					Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
@@ -212,7 +192,7 @@ public class EntregaView implements Serializable {
 			valorTotalComDesconto = new BigDecimal(0);
 
 			qtdeTotalIFood = 0;
-			
+
 			StringBuffer texto = new StringBuffer();
 			texto.append("*").append(entregadorSelecionado).append("*").append(QUEBRALINHA);
 
@@ -268,7 +248,7 @@ public class EntregaView implements Serializable {
 			valorTotalIfood = new BigDecimal(qtdeTotalIFood * 3.00);
 			valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
 			valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
-			
+
 			texto.append("Total de Entregas: R$ ").append(valorTotalEntregas)
 			.append(QUEBRALINHA);
 			texto.append("Total de Diárias: R$ ").append(valorTotalDiarias)
@@ -284,8 +264,7 @@ public class EntregaView implements Serializable {
 			.append("*RECEBER* R$: ")
 			.append(valorTotalComDesconto)
 			.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
-			
-			
+
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(texto.toString());
 				clipboard.setContents(selection, null);
@@ -293,41 +272,46 @@ public class EntregaView implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro", e.getMessage()));
 			}
-			
-			
-		}else {
+
+		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Selecione Entregador", "Entregador deve ser selecionado"));
 		}
-			
 	}
-	
+
+
 	public void buscarVales() {
 		vales = valeService.buscarPorEntregadorDataInicioFim(vale.getEntregador(), dataMovimento, LocalDate.now());
 	}
-	
+
+
 	public void apagarVale() {
 		valeService.deletarVale(valeSelecionado);
 		vales = valeService.listarOrdenadoPorData();
 	}
+
 
 	public void buscarEntregadoresAcerto() {
 		entregadores = entregaService.listarEntregadoresporDataInicioFim(Util.converteLocalDate(dataInicio),
 				Util.converteLocalDate(dataFim));
 	}
 
+
 	public List<Entrega> getEntregas() {
 		return entregas;
 	}
+
 
 	public Integer getQtdeEntregas() {
 		return qtdeEntregas;
 	}
 
+
 	public String getDataMovimentoFormatado() {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		return format.format(this.dataSelecionada);
 	}
+
 
 	public void apagarMovimento() {
 		Integer retorno = 0;
@@ -337,6 +321,7 @@ public class EntregaView implements Serializable {
 						Util.localDateFormatado(dataMovimento) + System.lineSeparator() + retorno
 								+ " registros foram apagados!"));
 	}
+
 
 	public void exemplos() {
 
@@ -352,13 +337,16 @@ public class EntregaView implements Serializable {
 		// "Campos Obrigatórios", "Valor, Tipo e Entregador" ));
 	}
 
+
 	public Date getDataSelecionada() {
 		return dataSelecionada;
 	}
 
+
 	public void setDataSelecionada(Date dataSelecionada) {
 		this.dataSelecionada = dataSelecionada;
 	}
+
 
 	public void exibirEntregadorSelecionado() {
 		if (!entregadorSelecionado.equals("")) {
@@ -380,5 +368,4 @@ public class EntregaView implements Serializable {
 					"Selecione Entregador", "Entregador deve ser selecionado"));
 		}
 	}
-
 }

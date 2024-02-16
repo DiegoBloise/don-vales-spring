@@ -17,7 +17,7 @@
                     <p:menuitem value="Colaboradores" outcome="/colaboradores" icon="pi pi-fw pi-users">
                         <f:param name="i" value="1"/>
                     </p:menuitem>
-                    <p:menuitem value="Pagamento de Entregadores" outcome="/entrega" icon="pi pi-fw pi-money-bill">
+                    <p:menuitem value="Upload de Arquivo" outcome="/entrega" icon="pi pi-fw pi-upload" rendered="#{authView.isAdmin}">
                         <f:param name="i" value="2"/>
                     </p:menuitem>
                     <p:menuitem value="Vales" outcome="/acerto" icon="pi pi-fw pi-calendar">

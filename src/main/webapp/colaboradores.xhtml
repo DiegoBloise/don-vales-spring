@@ -15,7 +15,7 @@
 
 			<div class="crud-demo">
 
-				<p:toolbar rendered="#{authView.isAdmin}">
+				<p:toolbar rendered="#{authView.isAdmin}" styleClass="mt-3">
 
 					<p:toolbarGroup>
 
@@ -47,7 +47,7 @@
 				</p:toolbar>
 
 				<p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{colaboradorView.colaboradores}"
-								reflow="true" styleClass="products-table" selection="#{colaboradorView.colaboradoresSelecionados}"
+								reflow="true" styleClass="products-table mt-3" selection="#{colaboradorView.colaboradoresSelecionados}"
 								rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
 
 					<f:facet name="header">
@@ -213,8 +213,7 @@
 
 				<f:facet name="footer">
 					<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
-									update="manage-vale-content" process="manage-vale-content @this"
-									oncomplete="PF('imprimeValeDialog').show(); PF('valeDialog').hide();"/>
+									update="manage-vale-content" process="manage-vale-content @this"/>
 					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('valeDialog').hide()"
 						class="ui-button-secondary" type="button" />
 				</f:facet>
@@ -239,7 +238,7 @@
                         <div class="field mb-5">
                             <span class="ui-float-label">
                                 <p:inputMask value="#{colaboradorView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
-                                <p:outputLabel for="@previous" value="Tefefone kkkk" />
+                                <p:outputLabel for="@previous" value="Telefone" />
                             </span>
                         </div>
 

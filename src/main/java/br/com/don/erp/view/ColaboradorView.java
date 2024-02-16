@@ -18,6 +18,8 @@ import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.MatchMode;
 import org.primefaces.model.StreamedContent;
 
 import br.com.don.erp.model.Colaborador;
@@ -63,11 +65,23 @@ public class ColaboradorView implements Serializable {
 	private ValeService valeService;
 
 
+	private List<Vale> filteredVales;
+	private List<FilterMeta> filterBy;
+
+
 	@PostConstruct
 	public void init() {
 		dataVale = LocalDate.now();
 
 		inicializarObjetos();
+
+		filterBy = new ArrayList<>();
+
+        filterBy.add(FilterMeta.builder()
+                .field("data")
+                .filterValue(new ArrayList<>(Arrays.asList(LocalDate.now().minusDays(7), LocalDate.now().plusDays(7))))
+                .matchMode(MatchMode.BETWEEN)
+                .build());
 	}
 
 
@@ -106,6 +120,9 @@ public class ColaboradorView implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
+		PrimeFaces.current().executeScript("PF('valeDialog').hide();");
+
+		PrimeFaces.current().executeScript("PF('imprimeValeDialog').show();");
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
 
         inicializarObjetos();
@@ -120,42 +137,6 @@ public class ColaboradorView implements Serializable {
                 .build();
 
 		System.out.println("Imprimindo...");
-	}
-
-
-	public void teste() {
-		valeSelecionado.setEntregador(colaboradorSelecionado.getNome()); 
-		valeSelecionado.setValor(new
-
-		BigDecimal(valorVale));
-
-		valeService.salvar(valeSelecionado);
-
-		vales();
-
-		/* StringBuffer fileContent = new StringBuffer() .append(vale.getEntregador())
-		 .append(Util.QUEBRA_LINHA) .append(vale.getValor())
-		 .append(Util.QUEBRA_LINHA) .append(vale.getDataFormatada());
-
-		 // Configurar o cabeçalho da resposta HTTP para indicar o download do arquivo
-		 FacesContext facesContext = FacesContext.getCurrentInstance();
-		 ExternalContext externalContext = facesContext.getExternalContext();
-		 //externalContext.responseReset();
-		 externalContext.setResponseContentType("text/plain");
-		 externalContext.setResponseHeader("Content-Disposition",
-		 "attachment; filename=\"vale.txt\"");
-
-		 try (OutputStream outputStream = externalContext.getResponseOutputStream()) {
-		 outputStream.write(fileContent.toString().getBytes()); outputStream.flush();
-		 PrimeFaces.current().ajax().update("dialogs:vales");
-		 facesContext.responseComplete();
-
-
-		  } catch (IOException e) { e.printStackTrace(); }
-
-		*/
-
-		 //PrimeFaces.current().ajax().update("dialogs:vales");
 	}
 
 
