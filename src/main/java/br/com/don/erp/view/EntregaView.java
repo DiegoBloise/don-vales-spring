@@ -25,10 +25,10 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 
+import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Acerto;
 import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Entrega;
-import br.com.don.erp.model.TipoVale;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.EntregaService;

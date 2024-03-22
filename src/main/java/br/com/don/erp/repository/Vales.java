@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import br.com.don.erp.model.TipoVale;
+import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Vale;
 
 public class Vales implements Serializable {

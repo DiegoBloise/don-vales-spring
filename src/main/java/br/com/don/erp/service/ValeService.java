@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.don.erp.model.TipoVale;
+import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.repository.Vales;
 

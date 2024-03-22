@@ -224,8 +224,7 @@
 			</p:dialog>
 
 
-			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog"
-                        responsive="true">
+			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog" responsive="true">
 
                 <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
 
@@ -265,7 +264,7 @@
                             <span class="ui-float-label">
                                 <p:selectOneMenu id="tipoColaborador"
                                                 value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}" required="true">
-                                    <f:selectItem itemLabel="Selecione" itemValue="" />
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
                                     <f:selectItems value="#{colaboradorView.tipoColaborador}" />
                                 </p:selectOneMenu>
                                 <p:outputLabel for="@previous" value="Tipo" />

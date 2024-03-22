@@ -14,8 +14,8 @@ import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 
+import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.model.Colaborador;
-import br.com.don.erp.model.TipoColaborador;
 import br.com.don.erp.service.ColaboradorService;
 import lombok.Data;
 import lombok.Getter;

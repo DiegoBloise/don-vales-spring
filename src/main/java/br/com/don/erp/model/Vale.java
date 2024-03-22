@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.util.Util;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

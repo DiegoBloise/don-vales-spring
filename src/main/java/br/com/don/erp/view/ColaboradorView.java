@@ -22,8 +22,8 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.StreamedContent;
 
+import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.model.Colaborador;
-import br.com.don.erp.model.TipoColaborador;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.ValeService;
