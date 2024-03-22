@@ -3,7 +3,7 @@ package br.com.don.erp.rest.consumer;
 import java.io.Serializable;
 
 public class ConsumerProvider implements Serializable {
-	
+
 	/*
 	 * private static final long serialVersionUID = 1L;
 	 * 
@@ -12,5 +12,4 @@ public class ConsumerProvider implements Serializable {
 	 * .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 	 * .build(); }
 	 */
-
 }

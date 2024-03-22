@@ -192,9 +192,7 @@
 
                         <div class="field mb-5">
                             <span class="ui-float-label">
-                                <p:selectOneMenu id="tipoColaborador"
-                                                value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}"
-                                                effect="fold" required="true">
+                                <p:selectOneMenu id="tipoColaborador" value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}" required="true">
                                     <f:selectItem itemLabel="Selecione" itemValue="" />
                                     <f:selectItems value="#{colaboradorView.tipoColaborador}" />
                                 </p:selectOneMenu>
@@ -217,7 +215,7 @@
 
             <p:dialog header="Vales" widgetVar="dlgColaborador"
 						showEffect="fade"
-						modal="true" 
+						modal="true"
 						blockScroll="false"
 						id="dialog">
 
@@ -231,12 +229,11 @@
 							pattern="dd/MM/yyyy" mask="true" required="true"/>
 
 						<p:outputLabel for="@next" value="Valor:"/>
-						<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2" 
+						<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2"
 							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 						<p:outputLabel for="@next" value="Tipo de Vale:" />
-						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.vale.tipoVale}"
-							effect="fold" required="true">
+						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.vale.tipoVale}" required="true">
 							<f:selectItem itemLabel="Selecione:" itemValue="" />
 							<f:selectItems value="#{entregaView.tipoVale}" />
 						</p:selectOneMenu>

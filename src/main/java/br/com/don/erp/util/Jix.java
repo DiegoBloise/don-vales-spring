@@ -2,9 +2,9 @@ package br.com.don.erp.util;
 
 /* 
 CREATED BY: Diego Bloise o mestre dos magos
- */
+*/
 
- public class Jix {
+public class Jix {
 
     private String nome;
 

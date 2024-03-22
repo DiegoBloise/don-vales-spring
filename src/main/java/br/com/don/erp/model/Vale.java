@@ -21,10 +21,6 @@ import lombok.ToString;
 @ToString
 public class Vale {
 
-	public Vale() {
-		this.valor = new BigDecimal(0);
-	}
-
 	@Id
 	@GeneratedValue
 	@Getter
@@ -48,6 +44,12 @@ public class Vale {
 	@Setter
 	@Enumerated(EnumType.STRING)
 	private TipoVale tipoVale;
+
+
+	public Vale() {
+		this.valor = new BigDecimal(0);
+	}
+
 
 	@Transient
 	public String getDataFormatada() {

@@ -7,27 +7,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Util {
-	
+
 
 	public static LocalDate converteLocalDate(Date date) {
 		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
-	
+
+
 	public static String localDateFormatado(LocalDate localDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return formatter.format(localDate);
 	}
-	
+
+
 	public static LocalDate converteDataHoraLocalDate(String data) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		return LocalDate.parse(data,formatter);
 	}
-	
+
+
 	public static LocalDate converteDataLocalDate(String data) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(data,formatter);
 	}
-	
+
+
 	public static String diaDaSemana(DayOfWeek dia) {
 		String retorno = dia.toString();
 		switch (dia) {

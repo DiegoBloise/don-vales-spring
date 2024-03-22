@@ -66,8 +66,8 @@ public class ColaboradorView implements Serializable {
 	@Inject
 	private ValeService valeService;
 
-
 	private List<Vale> filteredVales;
+
 	private List<FilterMeta> filterBy;
 
 

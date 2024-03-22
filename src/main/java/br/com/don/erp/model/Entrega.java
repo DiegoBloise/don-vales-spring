@@ -24,30 +24,30 @@ public class Entrega {
 	@Setter
 	@EqualsAndHashCode.Include
 	private Long id;
-	
+
 	@Getter
 	@Setter
 	private Integer pedido;
-	
+
 	@Getter
 	@Setter
 	private String entregador;
-	
+
 	@Getter
 	@Setter
 	private BigDecimal valor;
-	
+
 	@Getter
 	@Setter
 	private LocalDate data;
-	
+
 	@Getter
 	@Setter
 	@Transient
 	private Integer qtde;
 
+
 	public String getDataFormatada() {
 		return Util.localDateFormatado(data);
 	}
-	
 }

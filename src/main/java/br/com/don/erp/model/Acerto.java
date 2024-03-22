@@ -11,19 +11,20 @@ import lombok.Data;
 public class Acerto {
 
 	private LocalDate data;
-	
+
 	private Integer qtdeEntregasDia;
-	
+
 	private Integer qtdeIFood;
-	
+
 	private BigDecimal valorValeDia;
-	
+
 	private BigDecimal valorDiaria;
-	
+
 	private final String QUEBRALINHA ="\n";
-	
+
 	private final String TRACEJADO = "--------------------------------";
-	
+
+
 	public BigDecimal getValorDiaria() {
 		boolean isFimDeSemana = false;
 		if(data.getDayOfWeek().equals(DayOfWeek.FRIDAY) ||
@@ -31,7 +32,7 @@ public class Acerto {
 			data.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
 			isFimDeSemana = true;
 		}
-		
+
 		if(isFimDeSemana) {
 			if(qtdeEntregasDia > 40) {
 				this.valorDiaria = new BigDecimal("50.00");
@@ -51,14 +52,16 @@ public class Acerto {
 				this.valorDiaria = new BigDecimal("0.00");
 			}
 		}
-		
+
 		return this.valorDiaria;
 	}
-	
+
+
 	public String getDataFormatada() {
 		return Util.localDateFormatado(this.data).concat(System.lineSeparator()).concat(Util.diaDaSemana(data.getDayOfWeek()));
 	}
-	
+
+
 	public String toString() {
 		StringBuffer buffer = new StringBuffer()
 		.append("*").append(Util.diaDaSemana(data.getDayOfWeek()))
@@ -75,8 +78,8 @@ public class Acerto {
 		.append(QUEBRALINHA)
 		.append(TRACEJADO)
 		.append(QUEBRALINHA);
-		
+
 		return buffer.toString();
-		
+
 	}
 }
