@@ -10,3 +10,4 @@ bin/
 nb-configuration.xml
 .project
 /.idea/
+faces-config.NavData

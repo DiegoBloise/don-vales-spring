@@ -102,7 +102,7 @@
 
                             <h5>Vales de #{colaborador.nome}</h5>
 
-                            <p:dataTable id="vales" var="vale" value="#{colaboradorView.valesDoColaborador(colaborador)}" lazy="true">
+                            <p:dataTable id="vales" var="vale" value="#{colaboradorView.valesDoColaborador(colaborador)}" >
 
                                 <p:column headerText="Data do Vale">
                                     <p:outputLabel value="#{vale.dataFormatada}" />

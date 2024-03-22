@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>11.0.0</version>
+			<version>13.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -52,7 +52,7 @@
 			<version>6.2.4.Final</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -70,11 +70,17 @@
 			<artifactId>poi</artifactId>
 			<version>3.17</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.nayuki</groupId>
+			<artifactId>qrcodegen</artifactId>
+			<version>1.8.0</version>
 		</dependency>
 
 	</dependencies>

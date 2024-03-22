@@ -37,6 +37,18 @@ public class Colaboradores implements Serializable {
 		}
 		
 	}
+
+	public Colaborador buscarPorNome(String nome){
+
+		try {
+			String jpql = "select c from Colaborador c where c.nome = :nome";
+			return manager.createQuery(jpql, Colaborador.class).setParameter("nome", nome)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+
+	}
 	
 	public Integer deletar(Colaborador colaborador) {
 		String jpql = "delete from Colaborador e where e.nome = :nome";

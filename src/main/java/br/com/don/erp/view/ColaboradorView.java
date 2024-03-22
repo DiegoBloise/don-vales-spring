@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -31,7 +31,7 @@ import lombok.Data;
 
 @Data
 @Named
-@ViewScoped
+@SessionScoped
 public class ColaboradorView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -57,6 +57,8 @@ public class ColaboradorView implements Serializable {
 	private InputStream is;
 
 	private String valorVale;
+
+	private Boolean isChavePixTelefone;
 
 	@Inject
 	private ColaboradorService colaboradorService;
@@ -190,7 +192,7 @@ public class ColaboradorView implements Serializable {
 
 
 	public void inicializarObjetos() {
-        tipoColaborador = Arrays.asList(TipoColaborador.values());
+		tipoColaborador = Arrays.asList(TipoColaborador.values());
 
 		colaboradores = colaboradorService.getColaboradores();
         colaboradorSelecionado = new Colaborador();
@@ -199,6 +201,8 @@ public class ColaboradorView implements Serializable {
 		valeSelecionado = new Vale();
 		vales = valeService.listar();
 		valorVale = null;
+
+		isChavePixTelefone = null;
     }
 
 
@@ -209,8 +213,14 @@ public class ColaboradorView implements Serializable {
 
     public void salvar() {
         if (colaboradorSelecionado.getId() == null) {
-            colaboradores.add(colaboradorSelecionado);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Cadastrado", "Colaborador: " + colaboradorSelecionado.getNome());
+
+			if (isChavePixTelefone) {
+				colaboradorSelecionado.setChavePix("+55" + colaboradorSelecionado.getChavePix());
+			}
+
+			colaboradores.add(colaboradorSelecionado);
+
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Cadastrado", "Colaborador: " + colaboradorSelecionado.getNome());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
         else {

@@ -34,6 +34,11 @@ public class ColaboradorService implements Serializable {
 	public Colaborador buscar(Colaborador colaborador){
 		return colaboradores.buscar(colaborador);
 	}
+	
+	
+	public Colaborador buscarPorNome(String nome){
+		return colaboradores.buscarPorNome(nome);
+	}
 
 
 	public List<Colaborador> getColaboradores() {

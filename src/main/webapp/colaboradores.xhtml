@@ -83,6 +83,10 @@
 						<p:outputLabel value="#{colaborador.telefone}" />
 					</p:column>
 
+					<p:column headerText="Chave PIX" sortBy="#{colaborador.chavePix}" filterBy="#{colaborador.chavePix}">
+						<p:outputLabel value="#{colaborador.chavePix}" />
+					</p:column>
+
 					<p:column headerText="Tipo" sortBy="#{colaborador.tipoColaborador}" filterBy="#{colaborador.tipoColaborador}">
 						<p:outputLabel value="#{colaborador.tipoColaborador}" />
 					</p:column>
@@ -241,6 +245,14 @@
                                 <p:outputLabel for="@previous" value="Telefone" />
                             </span>
                         </div>
+
+						<div class="field mb-5">
+							<span class="ui-float-label">
+								<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}"/>
+								<p:outputLabel for="@previous" value="Chave PIX" />
+							</span>
+							<small class="block">Para telefone informe no formato: +55 11 99999-9999</small>
+						</div>
 
                         <div class="field mb-5">
                             <span class="ui-float-label">

@@ -23,50 +23,83 @@
 		<p:dialog header="Acerto" widgetVar="dlgAcerto" showEffect="fade"
 			modal="true" blockScroll="false" width="800" height="500">
 			<h:form>
-				<h:panelGrid columns="6" id="pngAcerto">
+				<div class="flex flex-column gap-2">
 
-					<p:outputLabel value="Data Inicio:" for="@next" />
-					<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}"
-						required="true" />
+					<div class="flex flex-row gap-2">
 
-					<p:outputLabel value="Data Fim:" for="dtFim" />
-					<p:datePicker id="dtFim" value="#{entregaView.dataFim}"
-						required="true" />
-					<p:commandButton action="#{entregaView.buscarEntregadoresAcerto}"
-						update="@root:@id(messages) pngAcerto pngAcerto2" icon="pi pi-search" />
+						<h:panelGroup styleClass="flex flex-row gap-2" id="pngAcerto">
+
+							<div class="flex flex-column">
+								<p:outputLabel value="Data Inicio:" for="@next" />
+								<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}"
+									required="true" />
+							</div>
+
+							<div class="flex flex-column">
+								<p:outputLabel value="Data Fim:" for="dtFim" />
+								<p:datePicker id="dtFim" value="#{entregaView.dataFim}"
+									required="true" />
+							</div>
+
+							<div class="flex flex-column">
+								<p:commandButton action="#{entregaView.buscarEntregadoresAcerto}"
+										update="@root:@id(messages) pngAcerto pngAcerto2" icon="pi pi-search" />
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="flex flex-row gap-2" id="pngAcerto2">
+							<div class="flex flex-column">
+	
+								<p:outputLabel for="@next" value="Entregador" />
+								<p:selectOneMenu id="somEntregadores"
+									value="#{entregaView.entregadorSelecionado}" effect="fold">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{entregaView.entregadores}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="flex flex-column">
+
+							<p:commandButton action="#{entregaView.realizarAcerto}"
+								update="@root:@id(messages) acertoList pngAcerto3" icon="pi pi-dollar" />
+							</div>
+						</h:panelGroup>
+
+				</div>
+
+
+				<h:panelGrid class="flex flex-row gap-2" id="pngAcerto3">
+					<div>
+						<div class="flex flex-row gap-2">
+							<h:outputText styleClass="block" value="Entregador:" />
+							<h:outputText styleClass="block" value="#{entregaView.entregadorSelecionado}" />
+						</div>
+
+						<div class="flex flex-row gap-2">
+							<h:outputText styleClass="block" value="Total de entregas:" />
+							<h:outputText styleClass="block" value="#{entregaView.qtdeEntregas}" />
+						</div>
+
+						<div class="flex flex-row gap-2">
+							<h:outputText styleClass="block" value="Qtde de Diárias:" />
+							<h:outputText styleClass="block" value="#{entregaView.qtdeTotalDias}" />
+						</div>
+
+						<div class="flex flex-row gap-2">
+							<h:outputText styleClass="block" value="Total Receber:" />
+							<h:outputText styleClass="block" value="#{entregaView.valorTotalComDesconto}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
+						</div>
+					</div>
+
+					<p:barcode type="qr" value="#{entregaView.qrpix}" width="125" height="125"/>
+
 				</h:panelGrid>
 
-				<h:panelGrid columns="3" id="pngAcerto2">
-					<p:outputLabel for="@next" value="Entregador" />
-					<p:selectOneMenu id="somEntregadores"
-						value="#{entregaView.entregadorSelecionado}" effect="fold">
-						<f:selectItem itemLabel="Selecione" itemValue="" />
-						<f:selectItems value="#{entregaView.entregadores}" />
-					</p:selectOneMenu>
-
-					<p:commandButton action="#{entregaView.realizarAcerto}"
-						update="@root:@id(messages) acertoList pngAcerto3" icon="pi pi-dollar" />
-				</h:panelGrid>
-
-				<h:panelGrid columns="2" id="pngAcerto3">
-					<p:outputLabel value="Entregador:" />
-					<p:outputLabel value="#{entregaView.entregadorSelecionado}" />
-
-					<p:outputLabel value="Total de entregas:" />
-					<p:outputLabel value="#{entregaView.qtdeEntregas}" />
-
-					<p:outputLabel value="Qtde de Diárias:" />
-					<p:outputLabel value="#{entregaView.qtdeTotalDias}" />
-
-					<p:outputLabel value="Total Receber:" />
-					<h:outputText value="#{entregaView.valorTotalComDesconto}">
-						<f:convertNumber type="currency" currencySymbol="R$" />
-					</h:outputText>
-
-				</h:panelGrid>
 
 				<p:dataTable id="acertoList" var="acerto"
-					value="#{entregaView.acertos}" style="font-size:12px" lazy="true">
+					value="#{entregaView.acertos}" style="font-size:12px" >
 
 					<p:column headerText="Data da Entrega">
 						<p:outputLabel value="#{acerto.dataFormatada}" />
@@ -168,6 +201,8 @@
 
 				</p:dataTable>
 
+				</div>
+
 			</h:form>
 		</p:dialog>
 
@@ -216,8 +251,7 @@
 					<p:commandButton value="Salvar" action="#{entregaView.salvarVale}"
 						update="@root:@id(messages) pngVales valeList" />
 				</h:panelGrid>
-				<p:dataTable id="valeList" var="vale" value="#{entregaView.vales}"
-					lazy="true">
+				<p:dataTable id="valeList" var="vale" value="#{entregaView.vales}">
 
 					<p:column headerText="Data do Vale">
 						<p:outputLabel value="#{vale.dataFormatada}" />

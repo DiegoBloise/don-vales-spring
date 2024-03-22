@@ -1,5 +1,6 @@
 package br.com.don.erp.model;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -31,13 +32,16 @@ public class Colaborador {
 	@Setter
 	private String nome;
 
-	@Getter
-	@Setter
 	private String telefone;
 
 	@Getter
 	@Setter
 	private LocalDate dataNascimento;
+
+	@Getter
+	@Setter
+	private String chavePix;
+
 
 	@Getter
 	@Setter
@@ -49,4 +53,21 @@ public class Colaborador {
 	public String getDataNascimentoFormatada() {
 		return Util.localDateFormatado(this.dataNascimento);
 	}
+
+
+	public String getTelefone() {
+        if (this.telefone == null) {
+            return this.telefone;
+        } else {
+            return MessageFormat.format("({0}) {1}-{2}",
+                this.telefone.substring(0, 2),
+                this.telefone.substring(2, 7),
+                this.telefone.substring(7));
+        }
+    }
+
+
+	public void setTelefone(String telefone) {
+        this.telefone = telefone.replaceAll("[^0-9]", "");
+    }
 }

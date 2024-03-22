@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,17 +26,20 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.model.Acerto;
+import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Entrega;
 import br.com.don.erp.model.TipoVale;
 import br.com.don.erp.model.Vale;
+import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.EntregaService;
 import br.com.don.erp.service.ValeService;
+import br.com.don.erp.util.Jix;
 import br.com.don.erp.util.Util;
 import lombok.Data;
 
 @Data
 @Named
-@ViewScoped
+@SessionScoped
 public class EntregaView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -77,12 +80,6 @@ public class EntregaView implements Serializable {
 
 	private List<TipoVale> tipoVale;
 
-	@Inject
-	private EntregaService entregaService;
-
-	@Inject
-	private ValeService valeService;
-
 	private Vale vale;
 
 	private Date dataInicio;
@@ -94,6 +91,17 @@ public class EntregaView implements Serializable {
 	private Vale valeSelecionado;
 
 	private final String QUEBRALINHA = System.lineSeparator();
+
+	private String qrpix;
+
+	@Inject
+	private EntregaService entregaService;
+
+	@Inject
+	private ValeService valeService;
+
+	@Inject
+	private ColaboradorService colaboradorService;
 
 
 	@PostConstruct
@@ -268,6 +276,14 @@ public class EntregaView implements Serializable {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(texto.toString());
 				clipboard.setContents(selection, null);
+
+
+				// PIX
+				Colaborador colaborador = colaboradorService.buscarPorNome(entregadorSelecionado);
+
+				qrpix = new Jix(colaborador.getNome(), colaborador.getChavePix(), valorTotalComDesconto.toString(), "Sao Paulo", "PizzaDon").gerarPayload();
+
+
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro", e.getMessage()));
