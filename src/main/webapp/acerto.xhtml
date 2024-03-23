@@ -52,7 +52,7 @@
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel for="@next" value="Entregador" />
-								<p:selectOneMenu id="acertoSomEntregadores" required="true"
+								<p:selectOneMenu disabled="#{empty entregaView.entregadores}" id="acertoSomEntregadores" required="true"
 									value="#{entregaView.entregadorSelecionado}">
 									<f:selectItem itemLabel="Selecione" itemValue="" />
 									<f:selectItems value="#{entregaView.entregadores}" />
@@ -60,7 +60,7 @@
 							</div>
 
 							<div class="flex flex-column">
-								<p:commandButton styleClass="w-15rem" value="Calcular Total" action="#{entregaView.realizarAcerto}"
+								<p:commandButton disabled="#{empty entregaView.entregadores}" styleClass="w-15rem" value="Calcular Total" action="#{entregaView.realizarAcerto}"
 									update="@root:@id(messages) @root:@id(manage-acerto-content)" icon="pi pi-dollar" process="@this @root:@id(pngAcerto2)"/>
 							</div>
 
@@ -111,8 +111,7 @@
 					</h:panelGroup>
 
 
-					<p:dataTable id="acertoList" var="acerto"
-						value="#{entregaView.acertos}" style="font-size:12px; min-width: 400;">
+					<p:dataTable id="acertoList" var="acerto" value="#{entregaView.acertos}" style="font-size:12px; min-width: 400;">
 
 						<p:column headerText="Data da Entrega">
 							<p:outputLabel value="#{acerto.dataFormatada}" />

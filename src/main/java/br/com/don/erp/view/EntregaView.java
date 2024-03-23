@@ -328,8 +328,18 @@ public class EntregaView implements Serializable {
 
 
 	public void buscarEntregadoresAcerto() {
+		FacesMessage msg;
+
 		entregadores = entregaService.listarEntregadoresporDataInicioFim(Util.converteLocalDate(dataInicio),
-				Util.converteLocalDate(dataFim));
+			Util.converteLocalDate(dataFim));
+
+		if (entregadores.isEmpty()) {
+			msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Nenhum entregador encontrado", "Não foi possível encontrar entregadores no período especificado");
+		} else {
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, entregadores.size() + " entregadores encontrados", "Selecione um entregador para prosseguir");
+		}
+
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 
