@@ -16,16 +16,16 @@
 				onclick="PF('dlgVale').show()" />
 
 			<p:commandButton value="Acerto" type="button" icon="pi pi-search"
-				onclick="PF('dlgAcerto').show()" />
+				onclick="PF('acertoDialog').show()" />
 
 		</h:form>
 
 		<h:form id="dialogs">
 
-			<p:dialog header="Acerto" widgetVar="dlgAcerto" showEffect="fade"
-				modal="true" blockScroll="false" resizable="false">
+			<p:dialog id="acertoDialog" header="Acerto" widgetVar="acertoDialog" showEffect="fade" hideEffect="fade" dynamic="true"
+				modal="true" blockScroll="false" resizable="false" fitViewport="true" responsive="true" closable="false" closeOnEscape="false">
 
-				<div class="flex flex-column gap-4 m-2 max-w-min">
+				<h:panelGroup id="manage-acerto-content" class="flex flex-column gap-4 m-2 max-w-min" style="min-width: 550px;">
 
 					<h:panelGroup class="flex flex-column gap-2">
 
@@ -33,17 +33,17 @@
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel value="Data Inicio:" for="dtInicio" />
-								<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}" required="true"/>
+								<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}" required="true" showIcon="true" showOnFocus="disable"/>
 							</div>
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel value="Data Fim:" for="dtFim" />
-								<p:datePicker id="dtFim" value="#{entregaView.dataFim}"	required="true"/>
+								<p:datePicker id="dtFim" value="#{entregaView.dataFim}"	required="true" showIcon="true" showOnFocus="disable"/>
 							</div>
 
 							<div class="flex flex-column flex-grow-1">
 								<p:commandButton styleClass="w-15rem" value="Buscar Entregadores" action="#{entregaView.buscarEntregadoresAcerto}"
-									update="@root:@id(messages) pngAcerto pngAcerto2" icon="pi pi-search"/>
+									update="@root:@id(messages) @root:@id(manage-acerto-content)" icon="pi pi-search" process="@this pngAcerto"/>
 							</div>
 
 						</h:panelGroup>
@@ -61,7 +61,7 @@
 
 							<div class="flex flex-column">
 								<p:commandButton styleClass="w-15rem" value="Calcular Total" action="#{entregaView.realizarAcerto}"
-									update="@root:@id(messages) acertoList pngAcerto3" icon="pi pi-dollar" />
+									update="@root:@id(messages) @root:@id(manage-acerto-content)" icon="pi pi-dollar" process="@this @root:@id(pngAcerto2)"/>
 							</div>
 
 						</h:panelGroup>
@@ -70,7 +70,14 @@
 
 					<h:panelGroup class="flex flex-row justify-content-center p-3 border-300 border-1 border-round min-w-max" id="pngAcerto3">
 
-						<div class="flex flex-column mx-6 gap-2 justify-content-center">
+						<h:panelGroup rendered="#{empty entregaView.qrpix}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
+							<p:skeleton width="12rem" class="mb-2"/>
+							<p:skeleton width="8rem" class="mb-2"/>
+							<p:skeleton width="7rem" class="mb-2"/>
+							<p:skeleton width="12rem" class="mt-5"/>
+						</h:panelGroup>
+
+						<h:panelGroup rendered="#{not empty entregaView.qrpix}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
 
 							<div class="flex flex-row gap-3 justify-content-between">
 								<h:outputText styleClass="font-semibold" value="Entregador:" />
@@ -94,17 +101,18 @@
 								</h:outputText>
 							</div>
 
-						</div>
+						</h:panelGroup>
 
 						<p:divider layout="vertical"/>
 
-						<p:barcode styleClass="mx-6" type="qr" value="#{entregaView.qrpix}" width="125" height="125"/>
+						<p:skeleton rendered="#{empty entregaView.qrpix}" width="10rem" height="10rem" styleClass="mx-6"/>
+						<p:barcode rendered="#{not empty entregaView.qrpix}" styleClass="mx-6" type="qr" value="#{entregaView.qrpix}" width="125" height="125"/>
 
 					</h:panelGroup>
 
 
 					<p:dataTable id="acertoList" var="acerto"
-						value="#{entregaView.acertos}" style="font-size:12px">
+						value="#{entregaView.acertos}" style="font-size:12px; min-width: 400;">
 
 						<p:column headerText="Data da Entrega">
 							<p:outputLabel value="#{acerto.dataFormatada}" />
@@ -217,7 +225,14 @@
 
 					</p:dataTable>
 
-				</div>
+				</h:panelGroup>
+
+				<f:facet name="footer">
+                    <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(manage-acerto-content)" partialSubmit="true"/>
+
+                    <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{entregaView.cancelar}"
+                                    icon="pi pi-times" styleClass="ui-button-secondary" oncomplete="PF('acertoDialog').hide()"/>
+                </f:facet>
 
 			</p:dialog>
 

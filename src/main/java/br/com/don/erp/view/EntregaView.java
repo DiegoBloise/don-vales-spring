@@ -43,55 +43,56 @@ public class EntregaView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Entrega> entregas;
 
-	private Integer qtdeEntregas;
+	private BigDecimal valorTotalEntregas;
 
-	private BigDecimal valorTotalEntregas = new BigDecimal("0.00");
+	private BigDecimal valorSaldo;
 
-	private BigDecimal valorSaldo = new BigDecimal("0.00");
+	private BigDecimal valorTotalDiarias;
 
-	private BigDecimal valorTotalDiarias = new BigDecimal("0.00");
+	private BigDecimal valorTotalIfood;
 
-	private BigDecimal valorTotalIfood = new BigDecimal("0.00");
+	private BigDecimal valorTotalVales;
 
-	private BigDecimal valorTotalVales = new BigDecimal("0.00");
+	private BigDecimal valorTotalSemDesconto;
 
-	private BigDecimal valorTotalSemDesconto = new BigDecimal("0.00");
+	private BigDecimal valorTotalComDesconto;
 
-	private BigDecimal valorTotalComDesconto = new BigDecimal("0.00");
+	private Vale vale;
 
-	private Integer qtdeTotalIFood = 0;
-
-	private String entregadorSelecionado;
-
-	private Date dataSelecionada;
-
-	private LocalDate dataMovimento;
-
-	private List<String> entregadores;
-
-	private Integer qtdeTotalDias;
-
-	private Double valorVale;
+	private Vale valeSelecionado;
 
 	private List<Vale> vales;
 
 	private List<TipoVale> tipoVale;
 
-	private Vale vale;
+	private List<Entrega> entregas;
+
+	private List<Acerto> acertos;
+
+	private List<String> entregadores;
+
+	private final String QUEBRALINHA = System.lineSeparator();
+
+	private String entregadorSelecionado;
+
+	private String qrpix;
+
+	private Integer qtdeEntregas;
+
+	private Integer qtdeTotalIFood;
+
+	private Integer qtdeTotalDias;
+
+	private Double valorVale;
+
+	private Date dataSelecionada;
 
 	private Date dataInicio;
 
 	private Date dataFim;
 
-	private List<Acerto> acertos;
-
-	private Vale valeSelecionado;
-
-	private final String QUEBRALINHA = System.lineSeparator();
-
-	private String qrpix;
+	private LocalDate dataMovimento;
 
 	@Inject
 	private EntregaService entregaService;
@@ -105,15 +106,35 @@ public class EntregaView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		entregas = new ArrayList<Entrega>();
+		entregas = new ArrayList<>();
+		acertos = new ArrayList<>();
+
 		dataSelecionada = new Date();
-		dataMovimento = Util.converteLocalDate(dataSelecionada);
-		tipoVale = Arrays.asList(TipoVale.values());
-		vale = new Vale();
-		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
-		vales = valeService.listarOrdenadoPorData();
 		dataInicio = new Date();
 		dataFim = new Date();
+		dataMovimento = Util.converteLocalDate(dataSelecionada);
+
+		vale = new Vale();
+
+		tipoVale = Arrays.asList(TipoVale.values());
+
+		entregadorSelecionado = null;
+		qtdeTotalDias = null;
+		qtdeEntregas = null;
+		qrpix = null;
+
+		qtdeTotalIFood = 0;
+
+		valorTotalComDesconto = new BigDecimal("0.00");
+		valorTotalEntregas = new BigDecimal("0.00");
+		valorTotalDiarias = new BigDecimal("0.00");
+		valorTotalIfood = new BigDecimal("0.00");
+		valorTotalSemDesconto = new BigDecimal("0.00");
+		valorTotalVales = new BigDecimal("0.00");
+		valorSaldo = new BigDecimal("0.00");
+
+		vales = valeService.listarOrdenadoPorData();
+		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
 	}
 
 
@@ -382,5 +403,10 @@ public class EntregaView implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Selecione Entregador", "Entregador deve ser selecionado"));
 		}
+	}
+
+
+	public void cancelar() {
+		init();
 	}
 }
