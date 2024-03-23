@@ -1,6 +1,7 @@
 package br.com.don.erp.model;
 
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -16,7 +17,9 @@ import lombok.Setter;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Entrega {
+public class Entrega implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue

@@ -12,7 +12,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -22,6 +25,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.StreamedContent;
 
+import br.com.don.erp.enums.TipoChavePix;
 import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Vale;
@@ -37,6 +41,8 @@ public class ColaboradorView implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<TipoColaborador> tipoColaborador;
+
+	private List<TipoChavePix> tipoChavePix;
 
 	private Colaborador colaboradorSelecionado;
 
@@ -57,8 +63,6 @@ public class ColaboradorView implements Serializable {
 	private InputStream is;
 
 	private String valorVale;
-
-	private Boolean isChavePixTelefone;
 
 	@Inject
 	private ColaboradorService colaboradorService;
@@ -193,6 +197,7 @@ public class ColaboradorView implements Serializable {
 
 	public void inicializarObjetos() {
 		tipoColaborador = Arrays.asList(TipoColaborador.values());
+		tipoChavePix = Arrays.asList(TipoChavePix.values());
 
 		colaboradores = colaboradorService.getColaboradores();
         colaboradorSelecionado = new Colaborador();
@@ -201,8 +206,6 @@ public class ColaboradorView implements Serializable {
 		valeSelecionado = new Vale();
 		vales = valeService.listar();
 		valorVale = null;
-
-		isChavePixTelefone = null;
     }
 
 
@@ -214,9 +217,9 @@ public class ColaboradorView implements Serializable {
     public void salvar() {
         if (colaboradorSelecionado.getId() == null) {
 
-			if (isChavePixTelefone) {
+			/* if (isChavePixTelefone) {
 				colaboradorSelecionado.setChavePix("+55" + colaboradorSelecionado.getChavePix());
-			}
+			} */
 
 			colaboradores.add(colaboradorSelecionado);
 
@@ -295,4 +298,16 @@ public class ColaboradorView implements Serializable {
 
         colaboradoresSelecionados.clear();
     }
+
+
+	public void setPix(AjaxBehaviorEvent event) {
+		UIComponent component = event.getComponent();
+
+        if (component instanceof UIInput) {
+            UIInput inputComponent = (UIInput) component;
+            Boolean value = (Boolean) inputComponent.getValue();
+
+			System.out.println("bazinga " + value);
+        }
+	}
 }

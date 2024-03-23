@@ -7,6 +7,18 @@
 
 	<ui:define name="head">
 		<h:outputScript name="layout.js" library="js"/>
+
+		<style>
+			.ui-selectonebutton > .ui-button {
+    			padding: 2px;
+    			font-size: 1rem;
+
+				width: 100% !important;
+    			border-width: 1px !important;
+    			border-radius: 4px !important;
+    			margin-right: 1rem !important;
+			}
+		</style>
 	</ui:define>
 
     <ui:define name="content">
@@ -85,6 +97,14 @@
 
 					<p:column headerText="Chave PIX" sortBy="#{colaborador.chavePix}" filterBy="#{colaborador.chavePix}">
 						<p:outputLabel value="#{colaborador.chavePix}" />
+					</p:column>
+
+					<p:column headerText="Tipo Chave PIX - DEBUG" sortBy="#{colaborador.tipoChavePix}" filterBy="#{colaborador.tipoChavePix}">
+						<p:outputLabel value="#{colaborador.tipoChavePix}" />
+					</p:column>
+
+					<p:column headerText="Chave PIX - DEBUG" sortBy="#{colaborador.getChavePixDebug()}" filterBy="#{colaborador.getChavePixDebug()}">
+						<p:outputLabel value="#{colaborador.getChavePixDebug()}" />
 					</p:column>
 
 					<p:column headerText="Tipo" sortBy="#{colaborador.tipoColaborador}" filterBy="#{colaborador.tipoColaborador}">
@@ -244,13 +264,43 @@
                             </span>
                         </div>
 
-						<div class="field mb-5">
-							<span class="ui-float-label">
-								<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}"/>
-								<p:outputLabel for="@previous" value="Chave PIX" />
-							</span>
-							<small class="block">Para telefone informe no formato: +55 11 99999-9999</small>
+						<div class="mb-5 flex flex-column gap-4 p-3 border-300 border-1 border-round">
+
+							<div class="flex flex-row gap-2">
+
+								<ui:repeat value="#{colaboradorView.tipoChavePix}" var="tipoChavePix">
+
+									<div style="margin: 1rem;">
+										<p:commandLink update="@root:@id(inputpix)" actionListener="#{colaboradorView.colaboradorSelecionado.setTipoChavePix(tipoChavePix)}" styleClass="no-underline" process="@this">
+											<div class="flex flex-column justify-content-center align-content-center align-items-center border-1 border-round border-300 p-5" style="width: 10rem; height: 10;">
+												<span style="color: #ff6e6c;">
+													<p:fragment rendered="#{tipoChavePix eq 'CELULAR'}"><i class="pi pi-mobile text-6xl font-light"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'CPF'}"><i class="pi pi-id-card text-6xl font-light"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'CNPJ'}"><i class="pi pi-building text-6xl font-light"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'EMAIL'}"><i class="pi pi-envelope text-6xl font-light"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'ALEATORIA'}"><i class="pi pi-arrow-right-arrow-left text-6xl font-light"></i></p:fragment>
+												</span>
+
+												<h:outputText value="#{tipoChavePix.descricao}" style="color: hsl(1, 100%, 20%);" styleClass="mt-3 font-medium text-xl"/>
+											</div>
+										</p:commandLink>
+									</div>
+
+								</ui:repeat>
+
+							</div>
+
+							<h:panelGroup id="inputpix" class="mb-5">
+								<span class="ui-float-label">
+									<p:inputMask placeholder="Informe o celular" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CELULAR'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="(99)99999-9999" required="true"/>
+									<p:inputMask placeholder="Informe o CPF" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CPF'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="999.999.999-99" required="true"/>
+									<p:inputMask placeholder="Informe o CNPJ" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CNPJ'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="99.999.999/9999-99" required="true"/>
+									<p:inputText placeholder="Informe o email" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'EMAIL'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+									<p:inputText placeholder="Informe a chave aleatória" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'ALEATORIA'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+								</span>
+							</h:panelGroup>
 						</div>
+
 
                         <div class="field mb-5">
                             <span class="ui-float-label">

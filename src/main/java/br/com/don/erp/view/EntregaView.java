@@ -33,7 +33,6 @@ import br.com.don.erp.model.Vale;
 import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.EntregaService;
 import br.com.don.erp.service.ValeService;
-import br.com.don.erp.util.Jix;
 import br.com.don.erp.util.Util;
 import lombok.Data;
 
@@ -281,7 +280,7 @@ public class EntregaView implements Serializable {
 				// PIX
 				Colaborador colaborador = colaboradorService.buscarPorNome(entregadorSelecionado);
 
-				qrpix = new Jix(colaborador.getNome(), colaborador.getChavePix(), valorTotalComDesconto.toString(), "Sao Paulo", "PizzaDon").gerarPayload();
+				qrpix = colaborador.getPixPayload(valorTotalComDesconto.toString());
 
 
 			} catch (Exception e) {

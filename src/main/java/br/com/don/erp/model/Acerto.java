@@ -1,5 +1,6 @@
 package br.com.don.erp.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -8,7 +9,9 @@ import br.com.don.erp.util.Util;
 import lombok.Data;
 
 @Data
-public class Acerto {
+public class Acerto implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private LocalDate data;
 

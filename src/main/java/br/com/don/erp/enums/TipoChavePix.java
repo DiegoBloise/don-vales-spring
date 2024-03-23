@@ -1,11 +1,11 @@
 package br.com.don.erp.enums;
 
 public enum TipoChavePix {
-	TELEFONE("Número de telefone celular"),
+	CELULAR("Celular"),
     CPF("CPF"),
     CNPJ("CNPJ"),
-    EMAIL("Email"),
-	ALEATORIA("Chave aleatória");
+    EMAIL("E-mail"),
+	ALEATORIA("Aleatória");
 
 	private String descricao;
 
