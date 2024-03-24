@@ -39,24 +39,9 @@ import lombok.Data;
 @Data
 @Named
 @SessionScoped
-public class EntregaView implements Serializable {
+public class AcertoView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-
-	private BigDecimal valorTotalEntregas;
-
-	private BigDecimal valorSaldo;
-
-	private BigDecimal valorTotalDiarias;
-
-	private BigDecimal valorTotalIfood;
-
-	private BigDecimal valorTotalVales;
-
-	private BigDecimal valorTotalSemDesconto;
-
-	private BigDecimal valorTotalComDesconto;
 
 	private Vale vale;
 
@@ -74,15 +59,7 @@ public class EntregaView implements Serializable {
 
 	private final String QUEBRALINHA = System.lineSeparator();
 
-	private String entregadorSelecionado;
-
-	private String qrpix;
-
-	private Integer qtdeEntregas;
-
-	private Integer qtdeTotalIFood;
-
-	private Integer qtdeTotalDias;
+	private String nomeColaborador;
 
 	private Double valorVale;
 
@@ -93,6 +70,8 @@ public class EntregaView implements Serializable {
 	private Date dataFim;
 
 	private LocalDate dataMovimento;
+
+	private Colaborador colaboradorSelecionado;
 
 	@Inject
 	private EntregaService entregaService;
@@ -118,20 +97,7 @@ public class EntregaView implements Serializable {
 
 		tipoVale = Arrays.asList(TipoVale.values());
 
-		entregadorSelecionado = null;
-		qtdeTotalDias = null;
-		qtdeEntregas = null;
-		qrpix = null;
-
-		qtdeTotalIFood = 0;
-
-		valorTotalComDesconto = new BigDecimal("0.00");
-		valorTotalEntregas = new BigDecimal("0.00");
-		valorTotalDiarias = new BigDecimal("0.00");
-		valorTotalIfood = new BigDecimal("0.00");
-		valorTotalSemDesconto = new BigDecimal("0.00");
-		valorTotalVales = new BigDecimal("0.00");
-		valorSaldo = new BigDecimal("0.00");
+		nomeColaborador = null;
 
 		vales = valeService.listarOrdenadoPorData();
 		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
@@ -197,118 +163,133 @@ public class EntregaView implements Serializable {
 
 	public void realizarAcerto() {
 
-		if (entregadorSelecionado != null && !entregadorSelecionado.isEmpty()) {
+		if (nomeColaborador != null && !nomeColaborador.isEmpty()) {
 
-		try {
-			entregas = new ArrayList<>();
-			entregas = entregaService.buscarPorEntregadorDataInicioDataFim(entregadorSelecionado,
+			try {
+				colaboradorSelecionado = colaboradorService.buscarPorNome(nomeColaborador);
+
+				acertos = new ArrayList<>();
+				entregas = new ArrayList<>();
+
+				entregas = entregaService.buscarPorEntregadorDataInicioDataFim(colaboradorSelecionado.getNome(),
 					Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
 
-			LocalDate dataComparacao = null;
-			int i = 0;
-			int qtdeIfoodDia = 0;
-			int qtdeEntregaDia = 0;
-			acertos = new ArrayList<>();
-			qtdeEntregas = entregas.size();
-			valorTotalEntregas = new BigDecimal(0.0);
-			BigDecimal totalVale = new BigDecimal(0);
-			qtdeTotalDias = 0;
-			valorSaldo = new BigDecimal(0);
-			valorTotalDiarias = new BigDecimal(0);
-			valorTotalVales = new BigDecimal(0);
-			valorTotalSemDesconto = new BigDecimal(0);
-			valorTotalComDesconto = new BigDecimal(0);
+				LocalDate dataComparacao = null;
 
-			qtdeTotalIFood = 0;
+				int i = 0;
+				int qtdeIfoodDia = 0;
+				int qtdeEntregaDia = 0;
+				int qtdeTotalDias = 0;
+				int qtdeTotalIFood = 0;
 
-			StringBuffer texto = new StringBuffer();
-			texto.append("*").append(entregadorSelecionado).append("*").append(QUEBRALINHA);
+				BigDecimal valorTotalEntregas = new BigDecimal(0.0);
+				BigDecimal totalVale = new BigDecimal(0);
+				BigDecimal valorTotalDiarias = new BigDecimal(0);
+				BigDecimal valorTotalVales = new BigDecimal(0);
+				BigDecimal valorSaldo = new BigDecimal(0);
 
-			for (Entrega ent : entregas) {
-				i++;
-				if (null == dataComparacao) {
-					dataComparacao = ent.getData();
-					++qtdeTotalDias;
-				}
+				StringBuffer texto = new StringBuffer();
+				texto.append("*")
+					.append(colaboradorSelecionado.getNome())
+					.append("*")
+					.append(QUEBRALINHA);
 
-				if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
-					++qtdeIfoodDia;
-					qtdeTotalIFood++;
-				}
+				for (Entrega ent : entregas) {
+					i++;
 
-				qtdeEntregaDia++;
-				valorTotalEntregas = ent.getValor().add(valorTotalEntregas);
-				if (i == entregas.size() || !dataComparacao.equals(entregas.get(i).getData())) {
-					Acerto acerto = new Acerto();
-
-					acerto.setData(ent.getData());
-					acerto.setQtdeEntregasDia(qtdeEntregaDia);
-					acerto.setQtdeIFood(qtdeIfoodDia);
-
-					vales = valeService.buscarPorEntregadorDataTipo(entregadorSelecionado, ent.getData(),
-							TipoVale.DINHEIRO);
-					if (null != vales) {
-						for (Vale vale : vales) {
-							totalVale = vale.getValor().add(totalVale);
-							valorTotalVales = vale.getValor().add(valorTotalVales);
-
-						}
+					if (null == dataComparacao) {
+						dataComparacao = ent.getData();
+						++qtdeTotalDias;
 					}
-					acerto.setValorValeDia(totalVale);
-					acertos.add(acerto);
-					texto.append(acerto.toString());
-					// busca valor do saldo
-					vales = valeService.buscarPorEntregadorDataTipo(entregadorSelecionado, ent.getData(),
+
+					if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
+						++qtdeIfoodDia;
+						qtdeTotalIFood++;
+					}
+
+					qtdeEntregaDia++;
+
+					valorTotalEntregas = ent.getValor().add(valorTotalEntregas);
+
+					if (i == entregas.size() || !dataComparacao.equals(entregas.get(i).getData())) {
+						Acerto acerto = new Acerto();
+
+						acerto.setData(ent.getData());
+						acerto.setQtdeEntregasDia(qtdeEntregaDia);
+						acerto.setQtdeIFood(qtdeIfoodDia);
+
+						vales = valeService.buscarPorEntregadorDataTipo(colaboradorSelecionado.getNome(), ent.getData(),
+							TipoVale.DINHEIRO);
+
+						if (null != vales) {
+							for (Vale vale : vales) {
+								totalVale = vale.getValor().add(totalVale);
+								valorTotalVales = vale.getValor().add(valorTotalVales);
+
+							}
+						}
+
+						acerto.setValorValeDia(totalVale);
+						acertos.add(acerto);
+						texto.append(acerto.toString());
+
+						// busca valor do saldo
+						vales = valeService.buscarPorEntregadorDataTipo(
+							colaboradorSelecionado.getNome(),
+							ent.getData(),
 							TipoVale.SALDO);
 
-					if (null != vales) {
-						for (Vale vale : vales) {
-							valorSaldo = vale.getValor().add(valorSaldo);
+						if (null != vales) {
+							for (Vale vale : vales) {
+								valorSaldo = vale.getValor().add(valorSaldo);
+							}
 						}
-					}
-					valorTotalDiarias = acerto.getValorDiaria().add(valorTotalDiarias);
-					dataComparacao = null;
-					qtdeIfoodDia = 0;
-					qtdeEntregaDia = 0;
-					totalVale = new BigDecimal(0);
-				}
-			}
-			valorTotalIfood = new BigDecimal(qtdeTotalIFood * 3.00);
-			valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
-			valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
 
-			texto.append("Total de Entregas: R$ ").append(valorTotalEntregas)
-			.append(QUEBRALINHA);
-			texto.append("Total de Diárias: R$ ").append(valorTotalDiarias)
-			.append(QUEBRALINHA)
-			.append("Total IFood: R$ ").append(valorTotalIfood).append(".00")
-			.append(QUEBRALINHA)
-			.append("Total Sem Desconto: R$ ").append(valorTotalSemDesconto)
-			.append(QUEBRALINHA)
-			.append("Total de Vales: R$ ").append(valorTotalVales)
-			.append(QUEBRALINHA)
-			.append("Saldo: R$ ").append(valorSaldo)
-			.append(QUEBRALINHA)
-			.append("*RECEBER* R$: ")
-			.append(valorTotalComDesconto)
-			.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
+						valorTotalDiarias = acerto.getValorDiaria().add(valorTotalDiarias);
+						dataComparacao = null;
+						qtdeIfoodDia = 0;
+						qtdeEntregaDia = 0;
+						totalVale = new BigDecimal(0);
+					}
+				}
+
+				BigDecimal valorTotalIfood = new BigDecimal(qtdeTotalIFood * 3.00);
+				BigDecimal valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
+				BigDecimal valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
+
+				colaboradorSelecionado.setQtdeTotalDias(qtdeTotalDias);
+				colaboradorSelecionado.setQtdeEntregas(entregas.size());
+				colaboradorSelecionado.setValorTotalEntregas(valorTotalEntregas);
+				colaboradorSelecionado.setValorTotalIfood(valorTotalIfood);
+				colaboradorSelecionado.setValorTotalSemDesconto(valorTotalSemDesconto);
+				colaboradorSelecionado.setValorTotalComDesconto(valorTotalComDesconto);
+				colaboradorSelecionado.setValorTotalDiarias(valorTotalDiarias);
+				colaboradorSelecionado.setValorTotalVales(valorTotalVales);
+
+				texto.append("Total de Entregas: R$ ").append(colaboradorSelecionado.getValorTotalEntregas())
+					.append(QUEBRALINHA)
+					.append("Total de Diárias: R$ ").append(colaboradorSelecionado.getValorTotalDiarias())
+					.append(QUEBRALINHA)
+					.append("Total IFood: R$ ").append(colaboradorSelecionado.getValorTotalIfood()).append(".00")
+					.append(QUEBRALINHA)
+					.append("Total Sem Desconto: R$ ").append(colaboradorSelecionado.getValorTotalSemDesconto())
+					.append(QUEBRALINHA)
+					.append("Total de Vales: R$ ").append(colaboradorSelecionado.getValorTotalVales())
+					.append(QUEBRALINHA)
+					.append("Saldo: R$ ").append(colaboradorSelecionado.getValorSaldo())
+					.append(QUEBRALINHA)
+					.append("*RECEBER* R$: ")
+					.append(colaboradorSelecionado.getValorTotalComDesconto())
+					.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
 
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(texto.toString());
 				clipboard.setContents(selection, null);
 
-
-				// PIX
-				Colaborador colaborador = colaboradorService.buscarPorNome(entregadorSelecionado);
-
-				qrpix = colaborador.getPixPayload(valorTotalComDesconto.toString());
-
-
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro", e.getMessage()));
 			}
-
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Selecione Entregador", "Entregador deve ser selecionado"));
@@ -348,11 +329,6 @@ public class EntregaView implements Serializable {
 	}
 
 
-	public Integer getQtdeEntregas() {
-		return qtdeEntregas;
-	}
-
-
 	public String getDataMovimentoFormatado() {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		return format.format(this.dataSelecionada);
@@ -369,7 +345,12 @@ public class EntregaView implements Serializable {
 	}
 
 
-	public void exemplos() {
+	public void cancelar() {
+		init();
+	}
+
+
+	/* public void exemplos() {
 
 		System.out.println("Aqui");
 		// formatar data
@@ -381,22 +362,12 @@ public class EntregaView implements Serializable {
 		// FacesContext facesContext = FacesContext.getCurrentInstance();
 		// facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 		// "Campos Obrigatórios", "Valor, Tipo e Entregador" ));
-	}
+	} */
 
 
-	public Date getDataSelecionada() {
-		return dataSelecionada;
-	}
-
-
-	public void setDataSelecionada(Date dataSelecionada) {
-		this.dataSelecionada = dataSelecionada;
-	}
-
-
-	public void exibirEntregadorSelecionado() {
-		if (!entregadorSelecionado.equals("")) {
-			entregas = entregaService.buscarPorEntregadorData(entregadorSelecionado, dataMovimento);
+	/* public void exibirEntregadorSelecionado() {
+		if (!colaboradorSelecionado.getNome().equals("")) {
+			entregas = entregaService.buscarPorEntregadorData(colaboradorSelecionado.getNome(), dataMovimento);
 			qtdeEntregas = entregas.size();
 			qtdeTotalDias = 0;
 			// qtdeIFood = 0;
@@ -413,10 +384,5 @@ public class EntregaView implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Selecione Entregador", "Entregador deve ser selecionado"));
 		}
-	}
-
-
-	public void cancelar() {
-		init();
-	}
+	} */
 }

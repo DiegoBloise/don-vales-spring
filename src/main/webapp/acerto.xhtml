@@ -12,11 +12,20 @@
     <ui:define name="content">
 
 		<h:form>
-			<p:commandButton value="Vale" type="button" icon="pi pi-external-link"
-				onclick="PF('dlgVale').show()" />
 
-			<p:commandButton value="Acerto" type="button" icon="pi pi-search"
-				onclick="PF('acertoDialog').show()" />
+			<p:toolbar rendered="#{authView.isAdmin}" styleClass="mt-3">
+
+				<p:toolbarGroup>
+
+					<p:commandButton value="Vale" type="button" icon="pi pi-external-link"
+						onclick="PF('dlgVale').show()" styleClass="mr-2"/>
+
+					<p:commandButton value="Acerto" type="button" icon="pi pi-search"
+						onclick="PF('acertoDialog').show()" styleClass="mr-2"/>
+
+				</p:toolbarGroup>
+
+			</p:toolbar>
 
 		</h:form>
 
@@ -33,16 +42,16 @@
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel value="Data Inicio:" for="dtInicio" />
-								<p:datePicker id="dtInicio" value="#{entregaView.dataInicio}" required="true" showIcon="true" showOnFocus="disable"/>
+								<p:datePicker id="dtInicio" value="#{acertoView.dataInicio}" required="true" showIcon="true" showOnFocus="disable"/>
 							</div>
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel value="Data Fim:" for="dtFim" />
-								<p:datePicker id="dtFim" value="#{entregaView.dataFim}"	required="true" showIcon="true" showOnFocus="disable"/>
+								<p:datePicker id="dtFim" value="#{acertoView.dataFim}"	required="true" showIcon="true" showOnFocus="disable"/>
 							</div>
 
 							<div class="flex flex-column flex-grow-1">
-								<p:commandButton styleClass="w-15rem" value="Buscar Entregadores" action="#{entregaView.buscarEntregadoresAcerto}"
+								<p:commandButton styleClass="w-15rem" value="Buscar Entregadores" action="#{acertoView.buscarEntregadoresAcerto}"
 									update="@root:@id(messages) @root:@id(manage-acerto-content)" icon="pi pi-search" process="@this pngAcerto"/>
 							</div>
 
@@ -52,15 +61,15 @@
 
 							<div class="flex flex-column flex-grow-1">
 								<p:outputLabel for="@next" value="Entregador" />
-								<p:selectOneMenu disabled="#{empty entregaView.entregadores}" id="acertoSomEntregadores" required="true"
-									value="#{entregaView.entregadorSelecionado}">
+								<p:selectOneMenu disabled="#{empty acertoView.entregadores}" id="acertoSomEntregadores" required="true"
+									value="#{acertoView.nomeColaborador}">
 									<f:selectItem itemLabel="Selecione" itemValue="" />
-									<f:selectItems value="#{entregaView.entregadores}" />
+									<f:selectItems value="#{acertoView.entregadores}" />
 								</p:selectOneMenu>
 							</div>
 
 							<div class="flex flex-column">
-								<p:commandButton disabled="#{empty entregaView.entregadores}" styleClass="w-15rem" value="Calcular Total" action="#{entregaView.realizarAcerto}"
+								<p:commandButton disabled="#{empty acertoView.entregadores}" styleClass="w-15rem" value="Calcular Total" action="#{acertoView.realizarAcerto}"
 									update="@root:@id(messages) @root:@id(manage-acerto-content)" icon="pi pi-dollar" process="@this @root:@id(pngAcerto2)"/>
 							</div>
 
@@ -70,33 +79,33 @@
 
 					<h:panelGroup class="flex flex-row justify-content-center p-3 border-300 border-1 border-round min-w-max" id="pngAcerto3">
 
-						<h:panelGroup rendered="#{empty entregaView.qrpix}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
+						<h:panelGroup rendered="#{empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
 							<p:skeleton width="12rem" class="mb-2"/>
 							<p:skeleton width="8rem" class="mb-2"/>
 							<p:skeleton width="7rem" class="mb-2"/>
 							<p:skeleton width="12rem" class="mt-5"/>
 						</h:panelGroup>
 
-						<h:panelGroup rendered="#{not empty entregaView.qrpix}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
+						<h:panelGroup rendered="#{not empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" styleClass="flex flex-column mx-6 gap-2 justify-content-center">
 
 							<div class="flex flex-row gap-3 justify-content-between">
-								<h:outputText styleClass="font-semibold" value="Entregador:" />
-								<h:outputText value="#{entregaView.entregadorSelecionado}" />
+								<h:outputText styleClass="font-semibold" value="Colaborador:" />
+								<h:outputText value="#{acertoView.colaboradorSelecionado.nome}" />
 							</div>
 
 							<div class="flex flex-row gap-3 justify-content-between">
 								<h:outputText styleClass="font-semibold" value="Qtde de Diárias:" />
-								<h:outputText value="#{entregaView.qtdeTotalDias}" />
+								<h:outputText value="#{acertoView.colaboradorSelecionado.qtdeTotalDias}" />
 							</div>
 
 							<div class="flex flex-row gap-3 justify-content-between">
 								<h:outputText styleClass="font-semibold" value="Total de entregas:" />
-								<h:outputText value="#{entregaView.qtdeEntregas}" />
+								<h:outputText value="#{acertoView.colaboradorSelecionado.qtdeEntregas}" />
 							</div>
 
 							<div class="flex flex-row gap-3 justify-content-between mt-5">
 								<h:outputText styleClass="font-semibold" value="Total Receber:" />
-								<h:outputText value="#{entregaView.valorTotalComDesconto}">
+								<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalComDesconto}">
 									<f:convertNumber type="currency" currencySymbol="R$" />
 								</h:outputText>
 							</div>
@@ -105,13 +114,13 @@
 
 						<p:divider layout="vertical"/>
 
-						<p:skeleton rendered="#{empty entregaView.qrpix}" width="10rem" height="10rem" styleClass="mx-6"/>
-						<p:barcode rendered="#{not empty entregaView.qrpix}" styleClass="mx-6" type="qr" value="#{entregaView.qrpix}" width="125" height="125"/>
+						<p:skeleton rendered="#{empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" width="10rem" height="10rem" styleClass="mx-6"/>
+						<p:barcode rendered="#{not empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" styleClass="mx-6" type="qr" value="#{acertoView.colaboradorSelecionado.pixPayload}" width="125" height="125"/>
 
 					</h:panelGroup>
 
 
-					<p:dataTable id="acertoList" var="acerto" value="#{entregaView.acertos}" style="font-size:12px; min-width: 400;">
+					<p:dataTable id="acertoList" var="acerto" value="#{acertoView.acertos}" style="font-size:12px; min-width: 400;">
 
 						<p:column headerText="Data da Entrega">
 							<p:outputLabel value="#{acerto.dataFormatada}" />
@@ -149,7 +158,7 @@
 
 								<p:column>
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalEntregas}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalEntregas}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -157,7 +166,7 @@
 
 								<p:column>
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalDiarias}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalDiarias}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -165,7 +174,7 @@
 
 								<p:column>
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalIfood}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalIfood}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -173,7 +182,7 @@
 
 								<p:column>
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalSemDesconto}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalSemDesconto}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -181,7 +190,7 @@
 
 								<p:column style="color:red">
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalVales}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalVales}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -195,7 +204,7 @@
 
 								<p:column style="color: red">
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorSaldo}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorSaldo}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -211,7 +220,7 @@
 								<p:column style="color: green">
 
 									<f:facet name="footer">
-										<h:outputText value="#{entregaView.valorTotalComDesconto}">
+										<h:outputText value="#{acertoView.colaboradorSelecionado.valorTotalComDesconto}">
 											<f:convertNumber type="currency" currencySymbol="R$" />
 										</h:outputText>
 									</f:facet>
@@ -229,7 +238,7 @@
 				<f:facet name="footer">
                     <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(manage-acerto-content)" partialSubmit="true"/>
 
-                    <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{entregaView.cancelar}"
+                    <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{acertoView.cancelar}"
                                     icon="pi pi-times" styleClass="ui-button-secondary" oncomplete="PF('acertoDialog').hide()"/>
                 </f:facet>
 
@@ -244,9 +253,9 @@
 					<h:panelGrid columns="2">
 
 						<p:outputLabel value="Data do Vale" />
-						<p:datePicker id="dtVale" value="#{entregaView.dataSelecionada}"
+						<p:datePicker id="dtVale" value="#{acertoView.dataSelecionada}"
 							required="true">
-							<p:ajax event="dateSelect" listener="#{entregaView.onDateSelect}"
+							<p:ajax event="dateSelect" listener="#{acertoView.onDateSelect}"
 								update="valeSomEntregadores" />
 						</p:datePicker>
 
@@ -256,36 +265,36 @@
 
 						<p:outputLabel for="@next" value="Entregador" />
 						<p:selectOneMenu id="valeSomEntregadores"
-							value="#{entregaView.vale.entregador}" required="true">
+							value="#{acertoView.vale.entregador}" required="true">
 							<f:selectItem itemLabel="Selecione" itemValue="" />
-							<f:selectItems value="#{entregaView.entregadores}" />
+							<f:selectItems value="#{acertoView.entregadores}" />
 						</p:selectOneMenu>
 
-						<p:commandButton action="#{entregaView.buscarVales}"
+						<p:commandButton action="#{acertoView.buscarVales}"
 							update="@root:@id(messages) valeList valeSomEntregadores" icon="pi pi-search" process="valeSomEntregadores @this"/>
 
 					</h:panelGrid>
 
 					<h:panelGrid columns="2">
 						<p:outputLabel for="@next" value="Valor" />
-						<p:inputNumber value="#{entregaView.valorVale}" decimalPlaces="2"
+						<p:inputNumber value="#{acertoView.valorVale}" decimalPlaces="2"
 							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 
 						<p:outputLabel for="@next" value="Tipo de Vale" />
-						<p:selectOneMenu id="valeTipo" value="#{entregaView.vale.tipoVale}" required="true">
+						<p:selectOneMenu id="valeTipo" value="#{acertoView.vale.tipoVale}" required="true">
 							<f:selectItem itemLabel="Selecione" itemValue="" />
-							<f:selectItems value="#{entregaView.tipoVale}" />
+							<f:selectItems value="#{acertoView.tipoVale}" />
 						</p:selectOneMenu>
 
 					</h:panelGrid>
 
-					<p:commandButton value="Salvar" action="#{entregaView.salvarVale}"
+					<p:commandButton value="Salvar" action="#{acertoView.salvarVale}"
 						update="@root:@id(messages) pngVales valeList" />
 
 				</h:panelGrid>
 
-				<p:dataTable id="valeList" var="vale" value="#{entregaView.vales}">
+				<p:dataTable id="valeList" var="vale" value="#{acertoView.vales}">
 
 					<p:column headerText="Data do Vale">
 						<p:outputLabel value="#{vale.dataFormatada}" />
@@ -311,7 +320,7 @@
 							icon="pi pi-trash" process="@this"
 							oncomplete="PF('deleteProductDialog').show()">
 							<f:setPropertyActionListener value="#{vale}"
-								target="#{entregaView.valeSelecionado}" />
+								target="#{acertoView.valeSelecionado}" />
 						</p:commandButton>
 					</p:column>
 
@@ -321,7 +330,7 @@
 					message="Apagar o vale?" header="Confirmação" severity="warn"
 					appendTo="@(body)">
 					<p:commandButton value="Sim" icon="pi pi-check"
-						action="#{entregaView.apagarVale}" process="@this"
+						action="#{acertoView.apagarVale}" process="@this"
 						oncomplete="PF('deleteProductDialog').hide()" update="valeList" />
 					<p:commandButton value="Não" type="button"
 						styleClass="ui-button-secondary" icon="pi pi-times"

@@ -7,18 +7,6 @@
 
 	<ui:define name="head">
 		<h:outputScript name="layout.js" library="js"/>
-
-		<style>
-			.ui-selectonebutton > .ui-button {
-    			padding: 2px;
-    			font-size: 1rem;
-
-				width: 100% !important;
-    			border-width: 1px !important;
-    			border-radius: 4px !important;
-    			margin-right: 1rem !important;
-			}
-		</style>
 	</ui:define>
 
     <ui:define name="content">
@@ -228,7 +216,7 @@
 						<p:outputLabel for="@next" value="Tipo de Vale:" />
 						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipoVale}" required="true">
 							<f:selectItem itemLabel="Selecione:" itemValue="" />
-							<f:selectItems value="#{entregaView.tipoVale}" />
+							<f:selectItems value="#{acertoView.tipoVale}" />
 						</p:selectOneMenu>
 
 					</h:panelGrid>

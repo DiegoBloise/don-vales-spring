@@ -1,8 +1,10 @@
 package br.com.don.erp.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -56,9 +58,64 @@ public class Colaborador implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoColaborador tipoColaborador;
 
+///////////////////////////////////////////////////////////
+
+
+	@Getter
+	@Setter
+	private Integer qtdeTotalDias;
+
+	@Getter
+	@Setter
+	private Integer qtdeEntregas;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalEntregas;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalIfood;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalSemDesconto;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalComDesconto;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalDiarias;
+
+	@Getter
+	@Setter
+	private BigDecimal valorTotalVales;
+
+	@Getter
+	@Setter
+	private BigDecimal valorSaldo;
+
 
 	public Colaborador() {
 		this.tipoChavePix = TipoChavePix.CELULAR;
+
+		this.qtdeTotalDias = 0;
+		this.qtdeEntregas = 0;
+
+		this.valorTotalEntregas = new BigDecimal("0.00");
+		this.valorTotalIfood = new BigDecimal("0.00");
+		this.valorTotalSemDesconto = new BigDecimal("0.00");
+		this.valorTotalComDesconto = new BigDecimal("0.00");
+		this.valorTotalDiarias = new BigDecimal("0.00");
+		this.valorTotalVales = new BigDecimal("0.00");
+		this.valorSaldo = new BigDecimal("0.00");
+	}
+
+
+	public void calcularAsParadas(List<Entrega> entregas) {
+
 	}
 
 
@@ -85,13 +142,15 @@ public class Colaborador implements Serializable {
     }
 
 
-	public String getPixPayload(String valor) {
-		return new Jix(this.nome, this.chavePix, valor, "Sao Paulo", "PizzaDon").gerarPayload();
+	public String getPixPayload() {
+		return new Jix(this.nome, this.chavePix, this.valorTotalComDesconto.toString(), "Sao Paulo", "PizzaDon").gerarPayload();
 	}
+
 
 	public String getChavePixDebug() {
 		return this.chavePix;
 	}
+
 
 	public String getChavePix() {
 		if (this.chavePix == null) {
