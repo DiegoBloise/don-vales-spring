@@ -182,8 +182,10 @@ public class Colaborador implements Serializable {
 	public void setChavePix(String chavePix) {
 		if (this.tipoChavePix.equals(TipoChavePix.CELULAR)) {
 			this.chavePix = "+55" + chavePix.replaceAll("[^0-9]", "");
-		} else {
+		} else if (this.tipoChavePix.equals(TipoChavePix.CPF) || this.tipoChavePix.equals(TipoChavePix.CNPJ)) {
 			this.chavePix = chavePix.replaceAll("[^0-9]", "");
+		} else {
+			this.chavePix = chavePix;
 		}
 	}
 }
