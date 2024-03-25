@@ -265,6 +265,7 @@ public class AcertoView implements Serializable {
 				colaboradorSelecionado.setValorTotalComDesconto(valorTotalComDesconto);
 				colaboradorSelecionado.setValorTotalDiarias(valorTotalDiarias);
 				colaboradorSelecionado.setValorTotalVales(valorTotalVales);
+				colaboradorSelecionado.setValorSaldo(valorSaldo);
 
 				texto.append("Total de Entregas: R$ ").append(colaboradorSelecionado.getValorTotalEntregas())
 					.append(QUEBRALINHA)
