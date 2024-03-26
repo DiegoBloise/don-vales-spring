@@ -153,39 +153,43 @@ public class Colaborador implements Serializable {
 
 
 	public String getChavePix() {
-		if (this.chavePix == null) {
-			return this.chavePix;
-		} else if (this.tipoChavePix.equals(TipoChavePix.CELULAR)) {
-			return MessageFormat.format("({0}) {1}-{2}",
+		switch (this.tipoChavePix) {
+			case CELULAR:
+				return MessageFormat.format("({0}) {1}-{2}",
 					this.chavePix.substring(3, 5),
 					this.chavePix.substring(5, 10),
 					this.chavePix.substring(10));
-		} else if (this.tipoChavePix.equals(TipoChavePix.CPF)) {
-			return MessageFormat.format("{0}.{1}.{2}-{3}",
-				this.chavePix.substring(0, 3),
-				this.chavePix.substring(3, 6),
-				this.chavePix.substring(6, 9),
-				this.chavePix.substring(9));
-		} else if (this.tipoChavePix.equals(TipoChavePix.CNPJ)) {
-			return MessageFormat.format("{0}.{1}.{2}/{3}-{4}",
-				this.chavePix.substring(0, 2),
-				this.chavePix.substring(2, 5),
-				this.chavePix.substring(5, 8),
-				this.chavePix.substring(8, 12),
-				this.chavePix.substring(12));
-		} else {
-			return this.chavePix;
+			case CPF:
+				return MessageFormat.format("{0}.{1}.{2}-{3}",
+					this.chavePix.substring(0, 3),
+					this.chavePix.substring(3, 6),
+					this.chavePix.substring(6, 9),
+					this.chavePix.substring(9));
+			case CNPJ:
+				return MessageFormat.format("{0}.{1}.{2}/{3}-{4}",
+					this.chavePix.substring(0, 2),
+					this.chavePix.substring(2, 5),
+					this.chavePix.substring(5, 8),
+					this.chavePix.substring(8, 12),
+					this.chavePix.substring(12));
+			default:
+				return this.chavePix;
 		}
 	}
 
 
 	public void setChavePix(String chavePix) {
-		if (this.tipoChavePix.equals(TipoChavePix.CELULAR)) {
-			this.chavePix = "+55" + chavePix.replaceAll("[^0-9]", "");
-		} else if (this.tipoChavePix.equals(TipoChavePix.CPF) || this.tipoChavePix.equals(TipoChavePix.CNPJ)) {
-			this.chavePix = chavePix.replaceAll("[^0-9]", "");
-		} else {
-			this.chavePix = chavePix;
+		switch (this.tipoChavePix) {
+			case CELULAR:
+				this.chavePix = "+55" + chavePix.replaceAll("[^0-9]", "");
+				break;
+			case CPF:
+			case CNPJ:
+				this.chavePix = chavePix.replaceAll("[^0-9]", "");
+				break;
+			default:
+				this.chavePix = chavePix;
+				break;
 		}
 	}
 }
