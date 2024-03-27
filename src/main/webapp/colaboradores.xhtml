@@ -11,6 +11,34 @@
 
     <ui:define name="content">
 
+		<style>
+			.tipo-chave-button {
+				width: 140px;
+				height: 140px;
+				transition: 0.2s;
+			}
+
+			.tipo-chave-button:hover {
+				border-color: #ff6e6c !important;
+			}
+
+			.tipo-chave-button-selecionada {
+				border-color: #ff6e6c !important;
+				background-color: #ff6f6c2a !important;
+				box-shadow: none !important;
+			}
+
+			.tipo-chave-button-selecionada:hover {
+				box-shadow: none !important;
+			}
+
+			.pix-icon {
+				border-color: #ff6e6c !important;
+				background-color: #ff6f6c2a !important;
+			}
+		</style>
+
+
 		<h:form id="form">
 
 			<div class="crud-demo">
@@ -19,7 +47,7 @@
 
 					<p:toolbarGroup>
 
-						<p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{colaboradorView.adicionar}"
+						<p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{colaboradorView.adicionarColaborador}"
 											update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
 											styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target="@root:@id(manage-colaborador-content)" />
@@ -101,10 +129,9 @@
 
 					<p:column exportable="false">
 
-						<p:commandButton icon="pi pi-plus" update="@root:@id(manage-vale-content)"
-											oncomplete="PF('valeDialog').show()"
-											styleClass="edit-button rounded-button ui-button-success" process="@this" action="#{colaboradorView.setDate}">
-							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
+						<p:commandButton icon="pi pi-plus" oncomplete="PF('valeDialog').show()" update="@root:@id(manage-vale-content)"
+											styleClass="edit-button rounded-button ui-button-success" process="@this"
+											actionListener="#{colaboradorView.adicionarVale(colaborador)}">
 							<p:resetInput target="@root:@id(manage-vale-content)" />
 						</p:commandButton>
 
@@ -194,32 +221,35 @@
 
 		<h:form id="dialogs">
 
-			<p:dialog header="Lançamento de Vale" widgetVar="valeDialog"
-						showEffect="fade"
-						modal="true"
-						blockScroll="false"
-						id="dialog">
+			<p:dialog header="Lançamento de Vale" widgetVar="valeDialog" showEffect="fade" modal="true" blockScroll="false" id="valeDialog"
+				closable="false" closeOnEscape="false">
 
 				<p:outputPanel id="manage-vale-content" styleClass="ui-fluid">
-					<h:panelGrid columns="2">
-						<p:outputLabel for="@next" value="Nome: "/>
-						<p:outputLabel styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
-						<p:outputLabel for="@next" value="Data do Vale:"/>
-						<p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
-							pattern="dd/MM/yyyy" mask="true" required="true"/>
+					<p:outputPanel rendered="#{not empty colaboradorView.valeSelecionado}">
 
-						<p:outputLabel for="@next" value="Valor:"/>
-						<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2"
-							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
+						<h:panelGrid columns="2">
+							<p:outputLabel for="@next" value="Nome: "/>
+							<p:outputLabel styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
-						<p:outputLabel for="@next" value="Tipo de Vale:" />
-						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipoVale}" required="true">
-							<f:selectItem itemLabel="Selecione:" itemValue="" />
-							<f:selectItems value="#{acertoView.tipoVale}" />
-						</p:selectOneMenu>
+							<p:outputLabel for="@next" value="Data do Vale:"/>
+							<p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
+								pattern="dd/MM/yyyy" mask="true" required="true"/>
 
-					</h:panelGrid>
+							<p:outputLabel for="@next" value="Valor:"/>
+							<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2"
+								thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
+
+							<p:outputLabel for="@next" value="Tipo de Vale:" />
+							<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipoVale}" required="true">
+								<f:selectItem itemLabel="Selecione:" itemValue="" />
+								<f:selectItems value="#{acertoView.tipoVale}" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+
+					</p:outputPanel>
+
 				</p:outputPanel>
 
 				<f:facet name="footer">
@@ -232,44 +262,43 @@
 			</p:dialog>
 
 
-			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog" responsive="true">
+			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog" responsive="true"
+				closable="false" closeOnEscape="false">
 
                 <p:outputPanel id="manage-colaborador-content" class="ui-fluid mt-5">
 
                     <p:outputPanel rendered="#{not empty colaboradorView.colaboradorSelecionado}">
 
                         <div class="field mb-5">
-                            <span class="ui-float-label">
-                                <p:inputText value="#{colaboradorView.colaboradorSelecionado.nome}" required="true"/>
-                                <p:outputLabel for="@previous" value="Nome" />
-                            </span>
+							<p:outputLabel for="@next" value="Nome" />
+							<p:inputText value="#{colaboradorView.colaboradorSelecionado.nome}" required="true"/>
                         </div>
 
                         <div class="field mb-5">
-                            <span class="ui-float-label">
-                                <p:inputMask value="#{colaboradorView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
-                                <p:outputLabel for="@previous" value="Telefone" />
-                            </span>
+							<p:outputLabel for="@next" value="Telefone" />
+							<p:inputMask value="#{colaboradorView.colaboradorSelecionado.telefone}" mask="(99)99999-9999" required="true"/>
                         </div>
 
-						<div class="mb-5 flex flex-column gap-4 p-3 border-300 border-1 border-round">
+						<h:panelGroup id="inputpix" class="mb-5 flex flex-column gap-4 p-3 border-300 border-1 border-round">
 
 							<div class="flex flex-row gap-2">
 
 								<ui:repeat value="#{colaboradorView.tipoChavePix}" var="tipoChavePix">
 
 									<div style="margin: 1rem;">
-										<p:commandLink update="@root:@id(inputpix)" actionListener="#{colaboradorView.colaboradorSelecionado.setTipoChavePix(tipoChavePix)}" styleClass="no-underline" process="@this">
-											<div class="flex flex-column justify-content-center align-content-center align-items-center border-1 border-round border-300 p-5" style="width: 10rem; height: 10;">
+										<p:commandLink update="@root:@id(inputpix)" actionListener="#{colaboradorView.colaboradorSelecionado.setTipoChavePix(tipoChavePix)}"
+											styleClass="no-underline" process="@this">
+											<div class="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq tipoChavePix ? 'tipo-chave-button-selecionada' : ''} 
+												tipo-chave-button flex flex-column justify-content-center align-content-center align-items-center border-1 border-round border-300 shadow-1 hover:shadow-3">
 												<span style="color: #ff6e6c;">
-													<p:fragment rendered="#{tipoChavePix eq 'CELULAR'}"><i class="pi pi-mobile text-6xl font-light"></i></p:fragment>
-													<p:fragment rendered="#{tipoChavePix eq 'CPF'}"><i class="pi pi-id-card text-6xl font-light"></i></p:fragment>
-													<p:fragment rendered="#{tipoChavePix eq 'CNPJ'}"><i class="pi pi-building text-6xl font-light"></i></p:fragment>
-													<p:fragment rendered="#{tipoChavePix eq 'EMAIL'}"><i class="pi pi-envelope text-6xl font-light"></i></p:fragment>
-													<p:fragment rendered="#{tipoChavePix eq 'ALEATORIA'}"><i class="pi pi-arrow-right-arrow-left text-6xl font-light"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'CELULAR'}"><i class="pix-icon pi pi-mobile text-4xl font-light border-circle p-4"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'CPF'}"><i class="pix-icon pi pi-id-card text-4xl font-light border-circle p-4"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'CNPJ'}"><i class="pix-icon pi pi-building text-4xl font-light border-circle p-4"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'EMAIL'}"><i class="pix-icon pi pi-envelope text-4xl font-light border-circle p-4"></i></p:fragment>
+													<p:fragment rendered="#{tipoChavePix eq 'ALEATORIA'}"><i class="pix-icon pi pi-arrow-right-arrow-left text-4xl font-light border-circle p-4"></i></p:fragment>
 												</span>
 
-												<h:outputText value="#{tipoChavePix.descricao}" style="color: hsl(1, 100%, 20%);" styleClass="mt-3 font-medium text-xl"/>
+												<h:outputText value="#{tipoChavePix.descricao}" styleClass="mt-3 font-medium text-xl text-700"/>
 											</div>
 										</p:commandLink>
 									</div>
@@ -278,35 +307,48 @@
 
 							</div>
 
-							<h:panelGroup id="inputpix" class="mb-5">
-								<span class="ui-float-label">
-									<p:inputMask placeholder="Informe o celular" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CELULAR'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="(99)99999-9999" required="true"/>
-									<p:inputMask placeholder="Informe o CPF" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CPF'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="999.999.999-99" required="true"/>
-									<p:inputMask placeholder="Informe o CNPJ" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CNPJ'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="99.999.999/9999-99" required="true"/>
-									<p:inputText placeholder="Informe o email" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'EMAIL'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
-									<p:inputText placeholder="Informe a chave aleatória" rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'ALEATORIA'}" value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
-								</span>
-							</h:panelGroup>
-						</div>
+							<div class="mb-5">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CELULAR'}">
+									<p:outputLabel for="@next" value="Informe o celular" />
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="(99)99999-9999" required="true"/>
+								</p:fragment>
+
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CPF'}">
+									<p:outputLabel for="@next" value="Informe o CPF" />
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="999.999.999-99" required="true"/>
+								</p:fragment>
+
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CNPJ'}">
+									<p:outputLabel for="@next" value="Informe o CNPJ" />
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="99.999.999/9999-99" required="true"/>
+								</p:fragment>
+
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'EMAIL'}">
+									<p:outputLabel for="@next" value="Informe o email" />
+									<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+								</p:fragment>
+
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'ALEATORIA'}">
+									<p:outputLabel for="@next" value="Informe a chave aleatória" />
+									<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+								</p:fragment>
+							</div>
+						</h:panelGroup>
 
 
                         <div class="field mb-5">
-                            <span class="ui-float-label">
-                                <p:datePicker value="#{colaboradorView.colaboradorSelecionado.dataNascimento}"
-                                                pattern="dd/MM/yyyy" mask="true" required="true"/>
-                                <p:outputLabel for="@previous" value="Dt Nascimento" />
-                            </span>
+							<p:outputLabel for="@next" value="Data de Nascimento" />
+							<p:datePicker value="#{colaboradorView.colaboradorSelecionado.dataNascimento}"
+											pattern="dd/MM/yyyy" mask="true" required="true"/>
                         </div>
 
                         <div class="field mb-5">
-                            <span class="ui-float-label">
-                                <p:selectOneMenu id="tipoColaborador"
-                                                value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}" required="true">
-                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
-                                    <f:selectItems value="#{colaboradorView.tipoColaborador}" />
-                                </p:selectOneMenu>
-                                <p:outputLabel for="@previous" value="Tipo" />
-                            </span>
+							<p:outputLabel for="@next" value="Tipo" />
+							<p:selectOneMenu id="tipoColaborador"
+											value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}" required="true">
+								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+								<f:selectItems value="#{colaboradorView.tipoColaborador}" />
+							</p:selectOneMenu>
                         </div>
 
                     </p:outputPanel>
@@ -314,7 +356,7 @@
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvar}"
+                    <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarColaborador}"
                                         update="manage-colaborador-content" process="manage-colaborador-content @this" />
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ColaboradorDialog').hide()"
                                         class="ui-button-secondary" type="button" />
@@ -324,7 +366,7 @@
 
 
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
-				message="Imprimir Vale?" header="Confirmação" severity="warn">
+				message="Imprimir Vale?" header="Confirmação" severity="warn" closable="false" closeOnEscape="false">
 				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.download}"
 								process="@this"
 								update="@root:@id(dt-colaboradores)"
@@ -338,8 +380,8 @@
 
 
 			<p:confirmDialog widgetVar="deletarColaboradorDialog" showEffect="fade" width="300"
-                                message="Remover o colaborador?" header="Confirmar" severity="warn">
-                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarSelecionado}"
+                                message="Remover o colaborador?" header="Confirmar" severity="warn" closable="false" closeOnEscape="false">
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarColaboradorSelecionado}"
                                     process="@this" update="@root:@id(delete-colaboradores-button)"
                                     oncomplete="PF('deletarColaboradorDialog').hide()" />
                 <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
@@ -347,7 +389,7 @@
             </p:confirmDialog>
 
 			<p:confirmDialog widgetVar="deletarValeDialog" showEffect="fade" width="300"
-                                message="Remover o vale?" header="Confirmar" severity="warn">
+                                message="Remover o vale?" header="Confirmar" severity="warn" closable="false" closeOnEscape="false">
                 <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.deletarValeSelecionado}"
                                     process="@this" oncomplete="PF('deletarValeDialog').hide()" />
                 <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
