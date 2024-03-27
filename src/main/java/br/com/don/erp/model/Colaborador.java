@@ -1,22 +1,20 @@
 package br.com.don.erp.model;
 
+import br.com.don.erp.enums.TipoChavePix;
+import br.com.don.erp.enums.TipoColaborador;
+import br.com.don.erp.util.Jix;
+import br.com.don.erp.util.Util;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-
-import br.com.don.erp.enums.TipoChavePix;
-import br.com.don.erp.enums.TipoColaborador;
-import br.com.don.erp.util.Jix;
-import br.com.don.erp.util.Util;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -99,18 +97,7 @@ public class Colaborador implements Serializable {
 
 
 	public Colaborador() {
-		this.tipoChavePix = TipoChavePix.CELULAR;
 
-		this.qtdeTotalDias = 0;
-		this.qtdeEntregas = 0;
-
-		this.valorTotalEntregas = new BigDecimal("0.00");
-		this.valorTotalIfood = new BigDecimal("0.00");
-		this.valorTotalSemDesconto = new BigDecimal("0.00");
-		this.valorTotalComDesconto = new BigDecimal("0.00");
-		this.valorTotalDiarias = new BigDecimal("0.00");
-		this.valorTotalVales = new BigDecimal("0.00");
-		this.valorSaldo = new BigDecimal("0.00");
 	}
 
 
@@ -153,6 +140,10 @@ public class Colaborador implements Serializable {
 
 
 	public String getChavePix() {
+		if(this.chavePix == null || this.chavePix.isEmpty()) {
+			return this.chavePix;
+		}
+
 		switch (this.tipoChavePix) {
 			case CELULAR:
 				return MessageFormat.format("({0}) {1}-{2}",
