@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -38,7 +38,7 @@ import lombok.Data;
 
 @Data
 @Named
-@SessionScoped
+@ViewScoped
 public class AcertoView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
