@@ -5,6 +5,8 @@
              version="2.1">
 	<persistence-unit name="don">
 
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
 		<properties>
 
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/don?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />

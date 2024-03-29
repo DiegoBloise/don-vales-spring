@@ -2,6 +2,7 @@ package br.com.don.erp.filter;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,10 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import br.com.don.erp.view.AuthView;
 
+@WebFilter(urlPatterns = {"/admin/*"})
+public class AdminFilter implements Filter {
 
-@WebFilter(urlPatterns = {"/admin/*", "/app/*", "/auth/*"}) // Remove comment to enable the filter
-public class AuthenticationFilter implements Filter {
+    @Inject
+    private AuthView auth;
 
 
     public void init(FilterConfig fConfig) throws ServletException {
@@ -33,23 +37,10 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         session.setMaxInactiveInterval(30 * 60);
 
-        String username = (String) session.getAttribute("username");
-        boolean isLoggedIn = username != null;
-
-        boolean isLoginPage = httpRequest.getRequestURI().endsWith("login.xhtml");
-
-        if (isLoggedIn) {
-            if (isLoginPage) {
-                httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
-            } else {
-                chain.doFilter(request, response);
-            }
+        if (auth.getIsAdmin()) {
+            chain.doFilter(request, response);
         } else {
-            if (isLoginPage) {
-                chain.doFilter(request, response);
-            } else {
-                httpResponse.sendRedirect(httpRequest.getContextPath() + "/auth/login.xhtml");
-            }
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
         }
     }
 

@@ -23,16 +23,16 @@
             <div class="flex flex-row justify-content-between">
 
                 <p:tabMenu id="tab-menu-principal" styleClass="tab-menu-principal" activeIndex="#{param.i}">
-                    <p:menuitem value="Home" outcome="/index" icon="pi pi-fw pi-home">
+                    <p:menuitem value="Home" outcome="/app/index" icon="pi pi-fw pi-home">
                         <f:param name="i" value="0"/>
                     </p:menuitem>
-                    <p:menuitem value="Colaboradores" outcome="/colaboradores" icon="pi pi-fw pi-users">
+                    <p:menuitem value="Colaboradores" outcome="/app/colaboradores" icon="pi pi-fw pi-users">
                         <f:param name="i" value="1"/>
                     </p:menuitem>
-                    <p:menuitem value="Upload de Arquivo" outcome="/entrega" icon="pi pi-fw pi-upload" rendered="#{authView.isAdmin}">
+                    <p:menuitem value="Upload de Arquivo" outcome="/app/entrega" icon="pi pi-fw pi-upload" rendered="#{authView.isAdmin}">
                         <f:param name="i" value="2"/>
                     </p:menuitem>
-                    <p:menuitem value="Vales" outcome="/acerto" icon="pi pi-fw pi-calendar" rendered="#{authView.isAdmin}">
+                    <p:menuitem value="Vales" outcome="/app/acerto" icon="pi pi-fw pi-calendar" rendered="#{authView.isAdmin}">
                         <f:param name="i" value="3"/>
                     </p:menuitem>
                     <!-- <p:menuitem value="Colaboradores Admin" outcome="/admin/colaboradores-admin" icon="pi pi-fw pi-user-edit" rendered="#{authView.isAdmin}" disabled="#{not authView.isAdmin}">
