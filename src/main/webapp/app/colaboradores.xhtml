@@ -43,7 +43,7 @@
 
 			<div class="crud-demo">
 
-				<p:toolbar rendered="#{authView.isAdmin}" styleClass="mt-3">
+				<p:toolbar rendered="#{userSession.usuario.isAdmin}" styleClass="mt-3">
 
 					<p:toolbarGroup>
 
@@ -87,11 +87,11 @@
 						</div>
 					</f:facet>
 
-					<p:ajax disabled="#{not authView.isAdmin}" event="rowSelect" update="@root:@id(delete-colaboradores-button)" />
-					<p:ajax disabled="#{not authView.isAdmin}" event="rowUnselect" update="@root:@id(delete-colaboradores-button)" />
-					<p:ajax disabled="#{not authView.isAdmin}" event="rowSelectCheckbox" update="@root:@id(delete-colaboradores-button)" />
-					<p:ajax disabled="#{not authView.isAdmin}" event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
-					<p:ajax disabled="#{not authView.isAdmin}" event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not userSession.usuario.isAdmin}" event="rowSelect" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not userSession.usuario.isAdmin}" event="rowUnselect" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not userSession.usuario.isAdmin}" event="rowSelectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not userSession.usuario.isAdmin}" event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
+					<p:ajax disabled="#{not userSession.usuario.isAdmin}" event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
 
 					<p:column selectionMode="multiple" exportable="false"></p:column>
 
@@ -135,14 +135,14 @@
 							<p:resetInput target="@root:@id(manage-vale-content)" />
 						</p:commandButton>
 
-						<p:commandButton rendered="#{authView.isAdmin}" icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
+						<p:commandButton rendered="#{userSession.usuario.isAdmin}" icon="pi pi-pencil" update="@root:@id(manage-colaborador-content)"
 											oncomplete="PF('ColaboradorDialog').show()"
 											styleClass="edit-button rounded-button ui-button-warning" process="@this">
 							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
 							<p:resetInput target="@root:@id(manage-colaborador-content)" />
 						</p:commandButton>
 
-						<p:commandButton rendered="#{authView.isAdmin}" class="ui-button-danger rounded-button" icon="pi pi-trash"
+						<p:commandButton rendered="#{userSession.usuario.isAdmin}" class="ui-button-danger rounded-button" icon="pi pi-trash"
 											process="@this"
 											oncomplete="PF('deletarColaboradorDialog').show()">
 							<f:setPropertyActionListener value="#{colaborador}" target="#{colaboradorView.colaboradorSelecionado}" />
@@ -172,7 +172,7 @@
 									</h:outputText>
 								</p:column>
 
-								<p:column exportable="false" rendered="#{authView.isAdmin}">
+								<p:column exportable="false" rendered="#{userSession.usuario.isAdmin}">
 
 									<p:commandButton icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
 														oncomplete="PF('valeDialog').show()"
@@ -196,7 +196,7 @@
 									<p:row>
 										<p:column colspan="2" style="text-align:right" footerText="Total:" />
 
-										<p:column colspan="#{authView.isAdmin ? 2 : ''}" style="color: red">
+										<p:column colspan="#{userSession.usuario.isAdmin ? 2 : ''}" style="color: red">
 											<f:facet name="footer">
 												<h:outputText value="#{colaboradorView.totalDoColaborador(colaborador)}">
 													<f:convertNumber type="currency" currencySymbol="R$" />
