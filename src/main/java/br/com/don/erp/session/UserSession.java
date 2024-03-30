@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import br.com.don.erp.enums.TipoUsuario;
 import br.com.don.erp.model.Usuario;
 import br.com.don.erp.repository.UsuarioRepository;
 import br.com.don.erp.util.CookieHelper;
@@ -27,10 +26,7 @@ public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String username = "Admin";
-
-    private TipoUsuario tipoUsuario = TipoUsuario.ADMIN;
-
+    Usuario usuario;
 
     @Inject
     private CookieHelper cookieHelper;
@@ -39,12 +35,10 @@ public class UserSession implements Serializable {
     private UsuarioRepository repository;
 
 
-
     @PostConstruct
     void init() {
 
     }
-
 
 
     public void doLogin(String username, String password) throws IOException {
@@ -52,7 +46,7 @@ public class UserSession implements Serializable {
         Boolean usuarioOk = false;
         Boolean senhaOk = false;
 
-        Usuario usuario = repository.findByUsername(username);
+        usuario = repository.findByUsername(username);
 
         if (usuario != null) {
             usuarioOk = true;
@@ -64,11 +58,9 @@ public class UserSession implements Serializable {
             ExternalContext externalContext = facesContext.getExternalContext();
 
             HttpSession session = (HttpSession) externalContext.getSession(true);
-            session.setAttribute("username", username);
+            session.setAttribute("username", usuario.getUsername());
 
-            this.username = username;
-
-            cookieHelper.setCookie("username", username, 30 * 60);
+            cookieHelper.setCookie("username", usuario.getUsername(), 30 * 60);
 
             externalContext.redirect(externalContext.getRequestContextPath() + "/app/index.xhtml");
 
@@ -83,7 +75,7 @@ public class UserSession implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
 
-        cookieHelper.setCookie("username", username, 0);
+        cookieHelper.setCookie("username", usuario.getUsername(), 0);
 
         externalContext.invalidateSession();
 
@@ -93,6 +85,6 @@ public class UserSession implements Serializable {
 
     @Override
     public String toString() {
-        return "UserSession [username=" + username + ", tipoUsuario=" + tipoUsuario + "]";
+        return "UserSession [usuario=" + usuario + "]";
     }
 }

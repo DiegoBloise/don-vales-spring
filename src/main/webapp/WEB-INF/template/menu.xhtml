@@ -20,9 +20,9 @@
 
         <p:fragment id="top-bar">
 
-            <div class="flex flex-row justify-content-between">
+            <div class="flex flex-row justify-content-between gap-2">
 
-                <p:tabMenu id="tab-menu-principal" styleClass="tab-menu-principal" activeIndex="#{param.i}">
+                <p:tabMenu id="tab-menu-principal" styleClass="tab-menu-principal flex flex-grow-1" activeIndex="#{param.i}">
                     <p:menuitem value="Home" outcome="/app/index" icon="pi pi-fw pi-home">
                         <f:param name="i" value="0"/>
                     </p:menuitem>
@@ -49,6 +49,10 @@
                         <p:commandButton icon="pi #{authView.isAdmin ? 'pi-lock-open' : 'pi-lock'}" styleClass="#{authView.isAdmin ? 'ui-button-danger' : 'ui-button-secondary'}"
                                         action="#{authView.setUser}" process="@root:@id(password) @this" update="@root:@id(app)"/>
                     </span>
+                </div>
+
+                <div class="field">
+                    <p:commandButton value="Sair" icon="pi pi-sign-out" iconPos="right" oncomplete="PF('logoutDialog').show()"/>
                 </div>
 
             </div>

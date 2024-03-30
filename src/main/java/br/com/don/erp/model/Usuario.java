@@ -30,6 +30,9 @@ public class Usuario implements Serializable {
 
     private String password;
 
+    private Boolean admin;
+
+
     @Enumerated()
     private TipoUsuario tipo;
 
@@ -41,6 +44,11 @@ public class Usuario implements Serializable {
 
     public void setPassword(String password) {
         this.password = new GenerateHashPassword().hashPassword(password);
+    }
+
+
+    public Boolean isAdmin() {
+        return this.tipo == TipoUsuario.ADMIN;
     }
 
 
