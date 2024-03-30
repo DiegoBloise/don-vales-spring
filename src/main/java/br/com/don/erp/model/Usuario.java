@@ -30,9 +30,6 @@ public class Usuario implements Serializable {
 
     private String password;
 
-    private Boolean admin;
-
-
     @Enumerated()
     private TipoUsuario tipo;
 
