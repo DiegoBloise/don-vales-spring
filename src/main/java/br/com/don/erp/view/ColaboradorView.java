@@ -17,10 +17,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
-import org.primefaces.model.StreamedContent;
 
 import br.com.don.erp.enums.TipoChavePix;
 import br.com.don.erp.enums.TipoColaborador;
@@ -53,10 +51,6 @@ public class ColaboradorView implements Serializable {
 
 	private BigDecimal totalVales = new BigDecimal(0);
 
-	private StreamedContent file;
-
-	private InputStream is;
-
 	private String valorVale;
 
 	@Inject
@@ -64,6 +58,9 @@ public class ColaboradorView implements Serializable {
 
 	@Inject
 	private ValeService valeService;
+
+	@Inject
+	private FileDownloadView fileDownloadView;
 
 	private List<Vale> filteredVales;
 
@@ -116,7 +113,11 @@ public class ColaboradorView implements Serializable {
 					.append(valeSelecionado.getValor())
 					.append(System.lineSeparator())
 					.append(valeSelecionado.getDataFormatada());
-	    	is = new ByteArrayInputStream(conteudo.toString().getBytes());
+
+			InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
+
+			fileDownloadView.setInputStream(inputStream);
+
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -221,17 +222,6 @@ public class ColaboradorView implements Serializable {
 
         colaboradoresSelecionados.clear();
     }
-
-
-	public void download() {
-		file = DefaultStreamedContent.builder()
-                .name("vale.txt")
-                .contentType("text/plain")
-                .stream(() -> is)
-                .build();
-
-		System.out.println("Imprimindo...");
-	}
 
 
 	public void vales(){

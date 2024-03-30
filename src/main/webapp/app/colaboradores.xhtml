@@ -367,11 +367,11 @@
 
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
 				message="Imprimir Vale?" header="Confirmação" severity="warn" closable="false" closeOnEscape="false">
-				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{colaboradorView.download}"
+				<p:commandButton value="Sim" icon="pi pi-check"
 								process="@this"
 								update="@root:@id(dt-colaboradores)"
 								oncomplete="PF('imprimeValeDialog').hide()">
-					<p:fileDownload value="#{colaboradorView.file}"/>
+					<p:fileDownload value="#{fileDownloadView.file}"/>
 				</p:commandButton>
 
 				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
