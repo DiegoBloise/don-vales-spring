@@ -11,12 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import br.com.don.erp.util.Util;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "entregas")
 public class Entrega implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -47,7 +49,7 @@ public class Entrega implements Serializable {
 	@Getter
 	@Setter
 	@Transient
-	private Integer qtde;
+	private Integer qtd;
 
 
 	public String getDataFormatada() {

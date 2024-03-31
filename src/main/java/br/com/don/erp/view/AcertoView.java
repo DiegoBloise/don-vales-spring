@@ -257,8 +257,8 @@ public class AcertoView implements Serializable {
 				BigDecimal valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
 				BigDecimal valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
 
-				colaboradorSelecionado.setQtdeTotalDias(qtdeTotalDias);
-				colaboradorSelecionado.setQtdeEntregas(entregas.size());
+				colaboradorSelecionado.setQtdTotalDias(qtdeTotalDias);
+				colaboradorSelecionado.setQtdEntregas(entregas.size());
 				colaboradorSelecionado.setValorTotalEntregas(valorTotalEntregas);
 				colaboradorSelecionado.setValorTotalIfood(valorTotalIfood);
 				colaboradorSelecionado.setValorTotalSemDesconto(valorTotalSemDesconto);

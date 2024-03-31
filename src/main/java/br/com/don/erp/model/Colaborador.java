@@ -4,11 +4,15 @@ import br.com.don.erp.enums.TipoChavePix;
 import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.util.Jix;
 import br.com.don.erp.util.Util;
+import jakarta.persistence.Table;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,6 +27,7 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @ToString
+@Table(name = "colaboradores")
 public class Colaborador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +47,7 @@ public class Colaborador implements Serializable {
 
 	@Getter
 	@Setter
+	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
 	private String chavePix;
@@ -49,50 +55,61 @@ public class Colaborador implements Serializable {
 	@Getter
 	@Setter
 	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_chave_pix")
 	private TipoChavePix tipoChavePix;
 
 	@Getter
 	@Setter
 	@Enumerated(EnumType.STRING)
-	private TipoColaborador tipoColaborador;
+	@Column(name = "tipo_colaborador")
+	private TipoColaborador tipo;
 
 ///////////////////////////////////////////////////////////
 
 
 	@Getter
 	@Setter
-	private Integer qtdeTotalDias;
+	@Column(name = "qtd_total_dias")
+	private Integer qtdTotalDias;
 
 	@Getter
 	@Setter
-	private Integer qtdeEntregas;
+	@Column(name = "qtd_entregas")
+	private Integer qtdEntregas;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_entregas")
 	private BigDecimal valorTotalEntregas;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_ifood")
 	private BigDecimal valorTotalIfood;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_sem_desconto")
 	private BigDecimal valorTotalSemDesconto;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_com_desconto")
 	private BigDecimal valorTotalComDesconto;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_diarias")
 	private BigDecimal valorTotalDiarias;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_total_vales")
 	private BigDecimal valorTotalVales;
 
 	@Getter
 	@Setter
+	@Column(name = "valor_saldo")
 	private BigDecimal valorSaldo;
 
 

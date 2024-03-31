@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.util.Util;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @ToString
+@Table(name = "vales")
 public class Vale implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -47,7 +49,7 @@ public class Vale implements Serializable {
 	@Getter
 	@Setter
 	@Enumerated(EnumType.STRING)
-	private TipoVale tipoVale;
+	private TipoVale tipo;
 
 
 	public Vale() {
