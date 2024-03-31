@@ -1,11 +1,5 @@
 package br.com.don.erp.model;
 
-import br.com.don.erp.enums.TipoChavePix;
-import br.com.don.erp.enums.TipoColaborador;
-import br.com.don.erp.util.Jix;
-import br.com.don.erp.util.Util;
-import jakarta.persistence.Table;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -18,7 +12,13 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import br.com.don.erp.enums.TipoChavePix;
+import br.com.don.erp.enums.TipoColaborador;
+import br.com.don.erp.util.Jix;
+import br.com.don.erp.util.Util;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
