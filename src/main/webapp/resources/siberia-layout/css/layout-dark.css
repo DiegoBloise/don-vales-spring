@@ -3250,7 +3250,7 @@ a {
 .login-body {
   background-size: 100% 50%;
   background-repeat: no-repeat;
-  background-image: url(javax.faces.resource/images/exceptions/mask-login.png.xhtml?ln=siberia-layout);
+  background-image: url(/javax.faces.resource/images/exceptions/mask-login.png.xhtml?ln=siberia-layout);
 }
 .login-body .login-wrapper {
   position: relative;
@@ -3381,7 +3381,7 @@ a {
 
 @media (max-width: 992px) {
   .login-body {
-    background-image: url(javax.faces.resource/images/exceptions/mask-mobile-login.png.xhtml?ln=siberia-layout);
+    background-image: url(/javax.faces.resource/images/exceptions/mask-mobile-login.png.xhtml?ln=siberia-layout);
   }
   .login-body .login-wrapper > img {
     width: 100%;
@@ -3397,13 +3397,13 @@ a {
   background-repeat: no-repeat;
 }
 .exception-body.notfound {
-  background-image: url(javax.faces.resource/images/exceptions/mask-404.png.xhtml?ln=siberia-layout);
+  background-image: url(/javax.faces.resource/images/exceptions/mask-404.png.xhtml?ln=siberia-layout);
 }
 .exception-body.access {
-  background-image: url(javax.faces.resource/images/exceptions/mask-denied.png.xhtml?ln=siberia-layout);
+  background-image: url(/javax.faces.resource/images/exceptions/mask-denied.png.xhtml?ln=siberia-layout);
 }
 .exception-body.error {
-  background-image: url(javax.faces.resource/images/exceptions/mask-error.png.xhtml?ln=siberia-layout);
+  background-image: url(/javax.faces.resource/images/exceptions/mask-error.png.xhtml?ln=siberia-layout);
 }
 .exception-body .exception-wrapper {
   position: relative;
@@ -3490,13 +3490,13 @@ a {
 
 @media (max-width: 992px) {
   .exception-body.notfound {
-    background-image: url(javax.faces.resource/images/exceptions/mask-404-mobile.png.xhtml?ln=siberia-layout);
+    background-image: url(/javax.faces.resource/images/exceptions/mask-404-mobile.png.xhtml?ln=siberia-layout);
   }
   .exception-body.access {
-    background-image: url(javax.faces.resource/images/exceptions/mask-access-mobile.png.xhtml?ln=siberia-layout);
+    background-image: url(/javax.faces.resource/images/exceptions/mask-access-mobile.png.xhtml?ln=siberia-layout);
   }
   .exception-body.error {
-    background-image: url(javax.faces.resource/images/exceptions/mask-error-mobile.png.xhtml?ln=siberia-layout);
+    background-image: url(/javax.faces.resource/images/exceptions/mask-error-mobile.png.xhtml?ln=siberia-layout);
   }
   .exception-body .exception-wrapper > img {
     width: 100%;
