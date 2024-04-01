@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.util.Util;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -59,6 +62,12 @@ public class Colaborador implements Serializable {
 
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Vale> vales = new ArrayList<>();
+
+	@Getter
+	@Setter
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_colaborador")
+	private TipoColaborador tipo;
 
 
 ///////////////////////////////////////////////////////////
