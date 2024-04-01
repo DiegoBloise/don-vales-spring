@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -47,7 +53,12 @@ public class Colaborador implements Serializable {
 
 	@Getter
 	@Setter
-	private Pix pix;
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pix_id")
+    private Pix pix;
+
+	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Vale> vales = new ArrayList<>();
 
 
 ///////////////////////////////////////////////////////////
@@ -135,4 +146,21 @@ public class Colaborador implements Serializable {
 	public String gerarPayloadPix() {
 		return this.pix.getPayload(this.nome, this.valorTotalComDesconto.toString(), "Sao Paulo", "PizzaDon");
 	}
+
+
+	public void adicionarVale(Vale vale) {
+        this.vales.add(vale);
+        vale.setColaborador(this);
+    }
+
+
+    public void adicionarVale() {
+        Vale vale = new Vale();
+        this.adicionarVale(vale);
+    }
+
+
+    public void removerVale(Vale vale) {
+        this.vales.remove(vale);
+    }
 }

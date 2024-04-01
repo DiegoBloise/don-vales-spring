@@ -17,8 +17,8 @@
 
 				<p:toolbarGroup>
 
-					<p:commandButton value="Vale" type="button" icon="pi pi-external-link"
-						onclick="PF('dlgVale').show()" styleClass="mr-2"/>
+					<!-- <p:commandButton value="Vale" type="button" icon="pi pi-external-link"
+						onclick="PF('dlgVale').show()" styleClass="mr-2"/> -->
 
 					<p:commandButton value="Acerto" type="button" icon="pi pi-search"
 						onclick="PF('acertoDialog').show()" styleClass="mr-2"/>
@@ -245,6 +245,8 @@
 			</p:dialog>
 
 
+			<!-- 
+				Comentei porque com os relacionamentos nao funciona mais vale.entregador - mudar para .colaborador.etc...
 			<p:dialog header="Vale" widgetVar="dlgVale" showEffect="fade"
 				id="dlgVale" modal="true" width="1100" height="500">
 
@@ -337,7 +339,7 @@
 						onclick="PF('deleteProductDialog').hide()" />
 				</p:confirmDialog>
 
-			</p:dialog>
+			</p:dialog> -->
 
 		</h:form>
 

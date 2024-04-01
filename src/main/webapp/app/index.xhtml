@@ -16,8 +16,8 @@
             <p:dataTable id="vales-do-dia" var="vale" value="#{colaboradorView.valesDoDia}" widgetVar="valesDoDia"
                     filteredValue="#{colaboradorView.filteredVales}" filterBy="#{colaboradorView.filterBy}" styleClass="mt-3">
 
-                <p:column headerText="Colaborador" sortBy="#{vale.entregador}" filterBy="#{vale.entregador}">
-                    <p:outputLabel value="#{vale.entregador}" />
+                <p:column headerText="Colaborador" sortBy="#{vale.colaborador.nome}" filterBy="#{vale.colaborador.nome}">
+                    <p:outputLabel value="#{vale.colaborador.nome}" />
                 </p:column>
 
                 <p:column field="data" headerText="Data do Vale" filterMatchMode="between">
