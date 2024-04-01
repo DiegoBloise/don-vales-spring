@@ -115,16 +115,16 @@
 						<p:outputLabel value="#{colaborador.chavePix}" />
 					</p:column>
 
-					<p:column headerText="Tipo Chave PIX - DEBUG" sortBy="#{colaborador.tipoChavePix}" filterBy="#{colaborador.tipoChavePix}">
+					<p:column headerText="Tipo Chave PIX" sortBy="#{colaborador.tipoChavePix}" filterBy="#{colaborador.tipoChavePix}">
 						<p:outputLabel value="#{colaborador.tipoChavePix}" />
 					</p:column>
 
-					<p:column headerText="Chave PIX - DEBUG" sortBy="#{colaborador.getChavePixDebug()}" filterBy="#{colaborador.getChavePixDebug()}">
+					<!-- <p:column headerText="Chave PIX - DEBUG" sortBy="#{colaborador.getChavePixDebug()}" filterBy="#{colaborador.getChavePixDebug()}">
 						<p:outputLabel value="#{colaborador.getChavePixDebug()}" />
-					</p:column>
+					</p:column> -->
 
-					<p:column headerText="Tipo" sortBy="#{colaborador.tipoColaborador}" filterBy="#{colaborador.tipoColaborador}">
-						<p:outputLabel value="#{colaborador.tipoColaborador}" />
+					<p:column headerText="Tipo" sortBy="#{colaborador.tipo}" filterBy="#{colaborador.tipo}">
+						<p:outputLabel value="#{colaborador.tipo}" />
 					</p:column>
 
 					<p:column exportable="false">
@@ -163,7 +163,7 @@
 								</p:column>
 
 								<p:column headerText="Tipo">
-									<p:outputLabel value="#{vale.tipoVale}" />
+									<p:outputLabel value="#{vale.tipo}" />
 								</p:column>
 
 								<p:column headerText="Valor">
@@ -241,7 +241,7 @@
 								thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 							<p:outputLabel for="@next" value="Tipo de Vale:" />
-							<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipoVale}" required="true">
+							<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
 								<f:selectItem itemLabel="Selecione:" itemValue="" />
 								<f:selectItems value="#{acertoView.tipoVale}" />
 							</p:selectOneMenu>
@@ -345,7 +345,7 @@
                         <div class="field mb-5">
 							<p:outputLabel for="@next" value="Tipo" />
 							<p:selectOneMenu id="tipoColaborador"
-											value="#{colaboradorView.colaboradorSelecionado.tipoColaborador}" required="true">
+											value="#{colaboradorView.colaboradorSelecionado.tipo}" required="true">
 								<f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
 								<f:selectItems value="#{colaboradorView.tipoColaborador}" />
 							</p:selectOneMenu>

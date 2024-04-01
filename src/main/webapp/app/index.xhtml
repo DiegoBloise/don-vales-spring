@@ -16,7 +16,7 @@
             <p:dataTable id="vales-do-dia" var="vale" value="#{colaboradorView.valesDoDia}" widgetVar="valesDoDia"
                     filteredValue="#{colaboradorView.filteredVales}" filterBy="#{colaboradorView.filterBy}" styleClass="mt-3">
 
-                <p:column headerText="Colaborador" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
+                <p:column headerText="Colaborador" sortBy="#{vale.entregador}" filterBy="#{vale.entregador}">
                     <p:outputLabel value="#{vale.entregador}" />
                 </p:column>
 
@@ -26,11 +26,11 @@
                     </f:facet>
                 </p:column>
 
-                <p:column headerText="Tipo" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
-                    <p:outputLabel value="#{vale.tipoVale}" />
+                <p:column headerText="Tipo" sortBy="#{vale.tipo}" filterBy="#{vale.tipo}">
+                    <p:outputLabel value="#{vale.tipo}" />
                 </p:column>
 
-                <p:column headerText="Valor" sortBy="#{vale.tipoVale}" filterBy="#{vale.tipoVale}">
+                <p:column headerText="Valor" sortBy="#{vale.valor}" filterBy="#{vale.valor}">
                     <h:outputText value="#{vale.valor}">
                         <f:convertNumber type="currency" currencySymbol="R$" />
                     </h:outputText>

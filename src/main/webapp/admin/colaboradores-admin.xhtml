@@ -109,7 +109,7 @@
                                 </p:column>
 
                                 <p:column headerText="Tipo">
-                                    <p:outputLabel value="#{vale.tipoVale}" />
+                                    <p:outputLabel value="#{vale.tipo}" />
                                 </p:column>
 
                                 <p:column headerText="Valor">
@@ -233,7 +233,7 @@
 							thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
 
 						<p:outputLabel for="@next" value="Tipo de Vale:" />
-						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.vale.tipoVale}" required="true">
+						<p:selectOneMenu id="valeTipo" value="#{colaboradorView.vale.tipo}" required="true">
 							<f:selectItem itemLabel="Selecione:" itemValue="" />
 							<f:selectItems value="#{acertoView.tipoVale}" />
 						</p:selectOneMenu>
