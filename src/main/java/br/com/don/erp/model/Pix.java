@@ -48,6 +48,16 @@ public class Pix implements Serializable {
     private List<Colaborador> colaboradores = new ArrayList<>();
 
 
+	public Pix() {
+
+	}
+
+
+	public Pix(Colaborador colaborador) {
+		this.adicionarColaborador(colaborador);
+	}
+
+
     public String getPayload(String nome, String valor, String cidade, String txtId) {
 		return new Jix(nome, this.chave, valor, cidade, txtId).gerarPayload();
 	}

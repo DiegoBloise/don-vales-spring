@@ -120,7 +120,7 @@ public class Colaborador implements Serializable {
 
 
 	public Colaborador() {
-
+		this.pix = new Pix(this);
 	}
 
 
