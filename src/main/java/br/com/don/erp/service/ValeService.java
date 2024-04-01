@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.don.erp.enums.TipoVale;
+import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.repository.Vales;
 
@@ -54,8 +55,8 @@ public class ValeService implements Serializable {
 	}
 
 
-	public List<Vale> buscarPorEntregadorDataInicioFim(String entregador,LocalDate dataInicio,LocalDate dataFim){
-		return vales.buscarPorEntregadorDataInicioFim(entregador, dataInicio, dataFim);
+	public List<Vale> buscarPorColaboradorDataInicioFim(Colaborador colaborador,LocalDate dataInicio,LocalDate dataFim){
+		return vales.buscarPorColaboradorDataInicioFim(colaborador, dataInicio, dataFim);
 	}
 
 

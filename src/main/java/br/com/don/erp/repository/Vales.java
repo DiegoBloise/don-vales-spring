@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import br.com.don.erp.enums.TipoVale;
+import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Vale;
 
 public class Vales implements Serializable {
@@ -66,10 +67,10 @@ public class Vales implements Serializable {
 	}
 
 
-	public List<Vale> buscarPorEntregadorDataInicioFim(String entregador, LocalDate dataInicio, LocalDate dataFim){
-		String jpql = "select e from Vale e where e.entregador = :entregador AND e.data >= :dataInicio AND e.data <= :dataFim";
+	public List<Vale> buscarPorColaboradorDataInicioFim(Colaborador colaborador, LocalDate dataInicio, LocalDate dataFim){
+		String jpql = "select v from Vale v where v.colaborador = :colaborador AND e.data >= :dataInicio AND e.data <= :dataFim";
 		return manager.createQuery(jpql, Vale.class)
-				.setParameter("entregador", entregador)
+				.setParameter("colaborador", colaborador)
 				.setParameter("dataInicio", dataInicio)
 				.setParameter("dataFim", dataFim)
 				.getResultList();
