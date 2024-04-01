@@ -17,13 +17,11 @@ import javax.persistence.Table;
 
 import br.com.don.erp.enums.TipoChavePix;
 import br.com.don.erp.util.Jix;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@Getter
+@Setter
 @Entity
 @Table(name = "chaves_pix")
 public class Pix implements Serializable {
@@ -32,13 +30,8 @@ public class Pix implements Serializable {
 
     @Id
 	@GeneratedValue
-	@Getter
-	@Setter
-	@EqualsAndHashCode.Include
 	private Long id;
 
-	@Getter
-	@Setter
 	@Enumerated(EnumType.STRING)
 	private TipoChavePix tipo;
 
@@ -129,4 +122,46 @@ public class Pix implements Serializable {
     public void removerColaborador(Colaborador colaborador) {
         this.colaboradores.remove(colaborador);
     }
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		result = prime * result + ((chave == null) ? 0 : chave.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pix other = (Pix) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (tipo != other.tipo)
+			return false;
+		if (chave == null) {
+			if (other.chave != null)
+				return false;
+		} else if (!chave.equals(other.chave))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Pix [id=" + id + ", tipo=" + tipo + ", chave=" + chave + "]";
+	}
 }

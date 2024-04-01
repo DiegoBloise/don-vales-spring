@@ -299,7 +299,7 @@ public class AcertoView implements Serializable {
 
 
 	public void buscarVales() {
-		vales = valeService.buscarPorEntregadorDataInicioFim(vale.getEntregador(), dataMovimento, LocalDate.now());
+		vales = valeService.buscarPorEntregadorDataInicioFim(vale.getColaborador().getNome(), dataMovimento, LocalDate.now());
 	}
 
 

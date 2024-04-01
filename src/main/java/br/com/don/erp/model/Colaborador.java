@@ -23,14 +23,12 @@ import javax.persistence.Transient;
 
 import br.com.don.erp.enums.TipoColaborador;
 import br.com.don.erp.util.Util;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter
+@Setter
 @Entity
-@ToString
 @Table(name = "colaboradores")
 public class Colaborador implements Serializable {
 
@@ -38,24 +36,15 @@ public class Colaborador implements Serializable {
 
 	@Id
 	@GeneratedValue
-	@Getter
-	@Setter
-	@EqualsAndHashCode.Include
 	private Long id;
 
-	@Getter
-	@Setter
 	private String nome;
 
 	private String telefone;
 
-	@Getter
-	@Setter
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
-	@Getter
-	@Setter
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pix_id")
     private Pix pix;
@@ -63,8 +52,6 @@ public class Colaborador implements Serializable {
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Vale> vales = new ArrayList<>();
 
-	@Getter
-	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_colaborador")
 	private TipoColaborador tipo;
@@ -73,48 +60,30 @@ public class Colaborador implements Serializable {
 ///////////////////////////////////////////////////////////
 
 
-	@Getter
-	@Setter
 	@Column(name = "qtd_total_dias")
 	private Integer qtdTotalDias;
 
-	@Getter
-	@Setter
 	@Column(name = "qtd_entregas")
 	private Integer qtdEntregas;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_entregas")
 	private BigDecimal valorTotalEntregas;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_ifood")
 	private BigDecimal valorTotalIfood;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_sem_desconto")
 	private BigDecimal valorTotalSemDesconto;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_com_desconto")
 	private BigDecimal valorTotalComDesconto;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_diarias")
 	private BigDecimal valorTotalDiarias;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_total_vales")
 	private BigDecimal valorTotalVales;
 
-	@Getter
-	@Setter
 	@Column(name = "valor_saldo")
 	private BigDecimal valorSaldo;
 
@@ -172,4 +141,62 @@ public class Colaborador implements Serializable {
     public void removerVale(Vale vale) {
         this.vales.remove(vale);
     }
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
+		result = prime * result + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + ((pix == null) ? 0 : pix.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Colaborador other = (Colaborador) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (telefone == null) {
+			if (other.telefone != null)
+				return false;
+		} else if (!telefone.equals(other.telefone))
+			return false;
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (pix == null) {
+			if (other.pix != null)
+				return false;
+		} else if (!pix.equals(other.pix))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Colaborador [id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", dataNascimento="
+				+ dataNascimento + ", pix=" + pix + "]";
+	}
 }

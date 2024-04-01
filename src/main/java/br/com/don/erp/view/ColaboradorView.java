@@ -100,7 +100,7 @@ public class ColaboradorView implements Serializable {
 
 	public void salvarVale() {
 		try {
-			valeSelecionado.setEntregador(colaboradorSelecionado.getNome());
+			valeSelecionado.setColaborador(colaboradorSelecionado);
 	        valeSelecionado.setValor(new BigDecimal(valorVale));
 
 			valeService.salvar(valeSelecionado);
@@ -108,7 +108,7 @@ public class ColaboradorView implements Serializable {
 			vales();
 
 	        StringBuilder conteudo = new StringBuilder()
-					.append(valeSelecionado.getEntregador())
+					.append(valeSelecionado.getColaborador().getNome())
 					.append(System.lineSeparator())
 					.append(valeSelecionado.getValor())
 					.append(System.lineSeparator())
@@ -225,7 +225,7 @@ public class ColaboradorView implements Serializable {
 
 
 	public void vales(){
-		valeSelecionado.setEntregador(colaboradorSelecionado.getNome());
+		valeSelecionado.setColaborador(colaboradorSelecionado);
 
 		vales = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
 
