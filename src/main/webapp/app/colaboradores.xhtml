@@ -111,16 +111,16 @@
 						<p:outputLabel value="#{colaborador.telefone}" />
 					</p:column>
 
-					<p:column headerText="Chave PIX" sortBy="#{colaborador.chavePix}" filterBy="#{colaborador.chavePix}">
-						<p:outputLabel value="#{colaborador.chavePix}" />
+					<p:column headerText="Chave PIX" sortBy="#{colaborador.pix.chave}" filterBy="#{colaborador.pix.chave}">
+						<p:outputLabel value="#{colaborador.pix.chave}" />
 					</p:column>
 
-					<p:column headerText="Tipo Chave PIX" sortBy="#{colaborador.tipoChavePix}" filterBy="#{colaborador.tipoChavePix}">
-						<p:outputLabel value="#{colaborador.tipoChavePix}" />
+					<p:column headerText="Tipo Chave PIX" sortBy="#{colaborador.pix.tipo}" filterBy="#{colaborador.pix.tipo}">
+						<p:outputLabel value="#{colaborador.pix.tipo}" />
 					</p:column>
 
-					<!-- <p:column headerText="Chave PIX - DEBUG" sortBy="#{colaborador.getChavePixDebug()}" filterBy="#{colaborador.getChavePixDebug()}">
-						<p:outputLabel value="#{colaborador.getChavePixDebug()}" />
+					<!-- <p:column headerText="Chave PIX - DEBUG" sortBy="#{colaborador.pix.getChaveDebug()}" filterBy="#{colaborador.pix.getChaveDebug()}">
+						<p:outputLabel value="#{colaborador.pix.getChaveDebug()}" />
 					</p:column> -->
 
 					<p:column headerText="Tipo" sortBy="#{colaborador.tipo}" filterBy="#{colaborador.tipo}">
@@ -286,9 +286,9 @@
 								<ui:repeat value="#{colaboradorView.tipoChavePix}" var="tipoChavePix">
 
 									<div style="margin: 1rem;">
-										<p:commandLink update="@root:@id(inputpix)" actionListener="#{colaboradorView.colaboradorSelecionado.setTipoChavePix(tipoChavePix)}"
+										<p:commandLink update="@root:@id(inputpix)" actionListener="#{colaboradorView.colaboradorSelecionado.pix.setTipo(tipoChavePix)}"
 											styleClass="no-underline" process="@this">
-											<div class="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq tipoChavePix ? 'tipo-chave-button-selecionada' : ''} 
+											<div class="#{colaboradorView.colaboradorSelecionado.pix.tipo eq tipoChavePix ? 'tipo-chave-button-selecionada' : ''} 
 												tipo-chave-button flex flex-column justify-content-center align-content-center align-items-center border-1 border-round border-300 shadow-1 hover:shadow-3">
 												<span style="color: #ff6e6c;">
 													<p:fragment rendered="#{tipoChavePix eq 'CELULAR'}"><i class="pix-icon pi pi-mobile text-4xl font-light border-circle p-4"></i></p:fragment>
@@ -308,29 +308,29 @@
 							</div>
 
 							<div class="mb-5">
-								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CELULAR'}">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.pix.tipo eq 'CELULAR'}">
 									<p:outputLabel for="@next" value="Informe o celular" />
-									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="(99)99999-9999" required="true"/>
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.pix.chave}" mask="(99)99999-9999" required="true"/>
 								</p:fragment>
 
-								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CPF'}">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.pix.tipo eq 'CPF'}">
 									<p:outputLabel for="@next" value="Informe o CPF" />
-									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="999.999.999-99" required="true"/>
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.pix.chave}" mask="999.999.999-99" required="true"/>
 								</p:fragment>
 
-								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'CNPJ'}">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.pix.tipo eq 'CNPJ'}">
 									<p:outputLabel for="@next" value="Informe o CNPJ" />
-									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.chavePix}" mask="99.999.999/9999-99" required="true"/>
+									<p:inputMask value="#{colaboradorView.colaboradorSelecionado.pix.chave}" mask="99.999.999/9999-99" required="true"/>
 								</p:fragment>
 
-								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'EMAIL'}">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.pix.tipo eq 'EMAIL'}">
 									<p:outputLabel for="@next" value="Informe o email" />
-									<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+									<p:inputText value="#{colaboradorView.colaboradorSelecionado.pix.chave}" required="true"/>
 								</p:fragment>
 
-								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.tipoChavePix eq 'ALEATORIA'}">
+								<p:fragment rendered="#{colaboradorView.colaboradorSelecionado.pix.tipo eq 'ALEATORIA'}">
 									<p:outputLabel for="@next" value="Informe a chave aleatória" />
-									<p:inputText value="#{colaboradorView.colaboradorSelecionado.chavePix}" required="true"/>
+									<p:inputText value="#{colaboradorView.colaboradorSelecionado.pix.chave}" required="true"/>
 								</p:fragment>
 							</div>
 						</h:panelGroup>

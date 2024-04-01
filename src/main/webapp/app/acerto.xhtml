@@ -115,7 +115,7 @@
 						<p:divider layout="vertical"/>
 
 						<p:skeleton rendered="#{empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" width="10rem" height="10rem" styleClass="mx-6"/>
-						<p:barcode rendered="#{not empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" styleClass="mx-6" type="qr" value="#{acertoView.colaboradorSelecionado.pixPayload}" width="125" height="125"/>
+						<p:barcode rendered="#{not empty acertoView.colaboradorSelecionado.valorTotalComDesconto}" styleClass="mx-6" type="qr" value="#{acertoView.colaboradorSelecionado.gerarPayloadPix()}" width="125" height="125"/>
 
 					</h:panelGroup>
 
