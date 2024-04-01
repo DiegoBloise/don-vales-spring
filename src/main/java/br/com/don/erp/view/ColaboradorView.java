@@ -227,7 +227,7 @@ public class ColaboradorView implements Serializable {
 	public void vales(){
 		valeSelecionado.setColaborador(colaboradorSelecionado);
 
-		vales = valeService.buscarPorEntregador(colaboradorSelecionado.getNome());
+		vales = valeService.buscarPorColaborador(colaboradorSelecionado);
 
 		calcularTotalVale(vales);
 	}
@@ -248,14 +248,14 @@ public class ColaboradorView implements Serializable {
 
 
 	public List<Vale>valesDoColaborador(Colaborador colaborador) {
-		return valeService.buscarPorEntregador(colaborador.getNome());
+		return valeService.buscarPorColaborador(colaborador);
 	}
 
 
 	public BigDecimal totalDoColaborador(Colaborador colaborador) {
 		BigDecimal total = new BigDecimal(0);
 
-		List<Vale> vales = valeService.buscarPorEntregador(colaborador.getNome());
+		List<Vale> vales = valeService.buscarPorColaborador(colaborador);
 
 		for (Vale vale : vales) {
 			total = vale.getValor().add(total);

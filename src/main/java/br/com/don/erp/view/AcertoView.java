@@ -218,7 +218,7 @@ public class AcertoView implements Serializable {
 						acerto.setQtdeEntregasDia(qtdeEntregaDia);
 						acerto.setQtdeIFood(qtdeIfoodDia);
 
-						vales = valeService.buscarPorEntregadorDataTipo(colaboradorSelecionado.getNome(), ent.getData(),
+						vales = valeService.buscarPorColaboradorDataTipo(colaboradorSelecionado, ent.getData(),
 							TipoVale.DINHEIRO);
 
 						if (null != vales) {
@@ -234,8 +234,8 @@ public class AcertoView implements Serializable {
 						texto.append(acerto.toString());
 
 						// busca valor do saldo
-						vales = valeService.buscarPorEntregadorDataTipo(
-							colaboradorSelecionado.getNome(),
+						vales = valeService.buscarPorColaboradorDataTipo(
+							colaboradorSelecionado,
 							ent.getData(),
 							TipoVale.SALDO);
 

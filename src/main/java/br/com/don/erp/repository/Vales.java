@@ -25,13 +25,13 @@ public class Vales implements Serializable {
 
 
 	public List<Vale> listarOrdenadoPorData(){
-		String jpql = "select e from Vale e order by e.data desc, id";
+		String jpql = "select v from Vale v order by v.data desc, id";
 		return manager.createQuery(jpql, Vale.class).getResultList();
 	}
 
 
 	public List<Vale> listarOrdenadoPorId(){
-		String jpql = "select e from Vale e order by e.id desc";
+		String jpql = "select v from Vale v order by v.id desc";
 		return manager.createQuery(jpql, Vale.class).getResultList();
 	}
 
@@ -43,17 +43,17 @@ public class Vales implements Serializable {
 	}
 
 
-	public List<Vale> buscarPorEntregador(String entregador){
-		String jpql = "select e from Vale e where e.entregador = :entregador order by e.data desc";
-		return manager.createQuery(jpql, Vale.class).setParameter("entregador", entregador)
+	public List<Vale> buscarPorColaborador(Colaborador colaborador){
+		String jpql = "select v from Vale v where v.colaborador = :colaborador order by v.data desc";
+		return manager.createQuery(jpql, Vale.class).setParameter("colaborador", colaborador)
 				.getResultList();
 	}
 
 
-	public List<Vale> buscarPorEntregadorDataTipo(String entregador, LocalDate data, TipoVale tipo){
-		String jpql = "select e from Vale e where e.entregador = :entregador AND e.data = :data AND e.tipoVale = :tipo";
+	public List<Vale> buscarPorColaboradorDataTipo(Colaborador colaborador, LocalDate data, TipoVale tipo){
+		String jpql = "select v from Vale v where v.colaborador = :colaborador AND v.data = :data AND v.tipo = :tipo";
 		return manager.createQuery(jpql, Vale.class)
-				.setParameter("entregador", entregador)
+				.setParameter("colaborador", colaborador)
 				.setParameter("data", data)
 				.setParameter("tipo", tipo)
 				.getResultList();
@@ -61,14 +61,14 @@ public class Vales implements Serializable {
 
 
 	public List<Vale> buscarPorData(LocalDate data){
-		String jpql = "select e from Vale e where e.data = :data";
+		String jpql = "select v from Vale v where v.data = :data";
 		return manager.createQuery(jpql, Vale.class).setParameter("data", data)
 				.getResultList();
 	}
 
 
 	public List<Vale> buscarPorColaboradorDataInicioFim(Colaborador colaborador, LocalDate dataInicio, LocalDate dataFim){
-		String jpql = "select v from Vale v where v.colaborador = :colaborador AND e.data >= :dataInicio AND e.data <= :dataFim";
+		String jpql = "select v from Vale v where v.colaborador = :colaborador AND v.data >= :dataInicio AND v.data <= :dataFim";
 		return manager.createQuery(jpql, Vale.class)
 				.setParameter("colaborador", colaborador)
 				.setParameter("dataInicio", dataInicio)
@@ -78,7 +78,7 @@ public class Vales implements Serializable {
 
 
 	public void deletarVale(Vale vale) {
-		String jpql = "delete from Vale e where e.id = :id ";
+		String jpql = "delete from Vale v where v.id = :id ";
 		manager.getTransaction().begin();
 		manager.createQuery(jpql)
 				.setParameter("id", vale.getId())

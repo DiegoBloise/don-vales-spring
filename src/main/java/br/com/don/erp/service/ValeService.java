@@ -40,13 +40,13 @@ public class ValeService implements Serializable {
 	}
 
 
-	public List<Vale> buscarPorEntregador(String entregador){
-		return vales.buscarPorEntregador(entregador);
+	public List<Vale> buscarPorColaborador(Colaborador colaborador){
+		return vales.buscarPorColaborador(colaborador);
 	}
 
 
-	public List<Vale> buscarPorEntregadorDataTipo(String entregador, LocalDate data,TipoVale tipo){
-		return vales.buscarPorEntregadorDataTipo(entregador, data, tipo);
+	public List<Vale> buscarPorColaboradorDataTipo(Colaborador colaborador, LocalDate data,TipoVale tipo){
+		return vales.buscarPorColaboradorDataTipo(colaborador, data, tipo);
 	}
 
 
