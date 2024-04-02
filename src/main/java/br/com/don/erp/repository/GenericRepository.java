@@ -5,13 +5,12 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-
-
-
+@Named
 public abstract class GenericRepository<T, ID extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,6 +24,18 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     @SuppressWarnings("unchecked")
     public GenericRepository() {
         this.entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+
+    public T find(Object value) {
+        String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e = :value";
+        try {
+            TypedQuery<T> query = entityManager.createQuery(jpql, entityClass)
+                .setParameter("value", value);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
 
@@ -49,7 +60,6 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
         String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e";
         try {
             TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
-
             return query.getResultList();
         } catch (NoResultException e) {
             return null;
@@ -60,8 +70,8 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     public List<T> findAllByProperty(String propertyName, Object value) {
         String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e." + propertyName + " = :value";
         try {
-            TypedQuery<T> query = entityManager.createQuery(jpql, entityClass);
-            query.setParameter("value", value);
+            TypedQuery<T> query = entityManager.createQuery(jpql, entityClass)
+                .setParameter("value", value);
             return query.getResultList();
         } catch (NoResultException e) {
             return null;

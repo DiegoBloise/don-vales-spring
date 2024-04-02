@@ -25,13 +25,15 @@ public class FileDownloadView implements Serializable {
 
     public FileDownloadView() {
 
-        file = DefaultStreamedContent.builder()
-                .name("vale.djprt")
-                .contentType("text/plain")
-                .stream(() -> inputStream)
-                .build();
+        if (file != null) {
+            file = DefaultStreamedContent.builder()
+                    .name("vale.djprt")
+                    .contentType("text/plain")
+                    .stream(() -> inputStream)
+                    .build();
 
-        System.out.println("Imprimindo...");
+            System.out.println("Imprimindo...");
+        }
     }
 
 

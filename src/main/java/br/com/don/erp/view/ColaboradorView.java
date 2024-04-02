@@ -73,7 +73,7 @@ public class ColaboradorView implements Serializable {
 		tipoColaborador = Arrays.asList(TipoColaborador.values());
 		tipoChavePix = Arrays.asList(TipoChavePix.values());
 
-		colaboradores = colaboradorService.getColaboradores();
+		colaboradores = colaboradorService.listar();
         colaboradoresSelecionados = new ArrayList<>();
 
 		vales = valeService.listar();
@@ -91,7 +91,6 @@ public class ColaboradorView implements Serializable {
 
 
 	public void adicionarVale(Colaborador colaborador) {
-		System.out.println("TO AQUI");
 		colaboradorSelecionado = colaborador;
 		valeSelecionado = new Vale();
 		valeSelecionado.setData(LocalDate.now());

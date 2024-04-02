@@ -21,17 +21,18 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Acerto;
-import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Entrega;
+import br.com.don.erp.model.Entregador;
 import br.com.don.erp.model.Vale;
-import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.EntregaService;
+import br.com.don.erp.service.EntregadorService;
 import br.com.don.erp.service.ValeService;
 import br.com.don.erp.util.Util;
 import lombok.Data;
@@ -53,13 +54,11 @@ public class AcertoView implements Serializable {
 
 	private List<Entrega> entregas;
 
+	private List<Entregador> entregadores;
+
 	private List<Acerto> acertos;
 
-	private List<String> entregadores;
-
 	private final String QUEBRALINHA = System.lineSeparator();
-
-	private String nomeColaborador;
 
 	private Double valorVale;
 
@@ -71,7 +70,7 @@ public class AcertoView implements Serializable {
 
 	private LocalDate dataMovimento;
 
-	private Colaborador colaboradorSelecionado;
+	private Entregador entregadorSelecionado;
 
 	@Inject
 	private EntregaService entregaService;
@@ -80,7 +79,7 @@ public class AcertoView implements Serializable {
 	private ValeService valeService;
 
 	@Inject
-	private ColaboradorService colaboradorService;
+	private EntregadorService entregadorService;
 
 
 	@PostConstruct
@@ -97,14 +96,22 @@ public class AcertoView implements Serializable {
 
 		tipoVale = Arrays.asList(TipoVale.values());
 
-		nomeColaborador = null;
-
 		vales = valeService.listarOrdenadoPorData();
-		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
+
+		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
+	}
+
+
+	public void novoAcerto() {
+		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
+
+		PrimeFaces.current().executeScript("PF('acertoDialog').show()");
 	}
 
 
 	public void fileUpload(FileUploadEvent event) {
+
+		System.out.println("Called: fileUpload method");
 
 		try {
 
@@ -120,7 +127,7 @@ public class AcertoView implements Serializable {
 
 				entregaService.salvarLote(salvar);
 				entregas = entregaService.buscarPorData(dataMovimento);
-				entregadores = entregaService.listarEntregadoresporData(dataMovimento);
+				entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Foram salvos "+ (salvar.size() + " registros"), Util.localDateFormatado(dataMovimento)));
 			}
@@ -133,7 +140,7 @@ public class AcertoView implements Serializable {
 
 	public void onDateSelect(SelectEvent<Date> event) {
 		dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
+		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 		/*
 		 * dataMovimento =
 		 * dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -157,52 +164,48 @@ public class AcertoView implements Serializable {
 		vale = new Vale();
 		valorVale = null;
 		vales = valeService.listarOrdenadoPorData();
-		entregadores = entregaService.listarEntregadoresporData(dataMovimento);
+		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 	}
 
 
 	public void realizarAcerto() {
 
-		if (nomeColaborador != null && !nomeColaborador.isEmpty()) {
+		try {
+			acertos = new ArrayList<>();
+			entregas = new ArrayList<>();
 
-			try {
-				colaboradorSelecionado = colaboradorService.buscarPorNome(nomeColaborador);
+			entregas = entregaService.buscarPorEntregadorDataInicioDataFim((Entregador) entregadorSelecionado,
+				Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
 
-				acertos = new ArrayList<>();
-				entregas = new ArrayList<>();
+			LocalDate dataComparacao = null;
 
-				entregas = entregaService.buscarPorEntregadorDataInicioDataFim(colaboradorSelecionado.getNome(),
-					Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
+			int i = 0;
+			int qtdeIfoodDia = 0;
+			int qtdeEntregaDia = 0;
+			int qtdeTotalDias = 0;
+			int qtdeTotalIFood = 0;
 
-				LocalDate dataComparacao = null;
+			BigDecimal valorTotalEntregas = new BigDecimal(0.0);
+			BigDecimal totalVale = new BigDecimal(0);
+			BigDecimal valorTotalDiarias = new BigDecimal(0);
+			BigDecimal valorTotalVales = new BigDecimal(0);
+			BigDecimal valorSaldo = new BigDecimal(0);
 
-				int i = 0;
-				int qtdeIfoodDia = 0;
-				int qtdeEntregaDia = 0;
-				int qtdeTotalDias = 0;
-				int qtdeTotalIFood = 0;
+			StringBuffer texto = new StringBuffer();
+			texto.append("*")
+				.append(entregadorSelecionado.getNome())
+				.append("*")
+				.append(QUEBRALINHA);
 
-				BigDecimal valorTotalEntregas = new BigDecimal(0.0);
-				BigDecimal totalVale = new BigDecimal(0);
-				BigDecimal valorTotalDiarias = new BigDecimal(0);
-				BigDecimal valorTotalVales = new BigDecimal(0);
-				BigDecimal valorSaldo = new BigDecimal(0);
+			for (Entrega ent : entregas) {
+				i++;
 
-				StringBuffer texto = new StringBuffer();
-				texto.append("*")
-					.append(colaboradorSelecionado.getNome())
-					.append("*")
-					.append(QUEBRALINHA);
+				if (null == dataComparacao) {
+					dataComparacao = ent.getData();
+					++qtdeTotalDias;
+				}
 
-				for (Entrega ent : entregas) {
-					i++;
-
-					if (null == dataComparacao) {
-						dataComparacao = ent.getData();
-						++qtdeTotalDias;
-					}
-
-					if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
+				if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
 						++qtdeIfoodDia;
 						qtdeTotalIFood++;
 					}
@@ -218,7 +221,7 @@ public class AcertoView implements Serializable {
 						acerto.setQtdeEntregasDia(qtdeEntregaDia);
 						acerto.setQtdeIFood(qtdeIfoodDia);
 
-						vales = valeService.buscarPorColaboradorDataTipo(colaboradorSelecionado, ent.getData(),
+						vales = valeService.buscarPorColaboradorDataTipo(entregadorSelecionado, ent.getData(),
 							TipoVale.DINHEIRO);
 
 						if (null != vales) {
@@ -235,7 +238,7 @@ public class AcertoView implements Serializable {
 
 						// busca valor do saldo
 						vales = valeService.buscarPorColaboradorDataTipo(
-							colaboradorSelecionado,
+							entregadorSelecionado,
 							ent.getData(),
 							TipoVale.SALDO);
 
@@ -257,30 +260,30 @@ public class AcertoView implements Serializable {
 				BigDecimal valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
 				BigDecimal valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
 
-				colaboradorSelecionado.setQtdTotalDias(qtdeTotalDias);
-				colaboradorSelecionado.setQtdEntregas(entregas.size());
-				colaboradorSelecionado.setValorTotalEntregas(valorTotalEntregas);
-				colaboradorSelecionado.setValorTotalIfood(valorTotalIfood);
-				colaboradorSelecionado.setValorTotalSemDesconto(valorTotalSemDesconto);
-				colaboradorSelecionado.setValorTotalComDesconto(valorTotalComDesconto);
-				colaboradorSelecionado.setValorTotalDiarias(valorTotalDiarias);
-				colaboradorSelecionado.setValorTotalVales(valorTotalVales);
-				colaboradorSelecionado.setValorSaldo(valorSaldo);
+				entregadorSelecionado.setQtdTotalDias(qtdeTotalDias);
+				entregadorSelecionado.setQtdEntregas(entregas.size());
+				entregadorSelecionado.setValorTotalEntregas(valorTotalEntregas);
+				entregadorSelecionado.setValorTotalIfood(valorTotalIfood);
+				entregadorSelecionado.setValorTotalSemDesconto(valorTotalSemDesconto);
+				entregadorSelecionado.setValorTotalComDesconto(valorTotalComDesconto);
+				entregadorSelecionado.setValorTotalDiarias(valorTotalDiarias);
+				entregadorSelecionado.setValorTotalVales(valorTotalVales);
+				entregadorSelecionado.setValorSaldo(valorSaldo);
 
-				texto.append("Total de Entregas: R$ ").append(colaboradorSelecionado.getValorTotalEntregas())
+				texto.append("Total de Entregas: R$ ").append(entregadorSelecionado.getValorTotalEntregas())
 					.append(QUEBRALINHA)
-					.append("Total de Diárias: R$ ").append(colaboradorSelecionado.getValorTotalDiarias())
+					.append("Total de Diárias: R$ ").append(entregadorSelecionado.getValorTotalDiarias())
 					.append(QUEBRALINHA)
-					.append("Total IFood: R$ ").append(colaboradorSelecionado.getValorTotalIfood()).append(".00")
+					.append("Total IFood: R$ ").append(entregadorSelecionado.getValorTotalIfood()).append(".00")
 					.append(QUEBRALINHA)
-					.append("Total Sem Desconto: R$ ").append(colaboradorSelecionado.getValorTotalSemDesconto())
+					.append("Total Sem Desconto: R$ ").append(entregadorSelecionado.getValorTotalSemDesconto())
 					.append(QUEBRALINHA)
-					.append("Total de Vales: R$ ").append(colaboradorSelecionado.getValorTotalVales())
+					.append("Total de Vales: R$ ").append(entregadorSelecionado.getValorTotalVales())
 					.append(QUEBRALINHA)
-					.append("Saldo: R$ ").append(colaboradorSelecionado.getValorSaldo())
+					.append("Saldo: R$ ").append(entregadorSelecionado.getValorSaldo())
 					.append(QUEBRALINHA)
 					.append("*RECEBER* R$: ")
-					.append(colaboradorSelecionado.getValorTotalComDesconto())
+					.append(entregadorSelecionado.getValorTotalComDesconto())
 					.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
 
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -291,10 +294,6 @@ public class AcertoView implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro", e.getMessage()));
 			}
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Selecione Entregador", "Entregador deve ser selecionado"));
-		}
 	}
 
 
@@ -312,7 +311,7 @@ public class AcertoView implements Serializable {
 	public void buscarEntregadoresAcerto() {
 		FacesMessage msg;
 
-		entregadores = entregaService.listarEntregadoresporDataInicioFim(Util.converteLocalDate(dataInicio),
+		entregadores = entregaService.listarEntregadoresPorDataInicioFim(Util.converteLocalDate(dataInicio),
 			Util.converteLocalDate(dataFim));
 
 		if (entregadores.isEmpty()) {

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -16,9 +17,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import br.com.don.erp.model.Entrega;
-import br.com.don.erp.repository.Entregas;
+import br.com.don.erp.model.Entregador;
+import br.com.don.erp.repository.EntregaRepository;
 import br.com.don.erp.util.Util;
 
+@Named
 public class EntregaService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,18 +31,21 @@ public class EntregaService implements Serializable {
 	private final String DELIVERY = "D";
 
 	@Inject
-	private Entregas entregas;
+	private EntregaRepository repository;
+
+	@Inject
+	private EntregadorService entregadorService;
 
 
 	public List<Entrega> listar() {
-		return entregas.listar();
+		return repository.findAll();
 	}
 
 
 	public List<Entrega> salvarLote(List<Entrega> lista) {
 
 		for (Entrega entrega : lista) {
-			entregas.salvar(entrega);
+			repository.save(entrega);
 		}
 		return lista;
 	}
@@ -63,7 +69,19 @@ public class EntregaService implements Serializable {
 						Entrega entrega = new Entrega();
 						Double numPedido = row.getCell(0).getNumericCellValue();
 						entrega.setPedido(numPedido.intValue());
-						entrega.setEntregador(row.getCell(14).getStringCellValue());
+
+						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
+						String nomeDoEntregador = row.getCell(14).getStringCellValue();
+						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador).get(0);
+
+						if (entregador != null) {
+							entrega.setEntregador(entregador);
+						} else {
+							entregador = new Entregador();
+							entregador.setNome(nomeDoEntregador);
+							entrega.setEntregador(entregador);
+						}
+
 						entrega.setData(dataMovimento);
 						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
 						listaEntregas.add(entrega);
@@ -104,7 +122,18 @@ public class EntregaService implements Serializable {
 						Entrega entrega = new Entrega();
 						Double numPedido = row.getCell(0).getNumericCellValue();
 						entrega.setPedido(numPedido.intValue());
-						entrega.setEntregador(row.getCell(14).getStringCellValue());
+
+						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
+						String nomeDoEntregador = row.getCell(14).getStringCellValue();
+						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador).get(0);
+
+						if (entregador != null) {
+							entrega.setEntregador(entregador);
+						} else {
+							entregador = new Entregador();
+							entregador.setNome(nomeDoEntregador);
+							entrega.setEntregador(entregador);
+						}
 
 						LocalDate dataComparacao = Util.converteDataHoraLocalDate(row.getCell(7).getStringCellValue());
 
@@ -131,42 +160,42 @@ public class EntregaService implements Serializable {
 	}
 
 
-	public List<Entrega> buscarPorEntregador(String entregador){
-		return entregas.buscarPorEntregador(entregador);
+	public List<Entrega> buscarPorEntregador(Entregador entregador){
+		return repository.findAllByProperty("entregador", entregador);
 	}
 
 
-	public List<String> listarEntregadoresporData(LocalDate data){
-		return entregas.buscarEntregadoresporData(data);
+	public List<Entregador> listarEntregadoresPorData(LocalDate data){
+		return repository.buscarEntregadoresPorData(data);
 	}
 
 
-	public List<String> listarEntregadoresporDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
-		return entregas.buscarEntregadoresporDataInicioFim(dataInicio,dataFim);
+	public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
+		return repository.buscarEntregadoresPorDataInicioFim(dataInicio,dataFim);
 	}
 
 
-	public List<Entrega> buscarPorEntregadorData(String entregador, LocalDate data){
-		return entregas.buscarPorEntregadorData(entregador, data);
+	public List<Entrega> buscarPorEntregadorData(Entregador entregador, LocalDate data){
+		return repository.buscarPorEntregadorData(entregador, data);
 	}
 
 
-	public List<Entrega> buscarPorEntregadorDataInicioDataFim(String entregador, LocalDate dataInicio, LocalDate datafim){
-		return entregas.buscarPorEntregadorDataInicioDataFim(entregador, dataInicio, datafim);
+	public List<Entrega> buscarPorEntregadorDataInicioDataFim(Entregador entregador, LocalDate dataInicio, LocalDate datafim){
+		return repository.buscarPorEntregadorDataInicioDataFim(entregador, dataInicio, datafim);
 	}
 
 
 	public List<Entrega> buscarPorData(LocalDate data){
-		return entregas.buscarPorData(data);
+		return repository.buscarPorData(data);
 	}
 
 
 	public Long buscarMovimento(LocalDate data) {
-		return entregas.buscarMovimento(data);
+		return repository.buscarMovimento(data);
 	}
 
 
 	public Integer deleterMovimento(LocalDate data) {
-		return entregas.deletarMovimento(data);
+		return repository.deletarMovimento(data);
 	}
 }

@@ -49,7 +49,7 @@ public class GestaoColaboradorAdminView implements Serializable {
 
     public void inicializarObjetos() {
         tipoColaborador = Arrays.asList(TipoColaborador.values());
-        colaboradores = colaboradorService.getColaboradores();
+        colaboradores = colaboradorService.listar();
         colaboradorSelecionado = new Colaborador();
         colaboradoresSelecionados = new ArrayList<>();
     }

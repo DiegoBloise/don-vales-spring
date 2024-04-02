@@ -12,4 +12,9 @@
 		</locale-config>
 	</application>
 
+	<converter>
+        <converter-for-class>br.com.don.erp.model.Entregador</converter-for-class>
+        <converter-class>br.com.don.erp.converter.EntregadorConverter</converter-class>
+    </converter>
+
 </faces-config>

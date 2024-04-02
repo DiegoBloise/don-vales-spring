@@ -5,9 +5,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,16 +28,18 @@ public class Entrega implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 	private Integer pedido;
-
-	private String entregador;
 
 	private BigDecimal valor;
 
 	private LocalDate data;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "entregador_id")
+    private Entregador entregador;
 
 	@Transient
 	private Integer qtd;
@@ -50,7 +56,6 @@ public class Entrega implements Serializable {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((pedido == null) ? 0 : pedido.hashCode());
-		result = prime * result + ((entregador == null) ? 0 : entregador.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((qtd == null) ? 0 : qtd.hashCode());
@@ -77,11 +82,6 @@ public class Entrega implements Serializable {
 				return false;
 		} else if (!pedido.equals(other.pedido))
 			return false;
-		if (entregador == null) {
-			if (other.entregador != null)
-				return false;
-		} else if (!entregador.equals(other.entregador))
-			return false;
 		if (valor == null) {
 			if (other.valor != null)
 				return false;
@@ -103,7 +103,7 @@ public class Entrega implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Entrega [id=" + id + ", pedido=" + pedido + ", entregador=" + entregador + ", valor=" + valor
+		return "Entrega [id=" + id + ", pedido=" + pedido + ", valor=" + valor
 				+ ", data=" + data + ", qtd=" + qtd + "]";
 	}
 }

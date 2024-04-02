@@ -1,7 +1,6 @@
 package br.com.don.erp.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,12 +8,17 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,15 +34,18 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "colaboradores")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_colaborador")
+@DiscriminatorValue("FIXO")
 public class Colaborador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String nome;
+	protected String nome;
 
 	private String telefone;
 
@@ -47,54 +54,18 @@ public class Colaborador implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pix_id")
-    private Pix pix;
+    protected Pix pix;
 
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Vale> vales = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_colaborador")
-	private TipoColaborador tipo;
-
-
-///////////////////////////////////////////////////////////
-
-
-	@Column(name = "qtd_total_dias")
-	private Integer qtdTotalDias;
-
-	@Column(name = "qtd_entregas")
-	private Integer qtdEntregas;
-
-	@Column(name = "valor_total_entregas")
-	private BigDecimal valorTotalEntregas;
-
-	@Column(name = "valor_total_ifood")
-	private BigDecimal valorTotalIfood;
-
-	@Column(name = "valor_total_sem_desconto")
-	private BigDecimal valorTotalSemDesconto;
-
-	@Column(name = "valor_total_com_desconto")
-	private BigDecimal valorTotalComDesconto;
-
-	@Column(name = "valor_total_diarias")
-	private BigDecimal valorTotalDiarias;
-
-	@Column(name = "valor_total_vales")
-	private BigDecimal valorTotalVales;
-
-	@Column(name = "valor_saldo")
-	private BigDecimal valorSaldo;
+    @Column(name = "tipo_colaborador", insertable = false, updatable = false)
+    private TipoColaborador tipo;
 
 
 	public Colaborador() {
 		this.pix = new Pix(this);
-	}
-
-
-	public void calcularAsParadas(List<Entrega> entregas) {
-
 	}
 
 
@@ -119,11 +90,6 @@ public class Colaborador implements Serializable {
 	public void setTelefone(String telefone) {
         this.telefone = telefone.replaceAll("[^0-9]", "");
     }
-
-
-	public String gerarPayloadPix() {
-		return this.pix.getPayload(this.nome, this.valorTotalComDesconto.toString(), "Sao Paulo", "PizzaDon");
-	}
 
 
 	public void adicionarVale(Vale vale) {

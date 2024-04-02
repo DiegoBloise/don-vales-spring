@@ -4,55 +4,52 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.don.erp.model.Colaborador;
-import br.com.don.erp.repository.Colaboradores;
+import br.com.don.erp.repository.ColaboradorRepository;
 
+@Named
 public class ColaboradorService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Colaboradores colaboradores;
+	private ColaboradorRepository repository;
 
 
 	public List<Colaborador> listar(){
-		return colaboradores.listar();
+		return repository.findAll();
 	}
 
 
 	public void salvar(Colaborador colaborador) {
-		colaboradores.salvar(colaborador);
+		repository.save(colaborador);
 	}
 
 
-	public Integer deletar(Colaborador colaborador) {
-		return colaboradores.deletar(colaborador);
+	public void deletar(Colaborador colaborador) {
+		repository.delete(colaborador);
 	}
 
 
 	public Colaborador buscar(Colaborador colaborador){
-		return colaboradores.buscar(colaborador);
+		return repository.find(colaborador);
 	}
 
 
-	public Colaborador buscarPorNome(String nome){
-		return colaboradores.buscarPorNome(nome);
-	}
-
-
-	public List<Colaborador> getColaboradores() {
-		return colaboradores.listar();
+	public List<Colaborador> buscarPorNome(String nome){
+		return repository.findAllByProperty("colaborador.nome", nome);
 	}
 
 
 	public void cadastrarColaborador(Colaborador colaborador) {
-		colaboradores.salvar(colaborador);
+		repository.save(colaborador);
 	}
 
 
 	public void removerColaborador(Colaborador colaborador) {
-		colaboradores.deletar(colaborador);
+		repository.delete(colaborador);
 	}
 
 

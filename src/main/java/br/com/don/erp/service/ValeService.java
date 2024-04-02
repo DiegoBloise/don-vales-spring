@@ -5,63 +5,65 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Vale;
-import br.com.don.erp.repository.Vales;
+import br.com.don.erp.repository.ValeRepository;
 
+@Named
 public class ValeService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Vales vales;
+	private ValeRepository repository;
 
 
 	public List<Vale> listar() {
-		return vales.listar();
+		return repository.findAll();
 	}
 
 
 	public List<Vale> listarOrdenadoPorData() {
-		return vales.listarOrdenadoPorData();
+		return repository.listarOrdenadoPorData();
 	}
 
 
 	public List<Vale> listarOrdenadoPorId() {
-		return vales.listarOrdenadoPorId();
+		return repository.listarOrdenadoPorId();
 	}
 
 
 	public Vale salvar(Vale vale) {
-		vales.salvar(vale);
+		repository.save(vale);
 		return vale;
 	}
 
 
 	public List<Vale> buscarPorColaborador(Colaborador colaborador){
-		return vales.buscarPorColaborador(colaborador);
+		return repository.findAllByProperty("colaborador", colaborador);
 	}
 
 
 	public List<Vale> buscarPorColaboradorDataTipo(Colaborador colaborador, LocalDate data,TipoVale tipo){
-		return vales.buscarPorColaboradorDataTipo(colaborador, data, tipo);
+		return repository.buscarPorColaboradorDataTipo(colaborador, data, tipo);
 	}
 
 
 	public List<Vale> buscarPorData(LocalDate data){
-		return vales.buscarPorData(data);
+		return repository.buscarPorData(data);
 	}
 
 
 	public List<Vale> buscarPorColaboradorDataInicioFim(Colaborador colaborador,LocalDate dataInicio,LocalDate dataFim){
-		return vales.buscarPorColaboradorDataInicioFim(colaborador, dataInicio, dataFim);
+		return repository.buscarPorColaboradorDataInicioFim(colaborador, dataInicio, dataFim);
 	}
 
 
 	public void deletarVale(Vale vale) {
-		vales.deletarVale(vale);
+		repository.delete(vale);
 	}
 
 }
