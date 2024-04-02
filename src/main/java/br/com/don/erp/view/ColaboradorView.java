@@ -51,8 +51,6 @@ public class ColaboradorView implements Serializable {
 
 	private BigDecimal totalVales = new BigDecimal(0);
 
-	private String valorVale;
-
 	@Inject
 	private ColaboradorService colaboradorService;
 
@@ -77,7 +75,6 @@ public class ColaboradorView implements Serializable {
         colaboradoresSelecionados = new ArrayList<>();
 
 		vales = valeService.listar();
-		valorVale = null;
 
 		filterBy = new ArrayList<>();
 
@@ -100,7 +97,6 @@ public class ColaboradorView implements Serializable {
 	public void salvarVale() {
 		try {
 			valeSelecionado.setColaborador(colaboradorSelecionado);
-	        valeSelecionado.setValor(new BigDecimal(valorVale));
 
 			vales();
 
@@ -124,7 +120,7 @@ public class ColaboradorView implements Serializable {
 
 			valeService.cadastrarVale(valeSelecionado);
 
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Lançado", "Valor: R$ " + valorVale.replace(".", ","));
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Lançado", "Valor: R$ " + valeSelecionado.getValor().toString().replace(".", ","));
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
         else {

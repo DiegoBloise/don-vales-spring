@@ -237,8 +237,12 @@
 								pattern="dd/MM/yyyy" mask="true" required="true"/>
 
 							<p:outputLabel for="@next" value="Valor:"/>
-							<p:inputNumber value="#{colaboradorView.valorVale}" decimalPlaces="2"
-								thousandSeparator="." decimalSeparator="," placeholder="0,00" required="true"/>
+							<p:inputText required="true" class="moneyInput"
+								value="#{colaboradorView.valeSelecionado.valor}"
+								styleClass="mt-1" size="12"
+								oninput="formatMoneyInput(this)" converter="dinheiroConverter">
+								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" pattern="¤ ###,###,##0.00; ¤ -###,###,##0.00"/>
+							</p:inputText>
 
 							<p:outputLabel for="@next" value="Tipo de Vale:" />
 							<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
@@ -403,6 +407,8 @@
             </p:confirmDialog>
 
 		</h:form>
+
+		<script src="#{request.contextPath}/resources/js/util.js"></script>
 
 	</ui:define>
 
