@@ -1,43 +1,46 @@
 package br.com.don.erp.view;
 
-import java.io.InputStream;
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import br.com.don.erp.session.UserFiles;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Named
-@SessionScoped
+@RequestScoped
 public class FileDownloadView implements Serializable {
 
     private StreamedContent file;
 
-    private InputStream inputStream;
+    @Inject
+    private UserFiles userFiles;
 
 
     public FileDownloadView() {
+        createFile();
+    }
 
-        if (file != null) {
-            file = DefaultStreamedContent.builder()
-                    .name("vale.djprt")
-                    .contentType("text/plain")
-                    .stream(() -> inputStream)
-                    .build();
 
-            System.out.println("Imprimindo...");
-        }
+    public void createFile() {
+        this.file = DefaultStreamedContent.builder()
+            .name("vale.djprt")
+            .contentType("text/plain")
+            .stream(() -> userFiles.getInputStream())
+            .build();
     }
 
 
     public StreamedContent getFile() {
-        return file;
+        System.out.println("Imprimindo...");
+        return this.file;
     }
 }

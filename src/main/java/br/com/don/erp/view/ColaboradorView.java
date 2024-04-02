@@ -26,6 +26,7 @@ import br.com.don.erp.model.Colaborador;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.service.ColaboradorService;
 import br.com.don.erp.service.ValeService;
+import br.com.don.erp.session.UserFiles;
 import lombok.Data;
 
 @Data
@@ -58,7 +59,7 @@ public class ColaboradorView implements Serializable {
 	private ValeService valeService;
 
 	@Inject
-	private FileDownloadView fileDownloadView;
+	private UserFiles userFiles;
 
 	private List<Vale> filteredVales;
 
@@ -109,7 +110,7 @@ public class ColaboradorView implements Serializable {
 
 			InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
 
-			fileDownloadView.setInputStream(inputStream);
+			userFiles.setInputStream(inputStream);
 
 		} catch (Exception e) {
 			System.out.println(e.toString());
