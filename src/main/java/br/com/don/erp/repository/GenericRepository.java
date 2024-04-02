@@ -3,12 +3,12 @@ package br.com.don.erp.repository;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 @Named
 public abstract class GenericRepository<T, ID extends Serializable> implements Serializable {
@@ -79,6 +79,18 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     }
 
 
+    public T findByProperty(String propertyName, Object value) {
+        String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e." + propertyName + " = :value";
+        try {
+            TypedQuery<T> query = entityManager.createQuery(jpql, entityClass)
+                .setParameter("value", value);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+
     public List<T> findDTOs(String jpql, Class<T> dtoClass) {
         try {
             TypedQuery<T> query = entityManager.createQuery(jpql, dtoClass);
@@ -89,6 +101,7 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     }
 
 
+    @Transactional
     public void save(T entity) {
         entityManager.getTransaction().begin();
         entityManager.persist(entity);
@@ -96,6 +109,7 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     }
 
 
+    @Transactional
     public void update(T entity) {
         entityManager.getTransaction().begin();
         entityManager.merge(entity);
@@ -103,9 +117,10 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
     }
 
 
+    @Transactional
     public void delete(T entity) {
         entityManager.getTransaction().begin();
-        entityManager.remove(entity);
+        entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
         entityManager.getTransaction().commit();
     }
 }

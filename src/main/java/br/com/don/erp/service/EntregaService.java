@@ -72,7 +72,7 @@ public class EntregaService implements Serializable {
 
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador).get(0);
+						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
 
 						if (entregador != null) {
 							entrega.setEntregador(entregador);
@@ -125,7 +125,7 @@ public class EntregaService implements Serializable {
 
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador).get(0);
+						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
 
 						if (entregador != null) {
 							entrega.setEntregador(entregador);

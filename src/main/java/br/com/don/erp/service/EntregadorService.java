@@ -43,8 +43,8 @@ public class EntregadorService implements Serializable {
 	}
 
 
-	public List<Entregador> buscarPorNome(String nome){
-		return repository.findAllByProperty("entregador.nome", nome);
+	public Entregador buscarPorNome(String nome){
+		return repository.findByProperty("entregador.nome", nome);
 	}
 
 

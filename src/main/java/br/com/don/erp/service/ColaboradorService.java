@@ -23,16 +23,6 @@ public class ColaboradorService implements Serializable {
 	}
 
 
-	public void salvar(Colaborador colaborador) {
-		repository.save(colaborador);
-	}
-
-
-	public void deletar(Colaborador colaborador) {
-		repository.delete(colaborador);
-	}
-
-
 	public Colaborador buscar(Colaborador colaborador){
 		return repository.find(colaborador);
 	}
@@ -45,6 +35,11 @@ public class ColaboradorService implements Serializable {
 
 	public void cadastrarColaborador(Colaborador colaborador) {
 		repository.save(colaborador);
+	}
+
+
+	public void atualizarColaborador(Colaborador colaborador) {
+		repository.update(colaborador);
 	}
 
 

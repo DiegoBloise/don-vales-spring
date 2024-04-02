@@ -36,9 +36,13 @@ public class ValeService implements Serializable {
 	}
 
 
-	public Vale salvar(Vale vale) {
+	public void cadastrarVale(Vale vale) {
 		repository.save(vale);
-		return vale;
+	}
+
+
+	public void atualizarVale(Vale vale) {
+		repository.update(vale);
 	}
 
 

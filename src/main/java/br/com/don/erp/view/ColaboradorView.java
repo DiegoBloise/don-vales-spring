@@ -102,8 +102,6 @@ public class ColaboradorView implements Serializable {
 			valeSelecionado.setColaborador(colaboradorSelecionado);
 	        valeSelecionado.setValor(new BigDecimal(valorVale));
 
-			valeService.salvar(valeSelecionado);
-
 			vales();
 
 	        StringBuilder conteudo = new StringBuilder()
@@ -123,11 +121,16 @@ public class ColaboradorView implements Serializable {
 
 		if (valeSelecionado.getId() == null) {
             vales.add(valeSelecionado);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Lançado", "Valor: R$ " + valorVale);
+
+			valeService.cadastrarVale(valeSelecionado);
+
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Lançado", "Valor: R$ " + valorVale.replace(".", ","));
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
         else {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Atualizado", "Valor: R$ " + valeSelecionado.getValor());
+			valeService.atualizarVale(valeSelecionado);
+
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Atualizado", "Valor: R$ " + valeSelecionado.getValor().toString().replace(".", ","));
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
@@ -143,12 +146,12 @@ public class ColaboradorView implements Serializable {
 	public void deletarValeSelecionado() {
         vales.remove(valeSelecionado);
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Removido", "");
+        valeService.deletarVale(valeSelecionado);
+
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Vale Removido", "");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
-
-        valeService.deletarVale(valeSelecionado);
 
         valeSelecionado = null;
     }
@@ -169,24 +172,22 @@ public class ColaboradorView implements Serializable {
     public void salvarColaborador() {
         if (colaboradorSelecionado.getId() == null) {
 
-			/* if (isChavePixTelefone) {
-				colaboradorSelecionado.setChavePix("+55" + colaboradorSelecionado.getChavePix());
-			} */
-
 			colaboradores.add(colaboradorSelecionado);
+
+			colaboradorService.cadastrarColaborador(colaboradorSelecionado);
 
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Cadastrado", "Colaborador: " + colaboradorSelecionado.getNome());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
         else {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Atualizado", "Colaborador: " + colaboradorSelecionado.getNome());
+			colaboradorService.atualizarColaborador(colaboradorSelecionado);
+
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Atualizado", "Colaborador: " + colaboradorSelecionado.getNome());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
         PrimeFaces.current().executeScript("PF('ColaboradorDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
-
-        colaboradorService.cadastrarColaborador(colaboradorSelecionado);
 
         init();
     }
@@ -197,12 +198,12 @@ public class ColaboradorView implements Serializable {
 
         colaboradoresSelecionados.remove(colaboradorSelecionado);
 
+		colaboradorService.removerColaborador(colaboradorSelecionado);
+
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaborador Removido", "Colaborador: " + colaboradorSelecionado.getNome());
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
-
-        colaboradorService.removerColaborador(colaboradorSelecionado);
 
         colaboradorSelecionado = null;
     }
@@ -211,13 +212,13 @@ public class ColaboradorView implements Serializable {
 	public void deletarColaboradoresSelecionados() {
         colaboradores.removeAll(colaboradoresSelecionados);
 
+		colaboradorService.removerColaboradores(colaboradoresSelecionados);
+
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Colaboradores Removidos", "Todas os colaboradores selecionados foram removidos.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
         PrimeFaces.current().executeScript("PF('dtColaboradores').clearFilters()");
-
-        colaboradorService.removerColaboradores(colaboradoresSelecionados);
 
         colaboradoresSelecionados.clear();
     }

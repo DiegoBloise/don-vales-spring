@@ -160,10 +160,14 @@ public class AcertoView implements Serializable {
 	public void salvarVale() {
 		vale.setData(Util.converteLocalDate(dataSelecionada));
 		vale.setValor(new BigDecimal(valorVale));
-		valeService.salvar(vale);
+
+		valeService.cadastrarVale(vale);
+
 		vale = new Vale();
 		valorVale = null;
+
 		vales = valeService.listarOrdenadoPorData();
+
 		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 	}
 

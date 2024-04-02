@@ -46,7 +46,7 @@ public class UserSession implements Serializable {
         Boolean usuarioOk = false;
         Boolean senhaOk = false;
 
-        this.usuario = repository.findAllByProperty("username", username).get(0);
+        this.usuario = repository.findByProperty("username", username);
 
         if (usuario != null) {
             usuarioOk = true;
