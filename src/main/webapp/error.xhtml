@@ -16,21 +16,23 @@
     </h:head>
 
     <h:body styleClass="exception-body access">
-        <div class="exception-wrapper">
-            <a href="#" class="logo-wrapper">
-                <p:graphicImage name="images/logo-siberia-white.png" styleClass="logo" library="siberia-layout"/>
-            </a>
+        <h:form>
             <div class="exception-wrapper">
-                <div class="exception-content">
-                    <div class="content-text">
-                        <h4>OCORREU UM ERRO</h4>
-                        <span>Oops! Algo de errado não está certo...</span>
-                        <p:commandButton type="button" value="Voltar a Home" action="kanban"/>
+                <a href="#" class="logo-wrapper">
+                    <p:graphicImage name="images/logo-siberia-white.png" styleClass="logo" library="siberia-layout"/>
+                </a>
+                <div class="exception-wrapper">
+                    <div class="exception-content">
+                        <div class="content-text">
+                            <h4>OCORREU UM ERRO</h4>
+                            <span>Oops! Algo de errado não está certo...</span>
+                            <p:commandButton action="/app/index.xhtml" value="Voltar a Home"/>
+                        </div>
+                        <p:graphicImage name="images/exceptions/asset-error.png" library="siberia-layout"/>
                     </div>
-                    <p:graphicImage name="images/exceptions/asset-error.png" library="siberia-layout"/>
                 </div>
             </div>
-        </div>
+        </h:form>
 
         <h:outputStylesheet name="css/layout-arctic.css" library="siberia-layout"/>
     </h:body>

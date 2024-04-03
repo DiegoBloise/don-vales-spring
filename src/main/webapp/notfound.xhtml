@@ -16,21 +16,23 @@
     </h:head>
 
     <h:body styleClass="exception-body access">
-        <div class="exception-wrapper">
-            <a href="#" class="logo-wrapper">
-                <p:graphicImage name="images/logo-siberia-white.png" styleClass="logo" library="siberia-layout"/>
-            </a>
+        <h:form>
             <div class="exception-wrapper">
-                <div class="exception-content">
-                    <div class="content-text">
-                        <h4>PÁGINA NÃO ENCONTRADA</h4>
-                        <span>Oops! A página está temporariamente indisponível.</span>
-                        <p:commandButton type="button" value="Voltar a Home" action="kanban"/>
+                <a href="#" class="logo-wrapper">
+                    <p:graphicImage name="images/logo-siberia-white.png" styleClass="logo" library="siberia-layout"/>
+                </a>
+                <div class="exception-wrapper">
+                    <div class="exception-content">
+                        <div class="content-text">
+                            <h4>PÁGINA NÃO ENCONTRADA</h4>
+                            <span>Oops! A página está temporariamente indisponível.</span>
+                            <p:commandButton action="/app/index.xhtml" value="Voltar a Home"/>
+                        </div>
+                        <p:graphicImage name="images/exceptions/asset-404.png" library="siberia-layout"/>
                     </div>
-                    <p:graphicImage name="images/exceptions/asset-404.png" library="siberia-layout"/>
                 </div>
             </div>
-        </div>
+        </h:form>
 
         <h:outputStylesheet name="css/layout-arctic.css" library="siberia-layout"/>
     </h:body>

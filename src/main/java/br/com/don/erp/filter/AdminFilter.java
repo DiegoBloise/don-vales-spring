@@ -42,7 +42,7 @@ public class AdminFilter implements Filter {
                 if (userSession.getUsuario().isAdmin()) {
                     chain.doFilter(request, response);
                 } else {
-                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/access.xhtml");
                 }
             } else {
                 chain.doFilter(request, response);
