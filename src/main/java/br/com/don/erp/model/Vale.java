@@ -40,7 +40,7 @@ public class Vale implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoVale tipo;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "colaborador_id")
     private Colaborador colaborador;
 
