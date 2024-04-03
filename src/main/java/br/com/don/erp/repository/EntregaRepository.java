@@ -56,7 +56,7 @@ public class EntregaRepository extends GenericRepository<Entrega, Long> {
 	}
 
 
-	public List<Entregador> buscarEntregadoresPorData(LocalDate data) {
+	public List<Entregador> listarEntregadoresPorData(LocalDate data) {
         String jpql = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data = :data";
         try {
 			return entityManager.createQuery(jpql, Entregador.class)
@@ -68,8 +68,8 @@ public class EntregaRepository extends GenericRepository<Entrega, Long> {
     }
 
 
-    public List<Entregador> buscarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim) {
-        String jpql = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data BETWEEN :dataInicio AND :dataFim";
+    public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim) {
+        String jpql = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data BETWEEN :dataInicio AND :dataFim ORDER BY e.entregador.nome";
         try {
 			return entityManager.createQuery(jpql, Entregador.class)
 				.setParameter("dataInicio", dataInicio)
