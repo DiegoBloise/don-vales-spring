@@ -16,11 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import br.com.don.erp.session.UserSession;
 
-@WebFilter(urlPatterns = {"/admin/*", "/app/*", "/auth/*"})
+@WebFilter(urlPatterns = {"/admin/*"})
 public class AdminFilter implements Filter {
-
-    /* @Inject
-    private AuthView auth; */
 
     @Inject
     private UserSession userSession;
@@ -34,17 +31,22 @@ public class AdminFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+            if (userSession.getUsuario() != null) {
 
-        HttpSession session = httpRequest.getSession();
-        session.setMaxInactiveInterval(30 * 60);
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (userSession.getUsuario().isAdmin()) {
-            chain.doFilter(request, response);
-        } else {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
-        }
+                HttpSession session = httpRequest.getSession();
+                session.setMaxInactiveInterval(30 * 60);
+
+                if (userSession.getUsuario().isAdmin()) {
+                    chain.doFilter(request, response);
+                } else {
+                    httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
+                }
+            } else {
+                chain.doFilter(request, response);
+            }
     }
 
 
