@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,8 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -34,38 +30,36 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "colaboradores")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_colaborador")
-@DiscriminatorValue("FIXO")
 public class Colaborador implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
 	protected String nome;
 
-	private String telefone;
+	protected String telefone;
 
 	@Column(name = "data_nascimento")
-	private LocalDate dataNascimento;
+	protected LocalDate dataNascimento;
 
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pix_id")
     protected Pix pix;
 
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Vale> vales = new ArrayList<>();
+    protected List<Vale> vales = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
-    @Column(name = "tipo_colaborador", insertable = false, updatable = false)
-    private TipoColaborador tipo;
+    @Column(name = "tipo_colaborador")
+    protected TipoColaborador tipo;
 
 
 	public Colaborador() {
 		this.pix = new Pix(this);
+		this.tipo = TipoColaborador.FIXO;
 	}
 
 
