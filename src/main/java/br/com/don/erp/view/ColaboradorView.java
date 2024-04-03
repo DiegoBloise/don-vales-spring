@@ -72,7 +72,7 @@ public class ColaboradorView implements Serializable {
 		tipoColaborador = Arrays.asList(TipoColaborador.values());
 		tipoChavePix = Arrays.asList(TipoChavePix.values());
 
-		colaboradores = colaboradorService.listar();
+		colaboradores = colaboradorService.listarPorNome();
         colaboradoresSelecionados = new ArrayList<>();
 
 		vales = valeService.listar();

@@ -23,8 +23,8 @@ public class EntregadorService implements Serializable {
 	}
 
 
-	public void salvar(Entregador entregador) {
-		repository.save(entregador);
+	public List<Entregador> listarPorNome() {
+		return repository.listarPorNome();
 	}
 
 
@@ -44,12 +44,7 @@ public class EntregadorService implements Serializable {
 
 
 	public Entregador buscarPorNome(String nome){
-		return repository.findByProperty("entregador.nome", nome);
-	}
-
-
-	public List<Entregador> getRepository() {
-		return repository.findAll();
+		return repository.findByProperty("nome", nome);
 	}
 
 

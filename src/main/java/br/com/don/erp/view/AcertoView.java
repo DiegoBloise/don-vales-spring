@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,7 +22,6 @@ import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.enums.TipoVale;
@@ -97,14 +95,10 @@ public class AcertoView implements Serializable {
 		tipoVale = Arrays.asList(TipoVale.values());
 
 		vales = valeService.listarOrdenadoPorData();
-
-		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 	}
 
 
 	public void novoAcerto() {
-		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
-
 		PrimeFaces.current().executeScript("PF('acertoDialog').show()");
 	}
 
@@ -138,9 +132,9 @@ public class AcertoView implements Serializable {
 	}
 
 
-	public void onDateSelect(SelectEvent<Date> event) {
-		dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
+	//public void onDateSelect(SelectEvent<Date> event) {
+	//	dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	//	entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 		/*
 		 * dataMovimento =
 		 * dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -154,10 +148,10 @@ public class AcertoView implements Serializable {
 		// entregas = entregaService.buscarPorEntregador(getEntregadorSelecionado());
 		// entregadores = entregaService.listarEntregadores();
 
-	}
+	//}
 
 
-	public void salvarVale() {
+	/* public void salvarVale() {
 		vale.setData(Util.converteLocalDate(dataSelecionada));
 		vale.setValor(new BigDecimal(valorVale));
 
@@ -169,7 +163,7 @@ public class AcertoView implements Serializable {
 		vales = valeService.listarOrdenadoPorData();
 
 		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
-	}
+	} */
 
 
 	public void realizarAcerto() {

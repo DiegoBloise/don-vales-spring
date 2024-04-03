@@ -42,6 +42,46 @@ public class EntregaService implements Serializable {
 	}
 
 
+	public List<Entrega> buscarPorEntregador(Entregador entregador){
+		return repository.findAllByProperty("entregador", entregador);
+	}
+
+
+	public List<Entregador> listarEntregadoresPorData(LocalDate data){
+		return repository.listarEntregadoresPorData(data);
+	}
+
+
+	public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
+		return repository.listarEntregadoresPorDataInicioFim(dataInicio,dataFim);
+	}
+
+
+	public List<Entrega> buscarPorEntregadorData(Entregador entregador, LocalDate data){
+		return repository.buscarPorEntregadorData(entregador, data);
+	}
+
+
+	public List<Entrega> buscarPorEntregadorDataInicioDataFim(Entregador entregador, LocalDate dataInicio, LocalDate datafim){
+		return repository.buscarPorEntregadorDataInicioDataFim(entregador, dataInicio, datafim);
+	}
+
+
+	public List<Entrega> buscarPorData(LocalDate data){
+		return repository.buscarPorData(data);
+	}
+
+
+	public Long buscarMovimento(LocalDate data) {
+		return repository.buscarMovimento(data);
+	}
+
+
+	public Integer deleterMovimento(LocalDate data) {
+		return repository.deletarMovimento(data);
+	}
+
+
 	public List<Entrega> salvarLote(List<Entrega> lista) {
 
 		for (Entrega entrega : lista) {
@@ -70,17 +110,13 @@ public class EntregaService implements Serializable {
 						Double numPedido = row.getCell(0).getNumericCellValue();
 						entrega.setPedido(numPedido.intValue());
 
+
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
+						pogEntregador(nomeDoEntregador, entrega);
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-						if (entregador != null) {
-							entrega.setEntregador(entregador);
-						} else {
-							entregador = new Entregador();
-							entregador.setNome(nomeDoEntregador);
-							entrega.setEntregador(entregador);
-						}
 
 						entrega.setData(dataMovimento);
 						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
@@ -123,20 +159,15 @@ public class EntregaService implements Serializable {
 						Double numPedido = row.getCell(0).getNumericCellValue();
 						entrega.setPedido(numPedido.intValue());
 
+
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
+						pogEntregador(nomeDoEntregador, entrega);
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-						if (entregador != null) {
-							entrega.setEntregador(entregador);
-						} else {
-							entregador = new Entregador();
-							entregador.setNome(nomeDoEntregador);
-							entrega.setEntregador(entregador);
-						}
 
 						LocalDate dataComparacao = Util.converteDataHoraLocalDate(row.getCell(7).getStringCellValue());
-
 
 						if(numPedido < 10 && !dataComparacao.equals(dataMovimento)){
 							dataMovimento = dataComparacao;
@@ -160,42 +191,20 @@ public class EntregaService implements Serializable {
 	}
 
 
-	public List<Entrega> buscarPorEntregador(Entregador entregador){
-		return repository.findAllByProperty("entregador", entregador);
-	}
+	public void pogEntregador(String nomeDoEntregador, Entrega entrega) {
+		Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
 
+		String out = entregador == null ? "null" : entregador.toString();
 
-	public List<Entregador> listarEntregadoresPorData(LocalDate data){
-		return repository.buscarEntregadoresPorData(data);
-	}
+		System.out.println("DEBUG.....:" + out);
 
-
-	public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
-		return repository.buscarEntregadoresPorDataInicioFim(dataInicio,dataFim);
-	}
-
-
-	public List<Entrega> buscarPorEntregadorData(Entregador entregador, LocalDate data){
-		return repository.buscarPorEntregadorData(entregador, data);
-	}
-
-
-	public List<Entrega> buscarPorEntregadorDataInicioDataFim(Entregador entregador, LocalDate dataInicio, LocalDate datafim){
-		return repository.buscarPorEntregadorDataInicioDataFim(entregador, dataInicio, datafim);
-	}
-
-
-	public List<Entrega> buscarPorData(LocalDate data){
-		return repository.buscarPorData(data);
-	}
-
-
-	public Long buscarMovimento(LocalDate data) {
-		return repository.buscarMovimento(data);
-	}
-
-
-	public Integer deleterMovimento(LocalDate data) {
-		return repository.deletarMovimento(data);
+		if (entregador != null) {
+			entrega.setEntregador(entregador);
+		} else {
+			entregador = new Entregador();
+			entregador.setNome(nomeDoEntregador);
+			entrega.setEntregador(entregador);
+			entregadorService.cadastrarEntregador(entregador);
+		}
 	}
 }

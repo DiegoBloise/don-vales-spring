@@ -23,13 +23,18 @@ public class ColaboradorService implements Serializable {
 	}
 
 
+	public List<Colaborador> listarPorNome(){
+		return repository.listarPorNome();
+	}
+
+
 	public Colaborador buscar(Colaborador colaborador){
 		return repository.find(colaborador);
 	}
 
 
 	public List<Colaborador> buscarPorNome(String nome){
-		return repository.findAllByProperty("colaborador.nome", nome);
+		return repository.findAllByProperty("nome", nome);
 	}
 
 
