@@ -82,6 +82,9 @@ public class AcertoView implements Serializable {
 	public void init() {
 		entregas = new ArrayList<>();
 		acertos = new ArrayList<>();
+		entregadores = new ArrayList<>();
+
+		entregadorSelecionado = null;
 
 		dataSelecionada = new Date();
 		dataInicio = new Date();
@@ -166,42 +169,44 @@ public class AcertoView implements Serializable {
 
 	public void realizarAcerto() {
 
-		try {
-			acertos = new ArrayList<>();
-			entregas = new ArrayList<>();
+		if(entregadorSelecionado.getPix().getChave() != null ) {
 
-			entregas = entregaService.buscarPorEntregadorDataInicioDataFim((Entregador) entregadorSelecionado,
-				Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
+			try {
+				acertos = new ArrayList<>();
+				entregas = new ArrayList<>();
 
-			LocalDate dataComparacao = null;
+				entregas = entregaService.buscarPorEntregadorDataInicioDataFim((Entregador) entregadorSelecionado,
+					Util.converteLocalDate(dataInicio), Util.converteLocalDate(dataFim));
 
-			int i = 0;
-			int qtdeIfoodDia = 0;
-			int qtdeEntregaDia = 0;
-			int qtdeTotalDias = 0;
-			int qtdeTotalIFood = 0;
+				LocalDate dataComparacao = null;
 
-			BigDecimal valorTotalEntregas = new BigDecimal(0.0);
-			BigDecimal totalVale = new BigDecimal(0);
-			BigDecimal valorTotalDiarias = new BigDecimal(0);
-			BigDecimal valorTotalVales = new BigDecimal(0);
-			BigDecimal valorSaldo = new BigDecimal(0);
+				int i = 0;
+				int qtdeIfoodDia = 0;
+				int qtdeEntregaDia = 0;
+				int qtdeTotalDias = 0;
+				int qtdeTotalIFood = 0;
 
-			StringBuffer texto = new StringBuffer();
-			texto.append("*")
-				.append(entregadorSelecionado.getNome())
-				.append("*")
-				.append(QUEBRALINHA);
+				BigDecimal valorTotalEntregas = new BigDecimal(0.0);
+				BigDecimal totalVale = new BigDecimal(0);
+				BigDecimal valorTotalDiarias = new BigDecimal(0);
+				BigDecimal valorTotalVales = new BigDecimal(0);
+				BigDecimal valorSaldo = new BigDecimal(0);
 
-			for (Entrega ent : entregas) {
-				i++;
+				StringBuffer texto = new StringBuffer();
+				texto.append("*")
+					.append(entregadorSelecionado.getNome())
+					.append("*")
+					.append(QUEBRALINHA);
 
-				if (null == dataComparacao) {
-					dataComparacao = ent.getData();
-					++qtdeTotalDias;
-				}
+				for (Entrega ent : entregas) {
+					i++;
 
-				if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
+					if (null == dataComparacao) {
+						dataComparacao = ent.getData();
+						++qtdeTotalDias;
+					}
+
+					if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
 						++qtdeIfoodDia;
 						qtdeTotalIFood++;
 					}
@@ -290,6 +295,9 @@ public class AcertoView implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro", e.getMessage()));
 			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenção", "Necessário cadastrar uma chave pix para continuar"));
+		}
 	}
 
 

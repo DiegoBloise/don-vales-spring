@@ -59,8 +59,8 @@
 						<h:panelGroup styleClass="flex flex-row gap-2 justify-content-center align-items-end ui-fluid" id="pngAcerto2">
 
 							<div class="flex flex-column flex-grow-1">
-								<p:outputLabel for="@next" value="Entregador" />
 
+								<p:outputLabel for="@next" value="Entregador" />
 								<p:selectOneMenu disabled="#{empty acertoView.entregadores}" autoWidth="true" id="acertoSomEntregadores" required="true"
 									value="#{acertoView.entregadorSelecionado}" converter="#{entregadorConverter}">
 									<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/>
@@ -237,7 +237,7 @@
 				</h:panelGroup>
 
 				<f:facet name="footer">
-                    <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(manage-acerto-content)" partialSubmit="true"/>
+                    <!-- <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(manage-acerto-content)" partialSubmit="true"/> -->
 
                     <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{acertoView.cancelar}"
                                     icon="pi pi-times" styleClass="ui-button-secondary" oncomplete="PF('acertoDialog').hide()"/>
