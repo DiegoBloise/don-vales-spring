@@ -14,13 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import br.com.don.erp.view.AuthView;
+import br.com.don.erp.session.UserSession;
 
-@WebFilter(urlPatterns = {"/admin/*"})
+@WebFilter(urlPatterns = {"/admin/*", "/app/*", "/auth/*"})
 public class AdminFilter implements Filter {
 
+    /* @Inject
+    private AuthView auth; */
+
     @Inject
-    private AuthView auth;
+    private UserSession userSession;
 
 
     public void init(FilterConfig fConfig) throws ServletException {
@@ -37,7 +40,7 @@ public class AdminFilter implements Filter {
         HttpSession session = httpRequest.getSession();
         session.setMaxInactiveInterval(30 * 60);
 
-        if (auth.getIsAdmin()) {
+        if (userSession.getUsuario().isAdmin()) {
             chain.doFilter(request, response);
         } else {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/app/index.xhtml");
