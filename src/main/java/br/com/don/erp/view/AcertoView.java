@@ -58,8 +58,6 @@ public class AcertoView implements Serializable {
 
 	private final String QUEBRALINHA = System.lineSeparator();
 
-	private Double valorVale;
-
 	private Date dataSelecionada;
 
 	private Date dataInicio;
