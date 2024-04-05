@@ -4,7 +4,7 @@ public enum TipoChavePix {
 	CELULAR("Celular"),
     CPF("CPF"),
     CNPJ("CNPJ"),
-    EMAIL("E-mail"),
+    EMAIL("Email"),
 	ALEATORIA("Aleatória");
 
 	private String descricao;
