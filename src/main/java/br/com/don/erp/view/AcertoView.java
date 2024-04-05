@@ -133,40 +133,6 @@ public class AcertoView implements Serializable {
 	}
 
 
-	//public void onDateSelect(SelectEvent<Date> event) {
-	//	dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	//	entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
-		/*
-		 * dataMovimento =
-		 * dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		 * System.out.println("Local date " + dataMovimento);
-		 * System.out.println(getDataMovimentoFormatado()); FacesContext facesContext =
-		 * FacesContext.getCurrentInstance(); SimpleDateFormat format = new
-		 * SimpleDateFormat("dd/MM/yyyy"); facesContext.addMessage(null, new
-		 * FacesMessage(FacesMessage.SEVERITY_INFO, "Data Selecioanda ",
-		 * format.format(event.getObject())));
-		 */
-		// entregas = entregaService.buscarPorEntregador(getEntregadorSelecionado());
-		// entregadores = entregaService.listarEntregadores();
-
-	//}
-
-
-	/* public void salvarVale() {
-		vale.setData(Util.converteLocalDate(dataSelecionada));
-		vale.setValor(new BigDecimal(valorVale));
-
-		valeService.cadastrarVale(vale);
-
-		vale = new Vale();
-		valorVale = null;
-
-		vales = valeService.listarOrdenadoPorData();
-
-		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
-	} */
-
-
 	public void realizarAcerto() {
 
 		if(entregadorSelecionado.getPix().getChave() != null ) {
@@ -352,41 +318,4 @@ public class AcertoView implements Serializable {
 	public void cancelar() {
 		init();
 	}
-
-
-	/* public void exemplos() {
-
-		System.out.println("Aqui");
-		// formatar data
-		// DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		// LocalDate localDate = LocalDate.parse(data,formato);
-		// formato.format(localDate);
-
-		// Messages
-		// FacesContext facesContext = FacesContext.getCurrentInstance();
-		// facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-		// "Campos Obrigatórios", "Valor, Tipo e Entregador" ));
-	} */
-
-
-	/* public void exibirEntregadorSelecionado() {
-		if (!colaboradorSelecionado.getNome().equals("")) {
-			entregas = entregaService.buscarPorEntregadorData(colaboradorSelecionado.getNome(), dataMovimento);
-			qtdeEntregas = entregas.size();
-			qtdeTotalDias = 0;
-			// qtdeIFood = 0;
-			valorTotalEntregas = new BigDecimal(0.0);
-			for (Entrega entrega : entregas) {
-				if (entrega.getValor().compareTo(new BigDecimal("0")) == 0) {
-					// qtdeIFood++;
-				}
-				valorTotalEntregas = valorTotalEntregas.add(entrega.getValor());
-				entrega.setQtde(++qtdeTotalDias);
-			}
-
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Selecione Entregador", "Entregador deve ser selecionado"));
-		}
-	} */
 }

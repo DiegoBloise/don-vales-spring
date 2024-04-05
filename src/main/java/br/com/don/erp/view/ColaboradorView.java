@@ -17,8 +17,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.MatchMode;
 
 import br.com.don.erp.enums.TipoChavePix;
 import br.com.don.erp.enums.TipoColaborador;
@@ -61,10 +59,6 @@ public class ColaboradorView implements Serializable {
 	@Inject
 	private UserFiles userFiles;
 
-	private List<Vale> filteredVales;
-
-	private List<FilterMeta> filterBy;
-
 
 	@PostConstruct
 	public void init() {
@@ -76,15 +70,6 @@ public class ColaboradorView implements Serializable {
         colaboradoresSelecionados = new ArrayList<>();
 
 		vales = valeService.listar();
-
-		filterBy = new ArrayList<>();
-
-		//.filterValue(new ArrayList<>(Arrays.asList(LocalDate.now().minusDays(7), LocalDate.now().plusDays(7))))
-        filterBy.add(FilterMeta.builder()
-                .field("data")
-                .filterValue(new ArrayList<>(Arrays.asList(LocalDate.now(), LocalDate.now())))
-                .matchMode(MatchMode.BETWEEN)
-                .build());
 	}
 
 
@@ -230,11 +215,6 @@ public class ColaboradorView implements Serializable {
 	}
 
 
-	public List<Vale> getValesDoDia() {
-		return valeService.listar();
-	}
-
-
 	public void calcularTotalVale(List<Vale> vales) {
 		this.totalVales = new BigDecimal(0);
 
@@ -259,6 +239,17 @@ public class ColaboradorView implements Serializable {
 		}
 
 		return total;
+	}
+
+
+	public void cancelarVale() {
+		valeSelecionado = null;
+	}
+
+
+	public void cancelarColaborador() {
+		colaboradorSelecionado.getPix().setTipo(null);
+		colaboradorSelecionado = null;
 	}
 
 

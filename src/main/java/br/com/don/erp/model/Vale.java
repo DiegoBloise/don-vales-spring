@@ -14,10 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import br.com.don.erp.enums.TipoVale;
-import br.com.don.erp.util.Util;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,12 +45,6 @@ public class Vale implements Serializable {
 
 	public Vale() {
 		this.valor = new BigDecimal(0);
-	}
-
-
-	@Transient
-	public String getDataFormatada() {
-		return Util.localDateFormatado(data);
 	}
 
 

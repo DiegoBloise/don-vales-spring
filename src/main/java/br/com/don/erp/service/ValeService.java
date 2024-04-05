@@ -21,6 +21,12 @@ public class ValeService implements Serializable {
 	private ValeRepository repository;
 
 
+	/* public List<Vale> findVales() {
+        String jpql = "SELECT NEW br.com.don.erp.model.Vale(v.id, v.nome) FROM Vale v";
+        return findDTOs(jpql, Cliente.class);
+    } */
+
+
 	public List<Vale> listar() {
 		return repository.findAll();
 	}
