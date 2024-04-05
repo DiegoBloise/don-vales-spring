@@ -1,4 +1,4 @@
-package br.com.don.erp.view;
+package br.com.don.erp.view.auth;
 
 import java.io.IOException;
 import java.io.Serializable;

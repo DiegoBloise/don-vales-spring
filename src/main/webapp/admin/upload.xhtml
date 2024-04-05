@@ -20,12 +20,12 @@
 						<div class="flex flex-row justify-content-center align-content-center">
 							<div class="mr-5">
 								<p:outputLabel for="@next" value="Data do Movimento"/>
-								<p:datePicker id="dataMovimento" value="#{acertoView.dataSelecionada}" required="true" locale="pt">
-									<p:ajax event="dateSelect" listener="#{acertoView.onDateSelect}"/>
+								<p:datePicker id="dataMovimento" value="#{uploadView.dataSelecionada}" required="true" locale="pt">
+									<p:ajax event="dateSelect" listener="#{uploadView.onDateSelect}"/>
 								</p:datePicker>
 							</div>
 
-							<p:commandButton value="Apagar" action="#{acertoView.apagarMovimento}" update="@root:@id(messages)">
+							<p:commandButton value="Apagar" action="#{uploadView.apagarMovimento}" update="@root:@id(messages)">
 								<p:confirm header="Confirmação"
 								message="Certeza que deseja prosseguir?"
 								icon="pi pi-exclamation-triangle" />
@@ -36,11 +36,11 @@
 
 				<p:fileUpload mode="advanced" multiple="false"
 						allowTypes="/(\.|\/)(xlsx)$/" auto="true" label="Selecionar Arquivo"
-						listener="#{acertoView.fileUpload}" update="entregasList @root:@id(messages)" styleClass="mt-3"/>
+						listener="#{uploadView.fileUpload}" update="entregasList @root:@id(messages)" styleClass="mt-3"/>
 			</div>
 
-			<p:dataTable id="entregasList" var="entrega" rendered="#{not empty acertoView.entregas}"
-						value="#{acertoView.entregas}" styleClass="mt-3">
+			<p:dataTable id="entregasList" var="entrega" rendered="#{not empty uploadView.entregas}"
+						value="#{uploadView.entregas}" styleClass="mt-3">
 
 				<p:column>
 					<h:outputLabel value="#{entrega.qtde}" />

@@ -29,10 +29,10 @@
                     <p:menuitem value="Colaboradores" outcome="/app/colaboradores" icon="pi pi-fw pi-users">
                         <f:param name="i" value="1"/>
                     </p:menuitem>
-                    <p:menuitem value="Upload de Arquivo" outcome="/admin/entrega" icon="pi pi-fw pi-upload" rendered="#{userSession.usuario.isAdmin()}">
+                    <p:menuitem value="Upload de Arquivo" outcome="/admin/upload" icon="pi pi-fw pi-upload" rendered="#{userSession.usuario.isAdmin()}">
                         <f:param name="i" value="2"/>
                     </p:menuitem>
-                    <p:menuitem value="Vales" outcome="/admin/acerto" icon="pi pi-fw pi-calendar" rendered="#{userSession.usuario.isAdmin()}">
+                    <p:menuitem value="Acerto" outcome="/admin/acerto" icon="pi pi-fw pi-calendar" rendered="#{userSession.usuario.isAdmin()}">
                         <f:param name="i" value="3"/>
                     </p:menuitem>
                     <!-- <p:menuitem value="Colaboradores Admin" outcome="/admin/colaboradores-admin" icon="pi pi-fw pi-user-edit" rendered="#{userSession.usuario.isAdmin()}" disabled="#{not userSession.usuario.isAdmin()}">

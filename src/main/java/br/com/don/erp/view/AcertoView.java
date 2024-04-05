@@ -3,7 +3,6 @@ package br.com.don.erp.view;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -21,8 +20,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Acerto;
@@ -101,35 +98,6 @@ public class AcertoView implements Serializable {
 
 	public void novoAcerto() {
 		PrimeFaces.current().executeScript("PF('acertoDialog').show()");
-	}
-
-
-	public void fileUpload(FileUploadEvent event) {
-
-		System.out.println("Called: fileUpload method");
-
-		try {
-
-			Long verificaData = entregaService.buscarMovimento(dataMovimento);
-
-			if (verificaData != null && verificaData > 0) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Já existe um movimento com a data selecionada!", Util.localDateFormatado(dataMovimento)));
-
-			} else {
-				UploadedFile file = event.getFile();
-				List<Entrega> salvar = entregaService.trataXML2(file.getInputStream());
-
-				entregaService.salvarLote(salvar);
-				entregas = entregaService.buscarPorData(dataMovimento);
-				entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Foram salvos "+ (salvar.size() + " registros"), Util.localDateFormatado(dataMovimento)));
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 
@@ -302,16 +270,6 @@ public class AcertoView implements Serializable {
 	public String getDataMovimentoFormatado() {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		return format.format(this.dataSelecionada);
-	}
-
-
-	public void apagarMovimento() {
-		Integer retorno = 0;
-		retorno = entregaService.deleterMovimento(dataMovimento);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Data do movimento apagada!",
-						Util.localDateFormatado(dataMovimento) + System.lineSeparator() + retorno
-								+ " registros foram apagados!"));
 	}
 
 
