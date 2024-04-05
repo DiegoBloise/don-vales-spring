@@ -1,4 +1,4 @@
-package br.com.don.erp.view;
+package br.com.don.erp.view.admin;
 
 import java.io.Serializable;
 
@@ -40,7 +40,6 @@ public class FileDownloadView implements Serializable {
 
 
     public StreamedContent getFile() {
-        System.out.println("Imprimindo...");
         return this.file;
     }
 }

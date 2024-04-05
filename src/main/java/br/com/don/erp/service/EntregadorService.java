@@ -1,6 +1,7 @@
 package br.com.don.erp.service;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,11 +26,6 @@ public class EntregadorService implements Serializable {
 
 	public List<Entregador> listarPorNome() {
 		return repository.listarPorNome();
-	}
-
-
-	public void deletar(Entregador entregador) {
-		repository.delete(entregador);
 	}
 
 
@@ -62,5 +58,15 @@ public class EntregadorService implements Serializable {
 		for (Entregador entregador : entregadores) {
 			this.removerEntregador(entregador);
 		}
+	}
+
+
+	public List<Entregador> listarEntregadoresPorData(LocalDate data){
+		return repository.listarEntregadoresPorData(data);
+	}
+
+
+	public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
+		return repository.listarEntregadoresPorDataInicioFim(dataInicio,dataFim);
 	}
 }

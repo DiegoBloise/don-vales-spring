@@ -56,31 +56,6 @@ public class EntregaRepository extends GenericRepository<Entrega, Long> {
 	}
 
 
-	public List<Entregador> listarEntregadoresPorData(LocalDate data) {
-        String jpql = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data = :data";
-        try {
-			return entityManager.createQuery(jpql, Entregador.class)
-				.setParameter("data", data)
-				.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}
-    }
-
-
-    public List<Entregador> listarEntregadoresPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim) {
-        String jpql = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data BETWEEN :dataInicio AND :dataFim ORDER BY e.entregador.nome";
-        try {
-			return entityManager.createQuery(jpql, Entregador.class)
-				.setParameter("dataInicio", dataInicio)
-				.setParameter("dataFim", dataFim)
-				.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}
-    }
-
-
 	public Long buscarMovimento(LocalDate data) {
 		String jpql = "select count(e) from Entrega e where e.data = :data";
 		try {

@@ -1,4 +1,4 @@
-package br.com.don.erp.view;
+package br.com.don.erp.view.admin;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,7 +19,7 @@ import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.model.Entrega;
 import br.com.don.erp.model.Entregador;
-import br.com.don.erp.service.EntregaService;
+import br.com.don.erp.service.UploadService;
 import br.com.don.erp.util.Util;
 import lombok.Data;
 
@@ -39,8 +39,8 @@ public class UploadView implements Serializable {
 
     private List<Entregador> entregadores;
 
-    @Inject
-    private EntregaService entregaService;
+	@Inject
+	private UploadService uploadService;
 
 
     @PostConstruct
@@ -56,7 +56,7 @@ public class UploadView implements Serializable {
 
     public void apagarMovimento() {
 		Integer retorno = 0;
-		retorno = entregaService.deleterMovimento(dataMovimento);
+		retorno = uploadService.deleterMovimento(dataMovimento);
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Data do movimento apagada!",
 						Util.localDateFormatado(dataMovimento) + System.lineSeparator() + retorno
@@ -66,23 +66,20 @@ public class UploadView implements Serializable {
 
     public void fileUpload(FileUploadEvent event) {
 
-		System.out.println("Called: fileUpload method");
-
 		try {
 
-			Long verificaData = entregaService.buscarMovimento(dataMovimento);
+			Long verificaData = uploadService.buscarMovimento(dataMovimento);
 
 			if (verificaData != null && verificaData > 0) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Já existe um movimento com a data selecionada!", Util.localDateFormatado(dataMovimento)));
-
 			} else {
 				UploadedFile file = event.getFile();
-				List<Entrega> salvar = entregaService.trataXML2(file.getInputStream());
+				List<Entrega> salvar = uploadService.trataXML2(file.getInputStream());
 
-				entregaService.salvarLote(salvar);
-				entregas = entregaService.buscarPorData(dataMovimento);
-				entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
+				uploadService.salvarLote(salvar);
+				entregas = uploadService.buscarPorData(dataMovimento);
+				entregadores = uploadService.listarEntregadoresPorData(dataMovimento);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Foram salvos "+ (salvar.size() + " registros"), Util.localDateFormatado(dataMovimento)));
 			}

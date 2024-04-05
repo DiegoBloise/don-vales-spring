@@ -1,4 +1,4 @@
-package br.com.don.erp.view;
+package br.com.don.erp.view.admin;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -249,7 +249,7 @@ public class AcertoView implements Serializable {
 	public void buscarEntregadoresAcerto() {
 		FacesMessage msg;
 
-		entregadores = entregaService.listarEntregadoresPorDataInicioFim(Util.converteLocalDate(dataInicio),
+		entregadores = entregadorService.listarEntregadoresPorDataInicioFim(Util.converteLocalDate(dataInicio),
 			Util.converteLocalDate(dataFim));
 
 		if (entregadores.isEmpty()) {
