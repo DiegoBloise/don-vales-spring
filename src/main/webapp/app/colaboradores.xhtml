@@ -129,7 +129,7 @@
 					</p:column> -->
 
 					<p:column headerText="Tipo" sortBy="#{colaborador.tipo}" filterBy="#{colaborador.tipo}">
-						<h:outputText value="#{colaborador.tipo}" />
+						<h:outputText value="#{colaborador.tipo.descricao}" />
 					</p:column>
 
 					<p:column exportable="false">

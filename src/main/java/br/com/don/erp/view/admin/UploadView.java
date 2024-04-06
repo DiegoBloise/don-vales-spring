@@ -19,6 +19,7 @@ import org.primefaces.model.file.UploadedFile;
 
 import br.com.don.erp.model.Entrega;
 import br.com.don.erp.model.Entregador;
+import br.com.don.erp.service.EntregaService;
 import br.com.don.erp.service.UploadService;
 import br.com.don.erp.util.Util;
 import lombok.Data;
@@ -42,15 +43,17 @@ public class UploadView implements Serializable {
 	@Inject
 	private UploadService uploadService;
 
+	@Inject
+	private EntregaService entregaService;
+
 
     @PostConstruct
 	public void init() {
-        entregas = new ArrayList<>();
+        entregas = entregaService.listar();
         entregadores = new ArrayList<>();
 
 		dataSelecionada = new Date();
         dataMovimento = Util.converteLocalDate(dataSelecionada);
-
 	}
 
 
@@ -80,6 +83,7 @@ public class UploadView implements Serializable {
 				uploadService.salvarLote(salvar);
 				entregas = uploadService.buscarPorData(dataMovimento);
 				entregadores = uploadService.listarEntregadoresPorData(dataMovimento);
+
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 						"Foram salvos "+ (salvar.size() + " registros"), Util.localDateFormatado(dataMovimento)));
 			}
@@ -90,9 +94,9 @@ public class UploadView implements Serializable {
 	}
 
 
-    //public void onDateSelect(SelectEvent<Date> event) {
-	//	dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	//	entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
+   /*  public void onDateSelect(SelectEvent<Date> event) {
+		dataMovimento = dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		entregadores = entregaService.listarEntregadoresPorData(dataMovimento);
 		/*
 		 * dataMovimento =
 		 * dataSelecionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -103,8 +107,8 @@ public class UploadView implements Serializable {
 		 * FacesMessage(FacesMessage.SEVERITY_INFO, "Data Selecioanda ",
 		 * format.format(event.getObject())));
 		 */
-		// entregas = entregaService.buscarPorEntregador(getEntregadorSelecionado());
-		// entregadores = entregaService.listarEntregadores();
+		//entregas = entregaService.buscarPorEntregador(getEntregadorSelecionado());
+		//entregadores = entregaService.listarEntregadores();
 
-	//}
+	//} */
 }

@@ -6,8 +6,6 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +35,6 @@ public class Vale implements Serializable {
 
 	private LocalDate data;
 
-	@Enumerated(EnumType.STRING)
 	private TipoVale tipo;
 
 	@ManyToOne(cascade = CascadeType.MERGE)

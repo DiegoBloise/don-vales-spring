@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import br.com.don.erp.enums.TipoColaborador;
@@ -20,7 +19,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "entregadores")
 public class Entregador extends Colaborador {
 
     @OneToMany(mappedBy = "entregador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
