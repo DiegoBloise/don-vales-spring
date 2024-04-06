@@ -84,7 +84,7 @@ public class UploadService implements Serializable {
 						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						pogEntregador(nomeDoEntregador, entrega);
+						checkEntregador(nomeDoEntregador, entrega);
 						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -103,9 +103,10 @@ public class UploadService implements Serializable {
 	}
 
 
-	public List<Entrega> trataXML2(InputStream inputStream) {
+	public Integer trataXML2(InputStream inputStream) {
 
 		List<Entrega> listaEntregas = new ArrayList<Entrega>();
+
 		try {
 			Workbook workbook = WorkbookFactory.create(inputStream);
 
@@ -118,13 +119,14 @@ public class UploadService implements Serializable {
 				row = iterator.next();
 
 				if(dataMovimento == null) {
-					dataMovimento = Util.converteDataHoraLocalDate(row.getCell(7).getStringCellValue());	
+					dataMovimento = Util.converteDataHoraLocalDate(row.getCell(7).getStringCellValue());
 				}
 
 				try {
 
-					if (row.getCell(3).getStringCellValue().equals(DELIVERY)
-							&& row.getCell(11).getStringCellValue().equals(NAO)) {
+					if (row.getCell(3).getStringCellValue().equals(DELIVERY) &&
+						row.getCell(11).getStringCellValue().equals(NAO)) {
+
 						Entrega entrega = new Entrega();
 						Double numPedido = row.getCell(0).getNumericCellValue();
 						entrega.setPedido(numPedido.intValue());
@@ -133,7 +135,7 @@ public class UploadService implements Serializable {
 						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
 						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						pogEntregador(nomeDoEntregador, entrega);
+						checkEntregador(nomeDoEntregador, entrega);
 						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -145,7 +147,8 @@ public class UploadService implements Serializable {
 
 						entrega.setData(dataMovimento);
 						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
-						listaEntregas.add(entrega);
+
+						checkEntrega(entrega, listaEntregas);
 					}
 
 				} catch (Exception e) {
@@ -156,12 +159,14 @@ public class UploadService implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return listaEntregas;
 
+		entregaService.salvarLote(listaEntregas);
+
+		return listaEntregas.size();
 	}
 
 
-	public void pogEntregador(String nomeDoEntregador, Entrega entrega) {
+	public void checkEntregador(String nomeDoEntregador, Entrega entrega) {
 		Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
 
 		if (entregador != null) {
@@ -171,6 +176,16 @@ public class UploadService implements Serializable {
 			entregador.setNome(nomeDoEntregador);
 			entrega.setEntregador(entregador);
 			entregadorService.cadastrarEntregador(entregador);
+		}
+	}
+
+
+	public void checkEntrega(Entrega entrega, List<Entrega> entregas) {
+		Entrega entregaExistente = entregaService.buscarPorPedidoDataEntregador(entrega.getPedido(), entrega.getData(), entrega.getEntregador());
+
+		if (entregaExistente != null) {
+		} else {
+			entregas.add(entrega);
 		}
 	}
 }

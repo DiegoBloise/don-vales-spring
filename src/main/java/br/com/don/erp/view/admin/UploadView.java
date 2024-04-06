@@ -78,14 +78,14 @@ public class UploadView implements Serializable {
 						"Já existe um movimento com a data selecionada!", Util.localDateFormatado(dataMovimento)));
 			} else {
 				UploadedFile file = event.getFile();
-				List<Entrega> salvar = uploadService.trataXML2(file.getInputStream());
 
-				uploadService.salvarLote(salvar);
+				Integer entregasSalvas = uploadService.trataXML2(file.getInputStream());
+
 				entregas = uploadService.buscarPorData(dataMovimento);
 				entregadores = uploadService.listarEntregadoresPorData(dataMovimento);
 
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"Foram salvos "+ (salvar.size() + " registros"), Util.localDateFormatado(dataMovimento)));
+						"Foram salvos "+ (entregasSalvas + " registros"), Util.localDateFormatado(dataMovimento)));
 			}
 
 		} catch (IOException e) {

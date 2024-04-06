@@ -18,6 +18,20 @@ public class EntregaRepository extends GenericRepository<Entrega, Long> {
     private EntityManager entityManager;
 
 
+	public Entrega buscarPorPedidoDataEntregador(Integer pedido, LocalDate data, Entregador entregador) {
+		String jpql = "SELECT e from Entrega e where e.pedido = :pedido AND e.data = :data AND e.entregador = :entregador";
+		try {
+			return (Entrega) entityManager.createQuery(jpql)
+				.setParameter("pedido", pedido)
+				.setParameter("data", data)
+				.setParameter("entregador", entregador)
+				.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+
 	public List<Entrega> buscarPorEntregadorData(Entregador entregador, LocalDate data){
 		String jpql = "select e from Entrega e where e.entregador = :entregador AND e.data = :data";
 		try {
