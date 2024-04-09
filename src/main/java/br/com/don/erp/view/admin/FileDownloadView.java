@@ -1,6 +1,8 @@
 package br.com.don.erp.view.admin;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,7 +34,7 @@ public class FileDownloadView implements Serializable {
 
     public void createFile() {
         this.file = DefaultStreamedContent.builder()
-            .name("vale.djprt")
+            .name("vale-" + getDateTime() + ".djprt")
             .contentType("text/plain")
             .stream(() -> userFiles.getInputStream())
             .build();
@@ -41,5 +43,12 @@ public class FileDownloadView implements Serializable {
 
     public StreamedContent getFile() {
         return this.file;
+    }
+
+
+    private static String getDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss"));
+        return formattedDateTime;
     }
 }

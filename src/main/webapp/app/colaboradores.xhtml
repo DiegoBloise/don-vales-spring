@@ -179,6 +179,9 @@
 
 								<p:column exportable="false" rendered="#{userSession.usuario.isAdmin()}">
 
+									<p:commandButton icon="pi pi-print" oncomplete="PF('imprimeValeDialog').show()"
+														styleClass="edit-button rounded-button ui-button-help" process="@this"/>
+
 									<p:commandButton icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
 														oncomplete="PF('valeDialog').show()"
 														styleClass="edit-button rounded-button ui-button-warning" process="@this">
@@ -243,7 +246,7 @@
 							<p:outputLabel for="@next" value="Valor:"/>
 							<p:inputText required="true" class="moneyInput"
 								value="#{colaboradorView.valeSelecionado.valor}"
-								styleClass="mt-1" size="12"
+								styleClass="mt-1 w-full" size="12"
 								oninput="formatMoneyInput(this)" converter="dinheiroConverter">
 								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" pattern="¤ ###,###,##0.00; ¤ -###,###,##0.00"/>
 							</p:inputText>
@@ -254,6 +257,9 @@
 								<f:selectItems value="#{acertoView.tipoVale}" />
 							</p:selectOneMenu>
 
+							<!-- <p:outputLabel for="@next" value="Imprimir Vale:" />
+							<p:toggleSwitch value="#{userFiles.autoPrintVale}"/> -->
+
 						</h:panelGrid>
 
 					</p:outputPanel>
@@ -261,8 +267,14 @@
 				</p:outputPanel>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
+					<p:commandButton rendered="#{userFiles.autoPrintVale eq false}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
 									update="manage-vale-content" process="manage-vale-content @this"/>
+
+					<p:commandButton rendered="#{userFiles.autoPrintVale eq true}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
+									update="manage-vale-content" process="manage-vale-content @this">
+						<p:fileDownload value="#{fileDownloadView.file}"/>
+					</p:commandButton>
+
 					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('valeDialog').hide()"
 						class="ui-button-secondary" actionListener="#{colaboradorView.cancelarVale}" process="@this"/>
 				</f:facet>
@@ -389,8 +401,7 @@
 
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
 				message="Imprimir Vale?" header="Confirmação" severity="warn" closable="false" closeOnEscape="false">
-				<p:commandButton value="Sim" icon="pi pi-check"
-								process="@this"
+				<p:commandButton value="Sim" icon="pi pi-check"	process="@this"
 								update="@root:@id(dt-colaboradores)"
 								oncomplete="PF('imprimeValeDialog').hide()">
 					<p:fileDownload value="#{fileDownloadView.file}"/>

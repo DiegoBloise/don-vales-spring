@@ -15,6 +15,8 @@ public class UserFiles implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Boolean autoPrintVale = false;
+
     InputStream inputStream;
 
     public UserFiles() {

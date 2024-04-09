@@ -22,11 +22,11 @@
                     </f:facet>
                 </p:column>
 
-                <p:column headerText="Colaborador" sortBy="#{vale.colaborador.nome}" filterBy="#{vale.colaborador.nome}">
+                <p:column headerText="Colaborador" sortBy="#{vale.colaborador.nome}" filterBy="#{vale.colaborador.nome}" filterMatchMode="exact">
                     <p:outputLabel value="#{vale.colaborador.nome}" />
                 </p:column>
 
-                <p:column headerText="Tipo" sortBy="#{vale.tipo}" filterBy="#{vale.tipo}">
+                <p:column headerText="Tipo" sortBy="#{vale.tipo}" filterBy="#{vale.tipo}" filterMatchMode="exact">
                     <p:outputLabel value="#{vale.tipo}" />
                 </p:column>
 

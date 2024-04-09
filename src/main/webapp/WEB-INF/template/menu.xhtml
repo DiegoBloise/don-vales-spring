@@ -52,12 +52,49 @@
                 </h:panelGroup>
 
                 <div class="field">
+                    <p:commandButton value="Configurações" icon="pi pi-cog" oncomplete="PF('configuracaoDialog').show()"/>
+                </div>
+
+                <div class="field">
                     <p:commandButton value="Sair" icon="pi pi-sign-out" iconPos="right" oncomplete="PF('logoutDialog').show()"/>
                 </div>
 
             </div>
 
         </p:fragment>
+
+    </h:form>
+
+    <h:form>
+
+        <p:dialog header="Configurações" widgetVar="configuracaoDialog" showEffect="fade" modal="true" blockScroll="false" id="configuracaoDialog"
+            closable="false" closeOnEscape="false" fitViewport="true" resizable="false" responsive="true">
+
+            <h:panelGroup id="manage-configuracao-content" class="ui-fluid mt-3 max-w-min">
+
+                <h:panelGroup rendered="true">
+
+                    <div class="flex flex-column p-3 border-300 border-1 border-round">
+
+                        <div class="field">
+                            <p:outputLabel for="@next" value="Imprimir vale automaticamente" styleClass="block" />
+                            <p:toggleSwitch value="#{userFiles.autoPrintVale}" />
+                        </div>
+
+                    </div>
+
+                </h:panelGroup>
+
+            </h:panelGroup>
+
+            <f:facet name="footer">
+                <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(valeDialog)" process="manage-configuracao-content @this" oncomplete="PF('configuracaoDialog').hide()"/>
+
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('configuracaoDialog').hide()"
+                    class="ui-button-secondary" />
+            </f:facet>
+
+        </p:dialog>
 
     </h:form>
 

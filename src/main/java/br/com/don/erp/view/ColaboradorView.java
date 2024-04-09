@@ -118,7 +118,10 @@ public class ColaboradorView implements Serializable {
 
 		PrimeFaces.current().executeScript("PF('valeDialog').hide();");
 
-		PrimeFaces.current().executeScript("PF('imprimeValeDialog').show();");
+		/* if (!userFiles.getAutoPrintVale()) {
+			PrimeFaces.current().executeScript("PF('imprimeValeDialog').show();");
+		} */
+
         PrimeFaces.current().ajax().update("form:dt-colaboradores");
 
         init();
