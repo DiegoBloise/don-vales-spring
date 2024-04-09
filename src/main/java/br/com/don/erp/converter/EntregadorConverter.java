@@ -10,6 +10,7 @@ import javax.faces.convert.FacesConverter;
 
 import br.com.don.erp.model.Entregador;
 
+@SuppressWarnings("rawtypes")
 @FacesConverter("entregadorConverter")
 public class EntregadorConverter implements Converter {
 
