@@ -31,7 +31,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession();
-        session.setMaxInactiveInterval(30 * 60);
+        session.setMaxInactiveInterval(6 * 60 * 60);
 
         String username = (String) session.getAttribute("username");
         boolean isLoggedIn = username != null;
