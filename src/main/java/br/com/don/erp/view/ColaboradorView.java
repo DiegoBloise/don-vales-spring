@@ -86,16 +86,7 @@ public class ColaboradorView implements Serializable {
 
 			vales();
 
-	        StringBuilder conteudo = new StringBuilder()
-					.append(valeSelecionado.getColaborador().getNome())
-					.append(System.lineSeparator())
-					.append(valeSelecionado.getValor())
-					.append(System.lineSeparator())
-					.append(valeSelecionado.getDataFormatada());
-
-			InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
-
-			userFiles.setInputStream(inputStream);
+	        prepararValeImpressao();
 
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -146,6 +137,20 @@ public class ColaboradorView implements Serializable {
 		valeService.deletarVale(valeSelecionado);
 
 		vales();
+	}
+
+
+	public void prepararValeImpressao() {
+		StringBuilder conteudo = new StringBuilder()
+		.append(valeSelecionado.getColaborador().getNome())
+		.append(System.lineSeparator())
+		.append(valeSelecionado.getValor())
+		.append(System.lineSeparator())
+		.append(valeSelecionado.getDataFormatada());
+
+		InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
+
+		userFiles.setInputStream(inputStream);
 	}
 
 

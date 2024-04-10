@@ -180,7 +180,9 @@
 								<p:column exportable="false" rendered="#{userSession.usuario.isAdmin()}">
 
 									<p:commandButton icon="pi pi-print" oncomplete="PF('imprimeValeDialog').show()"
-														styleClass="edit-button rounded-button ui-button-help" process="@this"/>
+														styleClass="edit-button rounded-button ui-button-help" process="@this">
+										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}"/>
+									</p:commandButton>
 
 									<p:commandButton icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
 														oncomplete="PF('valeDialog').show()"
@@ -401,7 +403,7 @@
 
 			<p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
 				message="Imprimir Vale?" header="Confirmação" severity="warn" closable="false" closeOnEscape="false">
-				<p:commandButton value="Sim" icon="pi pi-check"	process="@this"
+				<p:commandButton value="Sim" icon="pi pi-check"	process="@this" actionListener="#{colaboradorView.prepararValeImpressao}"
 								update="@root:@id(dt-colaboradores)"
 								oncomplete="PF('imprimeValeDialog').hide()">
 					<p:fileDownload value="#{fileDownloadView.file}"/>
