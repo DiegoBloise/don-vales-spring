@@ -1,8 +1,5 @@
 package br.com.don.erp.view.admin;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -38,6 +35,8 @@ import lombok.Data;
 public class AcertoView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private StringBuffer textoVale;
 
 	private Vale vale;
 
@@ -126,8 +125,8 @@ public class AcertoView implements Serializable {
 				BigDecimal valorTotalVales = new BigDecimal(0);
 				BigDecimal valorSaldo = new BigDecimal(0);
 
-				StringBuffer texto = new StringBuffer();
-				texto.append("*")
+				textoVale = new StringBuffer();
+				textoVale.append("*")
 					.append(entregadorSelecionado.getNome())
 					.append("*")
 					.append(QUEBRALINHA);
@@ -169,7 +168,7 @@ public class AcertoView implements Serializable {
 
 						acerto.setValorValeDia(totalVale);
 						acertos.add(acerto);
-						texto.append(acerto.toString());
+						textoVale.append(acerto.toString());
 
 						// busca valor do saldo
 						vales = valeService.buscarPorColaboradorDataTipo(
@@ -205,7 +204,7 @@ public class AcertoView implements Serializable {
 				entregadorSelecionado.setValorTotalVales(valorTotalVales);
 				entregadorSelecionado.setValorSaldo(valorSaldo);
 
-				texto.append("Total de Entregas: R$ ").append(entregadorSelecionado.getValorTotalEntregas())
+				textoVale.append("Total de Entregas: R$ ").append(entregadorSelecionado.getValorTotalEntregas())
 					.append(QUEBRALINHA)
 					.append("Total de Diárias: R$ ").append(entregadorSelecionado.getValorTotalDiarias())
 					.append(QUEBRALINHA)
@@ -221,9 +220,11 @@ public class AcertoView implements Serializable {
 					.append(entregadorSelecionado.getValorTotalComDesconto())
 					.append(QUEBRALINHA).append("*OBRIGADO E DEUS ABENÇÕE*");
 
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				/* Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(texto.toString());
-				clipboard.setContents(selection, null);
+				clipboard.setContents(selection, null); */
+
+				copyValeToClipboard();
 
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -275,5 +276,19 @@ public class AcertoView implements Serializable {
 
 	public void cancelar() {
 		init();
+	}
+
+
+	public void copyValeToClipboard() {
+		String texto = textoVale.toString();
+
+		texto = texto.replace("\n", "\\n").replace("\r", "\\r").replace("'", "\\'");
+
+		String script = "navigator.clipboard.writeText('" + texto + "');";
+
+		PrimeFaces.current().executeScript(script);
+
+		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recibo copiado", "Recibo copiado para a área de transferência.");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 }

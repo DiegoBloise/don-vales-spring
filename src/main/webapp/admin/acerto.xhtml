@@ -237,7 +237,7 @@
 				</h:panelGroup>
 
 				<f:facet name="footer">
-                    <!-- <p:commandButton value="Salvar" icon="pi pi-check" update="@root:@id(manage-acerto-content)" partialSubmit="true"/> -->
+                    <p:commandButton value="Copiar Recibo" icon="pi pi-copy" process="@this" actionListener="#{acertoView.copyValeToClipboard}"/>
 
                     <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{acertoView.cancelar}"
                                     icon="pi pi-times" styleClass="ui-button-secondary" oncomplete="PF('acertoDialog').hide()"/>
