@@ -43,17 +43,17 @@
 
 			<div class="crud-demo">
 
-				<p:toolbar rendered="#{userSession.usuario.isAdmin()}" styleClass="mt-3">
+				<p:toolbar styleClass="mt-3">
 
 					<p:toolbarGroup>
 
-						<p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{colaboradorView.adicionarColaborador}"
+						<p:commandButton value="Novo Colaborador" icon="pi pi-plus" actionListener="#{colaboradorView.adicionarColaborador}"
 											update="@root:@id(manage-colaborador-content)" oncomplete="PF('ColaboradorDialog').show()"
 											styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target="@root:@id(manage-colaborador-content)" />
 						</p:commandButton>
 
-						<p:commandButton id="delete-colaboradores-button" value="#{colaboradorView.deleteButtonMessage}"
+						<p:commandButton rendered="#{userSession.usuario.isAdmin()}" id="delete-colaboradores-button" value="#{colaboradorView.deleteButtonMessage}"
 											icon="pi pi-trash" actionListener="#{colaboradorView.deletarColaboradoresSelecionados}"
 											styleClass="ui-button-danger" disabled="#{!colaboradorView.hasColaboradoresSelecionados()}" update="@this">
 							<p:confirm header="Confirmação" message="Remover os colaboradores selecionados?"
@@ -64,7 +64,7 @@
 
 					<p:toolbarGroup align="right">
 
-						<p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
+						<p:fileUpload mode="simple" skinSimple="true" label="Importar" chooseIcon="pi pi-download" />
 
 						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-colaboradores" fileName="colaboradores" />
@@ -76,7 +76,8 @@
 
 				<p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{colaboradorView.colaboradores}"
 								reflow="true" styleClass="products-table mt-3" selection="#{colaboradorView.colaboradoresSelecionados}"
-								rowKey="#{colaborador.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+								rowKey="#{colaborador.id}" rows="10" rowSelectMode="add"
+								scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="500" stripedRows="true">
 
 					<f:facet name="header">
 						<div class="products-table-header">
@@ -93,7 +94,7 @@
 					<p:ajax disabled="#{not userSession.usuario.isAdmin()}" event="rowUnselectCheckbox" update="@root:@id(delete-colaboradores-button)" />
 					<p:ajax disabled="#{not userSession.usuario.isAdmin()}" event="toggleSelect" update="@root:@id(delete-colaboradores-button)" />
 
-					<p:column selectionMode="multiple" exportable="false"></p:column>
+					<p:column rendered="#{userSession.usuario.isAdmin()}" selectionMode="multiple" exportable="false"></p:column>
 
 					<p:column exportable="false">
 						<p:rowToggler />
@@ -134,7 +135,8 @@
 
 					<p:column exportable="false">
 
-						<p:commandButton icon="pi pi-plus" oncomplete="PF('valeDialog').show()" update="@root:@id(manage-vale-content)"
+						<p:tooltip for="lancar-vale" value="Lançar Vale" position="top"/>
+						<p:commandButton id="lancar-vale" icon="pi pi-ticket" oncomplete="PF('valeDialog').show()" update="@root:@id(manage-vale-content)"
 											styleClass="edit-button rounded-button ui-button-success" process="@this"
 											actionListener="#{colaboradorView.adicionarVale(colaborador)}">
 							<p:resetInput target="@root:@id(manage-vale-content)" />
@@ -231,57 +233,57 @@
 		<h:form id="dialogs">
 
 			<p:dialog header="Lançamento de Vale" widgetVar="valeDialog" showEffect="fade" modal="true" blockScroll="false" id="valeDialog"
-				closable="false" closeOnEscape="false" fitViewport="true" resizable="false" responsive="true">
+                closable="false" closeOnEscape="false" fitViewport="true" resizable="false" responsive="true">
 
-				<p:outputPanel id="manage-vale-content" styleClass="ui-fluid">
+                <p:outputPanel id="manage-vale-content" styleClass="ui-fluid">
 
-					<p:outputPanel rendered="#{not empty colaboradorView.valeSelecionado}">
+                    <p:outputPanel rendered="#{not empty colaboradorView.valeSelecionado}">
 
-						<h:panelGrid columns="2">
-							<p:outputLabel for="@next" value="Nome: "/>
-							<h:outputText styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="@next" value="Colaborador: "/>
+                            <h:outputText styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
-							<p:outputLabel for="@next" value="Data do Vale:"/>
-							<p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
-								pattern="dd/MM/yyyy" mask="true" required="true"/>
+                            <p:outputLabel for="@next" value="Data do Vale:"/>
+                            <p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
+                                pattern="dd/MM/yyyy" mask="true" required="true"/>
 
-							<p:outputLabel for="@next" value="Valor:"/>
-							<p:inputText required="true" class="moneyInput"
-								value="#{colaboradorView.valeSelecionado.valor}"
-								styleClass="mt-1 w-full" size="12"
-								oninput="formatMoneyInput(this)" converter="dinheiroConverter">
-								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" pattern="¤ ###,###,##0.00; ¤ -###,###,##0.00"/>
-							</p:inputText>
+                            <p:outputLabel for="@next" value="Valor:"/>
+                            <p:inputText required="true" class="moneyInput"
+                                value="#{colaboradorView.valeSelecionado.valor}"
+                                styleClass="mt-1 w-full" size="12"
+                                oninput="formatMoneyInput(this)" converter="dinheiroConverter">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" pattern="¤ ###,###,##0.00; ¤ -###,###,##0.00"/>
+                            </p:inputText>
 
-							<p:outputLabel for="@next" value="Tipo de Vale:" />
-							<p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
-								<f:selectItem itemLabel="Selecione:" itemValue="" />
-								<f:selectItems value="#{acertoView.tipoVale}" />
-							</p:selectOneMenu>
+                            <p:outputLabel for="@next" value="Tipo de Vale:" />
+                            <p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
+                                <f:selectItem itemLabel="Selecione:" itemValue="" />
+                                <f:selectItems value="#{acertoView.tipoVale}" />
+                            </p:selectOneMenu>
 
-							<!-- <p:outputLabel for="@next" value="Imprimir Vale:" />
-							<p:toggleSwitch value="#{userFiles.autoPrintVale}"/> -->
+                            <!-- <p:outputLabel for="@next" value="Imprimir Vale:" />
+                            <p:toggleSwitch value="#{userFiles.autoPrintVale}"/> -->
 
-						</h:panelGrid>
+                        </h:panelGrid>
 
-					</p:outputPanel>
+                    </p:outputPanel>
 
-				</p:outputPanel>
+                </p:outputPanel>
 
-				<f:facet name="footer">
-					<p:commandButton rendered="#{userFiles.autoPrintVale eq false}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
-									update="manage-vale-content" process="manage-vale-content @this"/>
+                <f:facet name="footer">
+                    <p:commandButton rendered="#{userFiles.autoPrintVale eq false}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
+                                    update="manage-vale-content" process="manage-vale-content @this"/>
 
-					<p:commandButton rendered="#{userFiles.autoPrintVale eq true}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
-									update="manage-vale-content" process="manage-vale-content @this">
-						<p:fileDownload value="#{fileDownloadView.file}"/>
-					</p:commandButton>
+                    <p:commandButton rendered="#{userFiles.autoPrintVale eq true}" value="Salvar" icon="pi pi-check" actionListener="#{colaboradorView.salvarVale}"
+                                    update="manage-vale-content" process="manage-vale-content @this">
+                        <p:fileDownload value="#{fileDownloadView.file}"/>
+                    </p:commandButton>
 
-					<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('valeDialog').hide()"
-						class="ui-button-secondary" actionListener="#{colaboradorView.cancelarVale}" process="@this"/>
-				</f:facet>
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('valeDialog').hide()"
+                        class="ui-button-secondary" actionListener="#{colaboradorView.cancelarVale}" process="@this"/>
+                </f:facet>
 
-			</p:dialog>
+            </p:dialog>
 
 
 			<p:dialog header="Detalhes do Colaborador" showEffect="fade" modal="true" widgetVar="ColaboradorDialog" responsive="true"
