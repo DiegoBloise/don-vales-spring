@@ -92,6 +92,8 @@ public class AcertoView implements Serializable {
 		tipoVale = Arrays.asList(TipoVale.values());
 
 		vales = valeService.listarOrdenadoPorData();
+
+		textoVale = null;
 	}
 
 
