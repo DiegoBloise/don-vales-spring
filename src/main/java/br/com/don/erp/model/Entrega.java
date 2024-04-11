@@ -37,7 +37,7 @@ public class Entrega implements Serializable {
 
 	private LocalDate data;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "entregador_id")
     private Entregador entregador;
 
