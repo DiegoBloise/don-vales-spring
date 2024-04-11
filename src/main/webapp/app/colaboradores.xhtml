@@ -177,14 +177,14 @@
 									</h:outputText>
 								</p:column>
 
-								<p:column exportable="false" rendered="#{userSession.usuario.isAdmin()}">
+								<p:column exportable="false">
 
 									<p:commandButton icon="pi pi-print" oncomplete="PF('imprimeValeDialog').show()"
 														styleClass="edit-button rounded-button ui-button-help" process="@this">
 										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}"/>
 									</p:commandButton>
 
-									<p:commandButton icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
+									<p:commandButton rendered="#{userSession.usuario.isAdmin()}" icon="pi pi-pencil" update="@root:@id(manage-vale-content)"
 														oncomplete="PF('valeDialog').show()"
 														styleClass="edit-button rounded-button ui-button-warning" process="@this">
 										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}" />
@@ -192,7 +192,7 @@
 										<p:resetInput target="@root:@id(manage-vale-content)" />
 									</p:commandButton>
 
-									<p:commandButton class="ui-button-danger rounded-button" icon="pi pi-trash"
+									<p:commandButton rendered="#{userSession.usuario.isAdmin()}" class="ui-button-danger rounded-button" icon="pi pi-trash"
 														process="@this"
 														oncomplete="PF('deletarValeDialog').show()">
 										<f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}" />

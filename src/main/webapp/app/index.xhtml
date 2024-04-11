@@ -36,8 +36,31 @@
                     </h:outputText>
                 </p:column>
 
+                <p:column exportable="false">
+
+                    <p:commandButton icon="pi pi-print" oncomplete="PF('imprimeValeDialog').show()"
+                                styleClass="edit-button rounded-button ui-button-help" process="@this">
+                        <f:setPropertyActionListener value="#{vale}" target="#{colaboradorView.valeSelecionado}"/>
+                    </p:commandButton>
+
+                </p:column>
+
             </p:dataTable>
 
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog widgetVar="imprimeValeDialog" showEffect="fade" width="300"
+				message="Imprimir Vale?" header="Confirmação" severity="warn" closable="false" closeOnEscape="false">
+				<p:commandButton value="Sim" icon="pi pi-check"	process="@this" actionListener="#{colaboradorView.prepararValeImpressao}"
+								update="@root:@id(dt-colaboradores)"
+								oncomplete="PF('imprimeValeDialog').hide()">
+					<p:fileDownload value="#{fileDownloadView.file}"/>
+				</p:commandButton>
+
+				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+								onclick="PF('imprimeValeDialog').hide()" />
+			</p:confirmDialog>
         </h:form>
 
 	</ui:define>
