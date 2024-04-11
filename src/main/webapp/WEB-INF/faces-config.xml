@@ -18,6 +18,11 @@
     </converter>
 
 	<converter>
+        <converter-for-class>br.com.don.erp.model.Colaborador</converter-for-class>
+        <converter-class>br.com.don.erp.converter.ColaboradorConverter</converter-class>
+    </converter>
+
+	<converter>
 		<converter-for-class>java.math.BigDecimal</converter-for-class>
 		<converter-class>br.com.don.erp.converter.DinheiroConverter</converter-class>
 	</converter>
