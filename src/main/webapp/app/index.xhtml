@@ -55,6 +55,8 @@
                         <f:facet name="filter">
                             <p:datePicker selectionMode="range" onchange="PF('valesDoDia').filter()" styleClass="custom-filter"/>
                         </f:facet>
+
+                        <h:outputText value="#{vale.dataFormatada}" />
                     </p:column>
 
                     <p:column field="colaborador" headerText="Colaborador" filterMatchMode="exact"
