@@ -49,7 +49,13 @@ public class Vale implements Serializable {
 
 	@Transient
 	public String getDataFormatada() {
-		return Util.localDateFormatado(data);
+		return Util.localDateFormatado(this.data);
+	}
+
+
+	@Transient
+	public String getDataSemanaFormatada() {
+		return Util.dataSemanaFormatada(this.data);
 	}
 
 

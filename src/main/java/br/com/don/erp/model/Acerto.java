@@ -61,7 +61,7 @@ public class Acerto implements Serializable {
 
 
 	public String getDataFormatada() {
-		return Util.localDateFormatado(this.data).concat(System.lineSeparator()).concat(Util.diaDaSemana(data.getDayOfWeek()));
+		return Util.dataSemanaFormatada(data);
 	}
 
 

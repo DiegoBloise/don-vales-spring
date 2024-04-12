@@ -32,29 +32,34 @@ public class Util {
 	}
 
 
+	public static String dataSemanaFormatada(LocalDate data) {
+		return localDateFormatado(data).concat(System.lineSeparator()).concat(diaDaSemana(data.getDayOfWeek()));
+	}
+
+
 	public static String diaDaSemana(DayOfWeek dia) {
 		String retorno = dia.toString();
 		switch (dia) {
-		case SATURDAY :
-			retorno = "SÁBADO";
-			break;
 		case SUNDAY:
-			retorno = "DOMINGO";
-			break;
-		case FRIDAY:
-			retorno = "SEXTA-FEIRA";
+			retorno = "Domingo";
 			break;
 		case MONDAY:
-			retorno = "SEGUNDA-FEIRA";
-			break;
-		case THURSDAY:
-			retorno = "QUINTA-FEIRA";
+			retorno = "Segunda-Feira";
 			break;
 		case TUESDAY:
-			retorno = "TERÇA-FEIRA";
+			retorno = "Terça-Feira";
 			break;
 		case WEDNESDAY:
-			retorno = "QUARTA-FEIRA";
+			retorno = "Quarta-Feira";
+			break;
+		case THURSDAY:
+			retorno = "Quinta-Feira";
+			break;
+		case FRIDAY:
+			retorno = "Sexta-Feira";
+			break;
+		case SATURDAY :
+			retorno = "Sábado";
 			break;
 		}
 		return retorno;

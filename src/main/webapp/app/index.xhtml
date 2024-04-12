@@ -56,7 +56,8 @@
                             <p:datePicker selectionMode="range" onchange="PF('valesDoDia').filter()" styleClass="custom-filter"/>
                         </f:facet>
 
-                        <h:outputText value="#{vale.dataFormatada}" />
+                        <h:outputText styleClass="data-format block" value="#{vale.dataSemanaFormatada.substring(0, 10)}"/>
+                        <h:outputText styleClass="data-format block" value="#{vale.dataSemanaFormatada.substring(10)}"/>
                     </p:column>
 
                     <p:column field="colaborador" headerText="Colaborador" filterMatchMode="exact"
