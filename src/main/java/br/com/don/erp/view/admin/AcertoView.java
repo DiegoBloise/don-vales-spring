@@ -50,6 +50,8 @@ public class AcertoView implements Serializable {
 
 	private List<Entregador> entregadores;
 
+	private List<Entregador> entregadoresDt;
+
 	private List<Acerto> acertos;
 
 	private final String QUEBRALINHA = System.lineSeparator();
@@ -79,6 +81,8 @@ public class AcertoView implements Serializable {
 		entregas = new ArrayList<>();
 		acertos = new ArrayList<>();
 		entregadores = new ArrayList<>();
+
+		entregadoresDt = entregadorService.listarPorNome();
 
 		entregadorSelecionado = null;
 
