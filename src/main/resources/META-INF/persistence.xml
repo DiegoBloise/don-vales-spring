@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+                          https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+
 	<persistence-unit name="don">
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+		<!-- Classes mapeadas -->
+		<class>br.com.don.model.Colaborador</class>
+		<class>br.com.don.model.Entrega</class>
+		<class>br.com.don.model.Entregador</class>
+		<class>br.com.don.model.Pix</class>
+		<class>br.com.don.model.Usuario</class>
+		<class>br.com.don.model.Vale</class>
+
 		<properties>
 
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/don?createDatabaseIfNotExist=true&amp;useTimezone=true&amp;serverTimezone=UTC" />
-            <property name="javax.persistence.jdbc.user" value="user" />
-            <property name="javax.persistence.jdbc.password" value="Gust@vo2020" />
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			<!-- Configurações de conexão com o banco de dados -->
+			<property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost/don"/>
+			<property name="jakarta.persistence.jdbc.user" value="user"/>
+			<property name="jakarta.persistence.jdbc.password" value="Gust@vo2020"/>
 
-			<property name="javax.persistence.schema-generation.create-source" value="metadata" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<!-- Configurações específicas do Hibernate para execução de scripts -->
+			<!-- <property name="hibernate.hbm2ddl.auto" value="create-drop"/> -->
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+
+			<!-- <property name="jakarta.persistence.schema-generation.create-source" value="metadata" /> -->
 
 		</properties>
 
 	</persistence-unit>
+
 </persistence>

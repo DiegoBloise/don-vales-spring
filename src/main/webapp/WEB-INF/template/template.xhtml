@@ -36,7 +36,7 @@
             </h:form>
 
             <!-- <div class="layout-main p-0" style="background-image: linear-gradient(#579dff, white);"> -->
-            <div class="layout-main p-0" style="background-image: linear-gradient(#ff6e6c, white);">
+            <div class="layout-main p-0" style="background-image: linear-gradient(#3da9fc, white);">
 
                 <div class="layout-content p-5">
                     <p:card id="app" style="height: calc(100vh - 4rem);">
@@ -45,6 +45,14 @@
                         <div class="fadein animation-duration-200">
                             <ui:insert name="content"/>
                         </div>
+
+
+                        <f:facet name="footer">
+                            <div class="flex flex-row-reverse mt-7">
+                                <h:outputText value="Versão: "/>
+                                <h:outputText value="1.5.0"/>
+                            </div>
+                        </f:facet>
                     </p:card>
                 </div>
 

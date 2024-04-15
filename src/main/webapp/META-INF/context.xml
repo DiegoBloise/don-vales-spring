@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/don">
-  <Manager pathname=""/>
-  <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="javax.enterprise.inject.spi.BeanManager"/>
+<Context path="/don/index.xhtml">
+  <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="jakarta.enterprise.inject.spi.BeanManager"/>
 </Context>

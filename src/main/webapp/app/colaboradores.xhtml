@@ -19,12 +19,12 @@
 			}
 
 			.tipo-chave-button:hover {
-				border-color: #ff6e6c !important;
+				border-color: #3ba8fc !important;
 			}
 
 			.tipo-chave-button-selecionada {
-				border-color: #ff6e6c !important;
-				background-color: #ff6f6c2a !important;
+				border-color: #3da9fc !important;
+				background-color: #6bbfff2a !important;
 				box-shadow: none !important;
 			}
 
@@ -33,8 +33,8 @@
 			}
 
 			.pix-icon {
-				border-color: #ff6e6c !important;
-				background-color: #ff6f6c2a !important;
+				border-color: #3da9fc !important;
+				background-color: #6bbfff2a !important;
 			}
 		</style>
 
@@ -76,8 +76,8 @@
 
 				<p:dataTable id="dt-colaboradores" widgetVar="dtColaboradores" var="colaborador" value="#{colaboradorView.colaboradores}"
 								reflow="true" styleClass="products-table mt-3" selection="#{colaboradorView.colaboradoresSelecionados}"
-								rowKey="#{colaborador.id}" rows="10" rowSelectMode="add"
-								scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="500" stripedRows="true">
+								rowKey="#{colaborador.id}" rows="15" rowSelectMode="add"
+								scrollRows="20" scrollable="true" scrollHeight="500" stripedRows="true">
 
 					<f:facet name="header">
 						<div class="products-table-header">
@@ -341,7 +341,7 @@
 												<div class="#{colaboradorView.colaboradorSelecionado.pix.tipo eq tipoChavePix ? 'tipo-chave-button-selecionada' : ''} 
 													tipo-chave-button flex flex-column justify-content-center align-content-center align-items-center border-1 border-round border-300 shadow-1 hover:shadow-3">
 
-													<span style="color: #ff6e6c;">
+													<span style="color: #3da9fc;">
 														<p:fragment rendered="#{tipoChavePix eq 'CELULAR'}">  <i class="pix-icon pi pi-mobile                 text-3xl font-light border-circle p-3"></i></p:fragment>
 														<p:fragment rendered="#{tipoChavePix eq 'CPF'}">      <i class="pix-icon pi pi-id-card                text-3xl font-light border-circle p-3"></i></p:fragment>
 														<p:fragment rendered="#{tipoChavePix eq 'CNPJ'}">     <i class="pix-icon pi pi-building               text-3xl font-light border-circle p-3"></i></p:fragment>
