@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Colaborador;
+import br.com.don.erp.model.Entregador;
 import br.com.don.erp.model.Vale;
 
 
@@ -79,5 +80,15 @@ public class ValeRepository extends GenericRepository<Vale, Long> {
 		} catch (NoResultException e) {
             return null;
         }
+	}
+
+
+	public List<Vale> buscarSaldo(Entregador colaborador, LocalDate data){
+		String jpql = "SELECT v FROM Vale v WHERE v.colaborador = :colaborador AND v.data > :data AND v.tipo = :tipo";
+		return entityManager.createQuery(jpql, Vale.class)
+				.setParameter("colaborador", colaborador)
+				.setParameter("data", data)
+				.setParameter("tipo", TipoVale.SALDO)
+				.getResultList();
 	}
 }

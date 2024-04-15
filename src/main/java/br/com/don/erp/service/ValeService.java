@@ -9,6 +9,7 @@ import javax.inject.Named;
 
 import br.com.don.erp.enums.TipoVale;
 import br.com.don.erp.model.Colaborador;
+import br.com.don.erp.model.Entregador;
 import br.com.don.erp.model.Vale;
 import br.com.don.erp.repository.ValeRepository;
 
@@ -62,6 +63,11 @@ public class ValeService implements Serializable {
 	}
 
 
+	public List<Vale> buscarSaldo(Entregador entregador, LocalDate data){
+		return repository.buscarSaldo(entregador, data );
+	}
+
+
 	public List<Vale> buscarPorData(LocalDate data){
 		return repository.buscarPorData(data);
 	}
@@ -75,5 +81,4 @@ public class ValeService implements Serializable {
 	public void deletarVale(Vale vale) {
 		repository.delete(vale);
 	}
-
 }

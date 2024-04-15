@@ -176,23 +176,20 @@ public class AcertoView implements Serializable {
 						acertos.add(acerto);
 						textoVale.append(acerto.toString());
 
-						// busca valor do saldo
-						vales = valeService.buscarPorColaboradorDataTipo(
-							entregadorSelecionado,
-							ent.getData(),
-							TipoVale.SALDO);
-
-						if (null != vales) {
-							for (Vale vale : vales) {
-								valorSaldo = vale.getValor().add(valorSaldo);
-							}
-						}
-
 						valorTotalDiarias = acerto.getValorDiaria().add(valorTotalDiarias);
 						dataComparacao = null;
 						qtdeIfoodDia = 0;
 						qtdeEntregaDia = 0;
 						totalVale = new BigDecimal(0);
+					}
+				}
+
+				// busca valor do saldo
+				vales = valeService.buscarSaldo(entregadorSelecionado, Util.converteLocalDate(dataInicio));
+
+				if (null != vales) {
+					for (Vale vale : vales) {
+						valorSaldo = vale.getValor().add(valorSaldo);
 					}
 				}
 
