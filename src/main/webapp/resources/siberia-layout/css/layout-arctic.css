@@ -3321,11 +3321,11 @@ a {
   width: 118px;
   height: 32px;
   border-radius: 2px;
-  background-color: #21b5ad;
+  background-color: hsl(206, 69%, 42%);
   border: none;
 }
 .login-body .login-wrapper .login-wrapper .login-content .content-text > button:hover {
-  background-color: #27d2c9;
+  background-color: hsl(206, 69%, 49%);
   -moz-transition: background-color 0.2s;
   -o-transition: background-color 0.2s;
   -webkit-transition: background-color 0.2s;
@@ -3348,12 +3348,12 @@ a {
 }
 .login-body .login-wrapper .login-wrapper .login-content .content-text a {
   font-size: 13px;
-  color: #21b5ad;
+  color: hsl(206, 69%, 42%);
   margin-top: 16px;
   display: block;
 }
 .login-body .login-wrapper .login-wrapper .login-content .content-text a:hover {
-  color: #27d2c9;
+  color: hsl(206, 69%, 49%);
   -moz-transition: color 0.2s;
   -o-transition: color 0.2s;
   -webkit-transition: color 0.2s;
