@@ -167,25 +167,36 @@ public class UploadService implements Serializable {
 
 
 	public void checkEntregador(String nomeDoEntregador, Entrega entrega) {
-		Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
-
-		if (entregador != null) {
-			entrega.setEntregador(entregador);
-		} else {
-			entregador = new Entregador();
-			entregador.setNome(nomeDoEntregador);
-			entrega.setEntregador(entregador);
-			entregadorService.cadastrarEntregador(entregador);
+		try {
+			Entregador entregador = entregadorService.buscarPorNome(nomeDoEntregador);
+			try {
+				if (entregador != null) {
+					entrega.setEntregador(entregador);
+				} else {
+					entregador = new Entregador();
+					entregador.setNome(nomeDoEntregador);
+					entregador = entregadorService.cadastrarEntregador(entregador);
+					entrega.setEntregador(entregador);
+				}
+			} catch (Exception e) {
+				System.out.println("checkEntregador1: " + e);
+			}
+		} catch (Exception e) {
+			System.out.println("checkEntregador2: " + e);
 		}
 	}
 
 
 	public void checkEntrega(Entrega entrega, List<Entrega> entregas) {
-		Entrega entregaExistente = entregaService.buscarPorPedidoDataEntregador(entrega.getPedido(), entrega.getData(), entrega.getEntregador());
+		try {
+			Entrega entregaExistente = entregaService.buscarPorPedidoDataEntregador(entrega.getPedido(), entrega.getData(), entrega.getEntregador());
 
-		if (entregaExistente != null) {
-		} else {
-			entregas.add(entrega);
+			if (entregaExistente != null) {
+			} else {
+				entregas.add(entrega);
+			}
+		} catch (Exception e) {
+			System.out.println("checkEntrega: " + e);
 		}
 	}
 }

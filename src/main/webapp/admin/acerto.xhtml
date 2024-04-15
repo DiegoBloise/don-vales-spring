@@ -13,18 +13,40 @@
 
 		<h:form>
 
-			<p:toolbar rendered="#{userSession.usuario.isAdmin()}" styleClass="mt-3">
+			<div class="crud-demo">
+				<p:toolbar rendered="#{userSession.usuario.isAdmin()}" styleClass="mt-3">
 
-				<p:toolbarGroup>
+					<p:toolbarGroup>
 
-					<!-- <p:commandButton value="Vale" type="button" icon="pi pi-external-link"
-						onclick="PF('dlgVale').show()" styleClass="mr-2"/> -->
+						<!-- <p:commandButton value="Vale" type="button" icon="pi pi-external-link"
+							onclick="PF('dlgVale').show()" styleClass="mr-2"/> -->
 
-					<p:commandButton value="Acerto" icon="pi pi-search" actionListener="#{acertoView.novoAcerto}" process="@this" styleClass="mr-2"/>
+						<p:commandButton value="Acerto" icon="pi pi-search" actionListener="#{acertoView.novoAcerto}" process="@this" styleClass="mr-2"/>
 
-				</p:toolbarGroup>
+					</p:toolbarGroup>
 
-			</p:toolbar>
+				</p:toolbar>
+
+				<p:dataTable id="dt-entregadores" widgetVar="dtEntregadores" var="entregador" value="#{acertoView.entregadoresDt}"
+									reflow="true" styleClass="my-3" rowKey="#{entregador.id}" rows="15" scrollRows="20"
+									scrollable="true" liveScroll="true" scrollHeight="550" stripedRows="true">
+
+					<f:facet name="header">
+						<div class="products-table-header">
+							<span style="font-weight: bold">Entregadores</span>
+							<span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+								<p:inputText id="globalFilter" onkeyup="PF('dtEntregadores').filter()" placeholder="Buscar"/>
+							</span>
+						</div>
+					</f:facet>
+
+					<p:column headerText="Entregador" sortBy="#{entregador.nome}" filterBy="#{entregador.nome}">
+						<h:outputLabel value="#{entregador.nome}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</div>
 
 		</h:form>
 

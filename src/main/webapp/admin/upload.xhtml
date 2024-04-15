@@ -51,8 +51,8 @@
 				</p:toolbar>
 
 				<p:dataTable id="dt-entregas" widgetVar="dtEntregas" var="entrega" value="#{uploadView.entregas}"
-								reflow="true" styleClass="mt-3" rowKey="#{entrega.id}"
-								paginator="true" rows="10" paginatorPosition="bottom">
+								reflow="true" styleClass="my-3" rowKey="#{entrega.id}" rows="15" scrollRows="20"
+								scrollable="true" liveScroll="true" scrollHeight="550" stripedRows="true">
 
 					<f:facet name="header">
 						<div class="products-table-header">

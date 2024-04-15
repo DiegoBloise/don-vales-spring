@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import br.com.don.erp.enums.TipoStatusPagamento;
 import br.com.don.erp.util.Util;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,12 +38,19 @@ public class Entrega implements Serializable {
 
 	private LocalDate data;
 
+	private TipoStatusPagamento status;
+
 	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "entregador_id")
     private Entregador entregador;
 
 	@Transient
 	private Integer qtd;
+
+
+	public Entrega() {
+		this.status = TipoStatusPagamento.PENDENTE;
+	}
 
 
 	public String getDataFormatada() {

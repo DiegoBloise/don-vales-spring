@@ -3,6 +3,7 @@ package br.com.don.erp.repository;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -102,10 +103,11 @@ public abstract class GenericRepository<T, ID extends Serializable> implements S
 
 
     @Transactional
-    public void save(T entity) {
+    public T save(T entity) {
         entityManager.getTransaction().begin();
         entityManager.persist(entity);
         entityManager.getTransaction().commit();
+        return entity;
     }
 
 
