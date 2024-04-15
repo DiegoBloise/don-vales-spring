@@ -43,7 +43,7 @@ public class Colaborador implements Serializable {
 	@Column(name = "data_nascimento")
 	protected LocalDate dataNascimento;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pix_id")
     protected Pix pix;
 

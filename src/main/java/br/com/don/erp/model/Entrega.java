@@ -40,7 +40,7 @@ public class Entrega implements Serializable {
 
 	private TipoStatusPagamento status;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entregador_id")
     private Entregador entregador;
 
