@@ -27,7 +27,7 @@
 								</p:datePicker>
 							</div>
 
-							<p:commandButton value="Apagar" action="#{uploadView.apagarMovimento}" update="@root:@id(messages)">
+							<p:commandButton value="Apagar" actionListener="#{uploadView.apagarMovimento}" update="@root:@id(messages)">
 								<p:confirm header="Confirmação"
 								message="Certeza que deseja prosseguir?"
 								icon="pi pi-exclamation-triangle" />

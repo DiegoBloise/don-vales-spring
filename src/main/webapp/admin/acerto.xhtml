@@ -52,10 +52,11 @@
 
 		<h:form id="dialogs">
 
-			<p:dialog id="acertoDialog" header="Acerto" widgetVar="acertoDialog" dynamic="true"
-				modal="true" blockScroll="false" resizable="false" fitViewport="true" responsive="true" closable="false" closeOnEscape="false">
+			<p:dialog id="acertoDialog" header="Acerto" widgetVar="acertoDialog" dynamic="true" showEffect="fade"
+				modal="true" blockScroll="true" draggable="false" resizable="false" fitViewport="true" responsive="true"
+				closable="false" closeOnEscape="false">
 
-				<h:panelGroup id="manage-acerto-content" class="flex flex-column gap-4 m-2 max-w-min" style="min-width: 550px;">
+				<h:panelGroup id="manage-acerto-content" styleClass="relative z-0 flex flex-column fadein animation-duration-300 gap-4 m-2 max-w-min" style="height: 550px; width: 560px;">
 
 					<h:panelGroup class="flex flex-column gap-2">
 
@@ -72,8 +73,8 @@
 							</div>
 
 							<div class="flex flex-column flex-grow-1">
-								<p:commandButton styleClass="w-15rem" value="Buscar Entregadores" action="#{acertoView.buscarEntregadoresAcerto}"
-									update="@root:@id(manage-acerto-content)" icon="pi pi-search" process="@this pngAcerto"/>
+								<p:commandButton styleClass="w-15rem" value="Buscar Entregadores" actionListener="#{acertoView.buscarEntregadoresAcerto}"
+									update="@root:@id(pngAcerto2)" icon="pi pi-search" process="@this pngAcerto"/>
 							</div>
 
 						</h:panelGroup>
@@ -92,8 +93,8 @@
 							</div>
 
 							<div class="flex flex-column">
-								<p:commandButton disabled="#{empty acertoView.entregadores}" styleClass="w-15rem" value="Calcular Total" action="#{acertoView.realizarAcerto}"
-									update="@root:@id(manage-acerto-content)" icon="pi pi-dollar" process="@this @root:@id(pngAcerto2)"/>
+								<p:commandButton disabled="#{empty acertoView.entregadores}" styleClass="w-15rem" value="Calcular Total" actionListener="#{acertoView.realizarAcerto}"
+									update="@root:@id(pngAcerto3) @root:@id(acertoList) @root:@id(vale-dialog-footer)" icon="pi pi-dollar" process="@this @root:@id(pngAcerto2)"/>
 							</div>
 
 						</h:panelGroup>
@@ -141,7 +142,6 @@
 						<p:barcode rendered="#{not empty acertoView.entregadorSelecionado.valorTotalComDesconto}" styleClass="mx-6" type="qr" value="#{acertoView.entregadorSelecionado.gerarPayloadPix()}" width="125" height="125"/>
 
 					</h:panelGroup>
-
 
 					<p:dataTable id="acertoList" var="acerto" value="#{acertoView.acertos}" style="font-size:12px; min-width: 400;">
 
@@ -259,13 +259,25 @@
 				</h:panelGroup>
 
 				<f:facet name="footer">
-                    <p:commandButton disabled="#{not acertoView.textoVale != null}" value="Copiar Recibo" icon="pi pi-copy" process="@this" actionListener="#{acertoView.copyValeToClipboard}"/>
 
-                    <p:commandButton value="Cancelar" update="@root:@id(acertoDialog)" process="@this" actionListener="#{acertoView.cancelar}"
-                                    icon="pi pi-times" styleClass="ui-button-secondary" oncomplete="PF('acertoDialog').hide()"/>
-                </f:facet>
+					<h:panelGroup id="vale-dialog-footer">
+						<p:commandButton disabled="#{empty acertoView.textoVale}" value="Enviar Mensagem" icon="pi pi-whatsapp" process="@this" actionListener="#{acertoView.sendValeToWhatsapp}" styleClass="ui-button-success"/>
+
+						<p:commandButton disabled="#{empty acertoView.textoVale}" value="Copiar Recibo" icon="pi pi-copy" process="@this" actionListener="#{acertoView.copyValeToClipboard}"/>
+
+						<p:commandButton value="Cancelar" process="@this" actionListener="#{acertoView.cancelar}"
+										icon="pi pi-times" styleClass="ui-button-secondary" update="@root:@id(manage-acerto-content) @root:@id(vale-dialog-footer)" oncomplete="PF('acertoDialog').hide()"/>
+					</h:panelGroup>
+
+				</f:facet>
 
 			</p:dialog>
+
+
+			<p:dialog id="zapDialog" widgetVar="zapDialog" header="ZipZop" minHeight="40" width="350" showEffect="fade">
+				<p:graphicImage name="qrcodes/qrcode.png" library="resources"/>
+			</p:dialog>
+
 
 		</h:form>
 

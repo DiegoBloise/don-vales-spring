@@ -11,3 +11,4 @@ nb-configuration.xml
 .project
 /.idea/
 faces-config.NavData
+src/main/resources/qrcodes/qrcode.png
