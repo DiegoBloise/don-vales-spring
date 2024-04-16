@@ -80,9 +80,11 @@ public class WhatsAppSender {
 
 
     public void captureQRCode(WebDriver browser) {
-        File screenshot = ((TakesScreenshot) browser).getScreenshotAs(OutputType.FILE);
+        WebElement qrCodeElement = browser.findElement(By.xpath(qrCodeXPath));
 
-        String serverFolderPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/WEB-INF/qrcodes/");
+        File screenshot = ((TakesScreenshot) qrCodeElement).getScreenshotAs(OutputType.FILE);
+
+        String serverFolderPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/qrcodes/");
         File serverFolder = new File(serverFolderPath);
 
         if (!serverFolder.exists()) {
