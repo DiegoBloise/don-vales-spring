@@ -20,7 +20,9 @@ import br.com.don.service.EntregaService;
 import br.com.don.service.EntregadorService;
 import br.com.don.service.ValeService;
 import br.com.don.util.Util;
+import br.com.don.util.WhatsAppSender;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
@@ -65,6 +67,8 @@ public class AcertoView implements Serializable {
 
 	private Entregador entregadorSelecionado;
 
+	private WhatsAppSender was;
+
 	@Inject
 	private EntregaService entregaService;
 
@@ -97,6 +101,15 @@ public class AcertoView implements Serializable {
 		vales = valeService.listarOrdenadoPorData();
 
 		textoVale = null;
+	}
+
+
+	@PreDestroy
+	public void destroy() {
+		if(was != null) {
+			was.cleanup();
+			was = null;
+		}
 	}
 
 
@@ -292,5 +305,14 @@ public class AcertoView implements Serializable {
 
 		FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Recibo copiado", "Recibo copiado para a área de transferência.");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+
+	public void sendValeToWhatsapp() {
+		was = new WhatsAppSender();
+
+		if(was.setup()) {
+			was.sendText(entregadorSelecionado.getTelefoneWhatsApp(), textoVale.toString());
+		}
 	}
 }

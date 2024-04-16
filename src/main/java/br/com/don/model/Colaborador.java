@@ -77,6 +77,15 @@ public class Colaborador implements Serializable {
     }
 
 
+	public String getTelefoneWhatsApp() {
+        if (this.telefone == null) {
+            return this.telefone;
+        } else {
+            return "+55" + this.telefone;
+        }
+    }
+
+
 	public void setTelefone(String telefone) {
         this.telefone = telefone.replaceAll("[^0-9]", "");
     }
