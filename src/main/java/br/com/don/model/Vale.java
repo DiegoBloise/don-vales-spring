@@ -44,7 +44,7 @@ public class Vale implements Serializable {
 
 	public Vale() {
 		this.valor = new BigDecimal(0);
-		this.tipo = TipoVale.SALDO;
+		this.tipo = TipoVale.DINHEIRO;
 		this.setData(LocalDate.now());
 	}
 
