@@ -56,7 +56,7 @@ public class Vale implements Serializable {
 
 
 	public void setData(LocalDate data) {
-		if (userSession.getUsuario().isAdmin()) {
+		if (this.userSession != null && this.userSession.getUsuario().isAdmin()) {
 			this.data = data;
 		} else {
 			LocalTime horaAtual = LocalTime.now();
