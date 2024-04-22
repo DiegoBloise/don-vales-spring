@@ -67,7 +67,7 @@ public class ValeView implements Serializable {
 
 		LocalTime horaAtual = LocalTime.now();
 		LocalDate data;
-		if (horaAtual.isBefore(LocalTime.of(3, 0))) {
+		if (horaAtual.isBefore(LocalTime.of(1, 20))) {
 			data = LocalDate.now().minusDays(1);
 		} else {
 			data = LocalDate.now();

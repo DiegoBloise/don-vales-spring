@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import br.com.don.enums.TipoVale;
+import br.com.don.session.UserSession;
 import br.com.don.util.Util;
+import jakarta.inject.Inject;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +43,10 @@ public class Vale implements Serializable {
     @JoinColumn(name = "colaborador_id")
     private Colaborador colaborador;
 
+	@Transient
+	@Inject
+	private UserSession userSession;
+
 
 	public Vale() {
 		this.valor = new BigDecimal(0);
@@ -50,11 +56,16 @@ public class Vale implements Serializable {
 
 
 	public void setData(LocalDate data) {
-		LocalTime horaAtual = LocalTime.now();
-		if (horaAtual.isBefore(LocalTime.of(3, 0))) {
-			this.data = data.minusDays(1);
-		} else {
+		if (userSession.getUsuario().isAdmin()) {
 			this.data = data;
+		} else {
+			LocalTime horaAtual = LocalTime.now();
+
+			if (horaAtual.isBefore(LocalTime.of(1, 20))) {
+				this.data = data.minusDays(1);
+			} else {
+				this.data = data;
+			}
 		}
 	}
 

@@ -146,7 +146,7 @@
                             </p:selectOneMenu>
 
                             <p:outputLabel for="@next" value="Data do Vale:"/>
-                            <p:datePicker disabled="true" showOnFocus="false" showIcon="true" value="#{valeView.valeSelecionado.data}"
+                            <p:datePicker disabled="#{not userSession.usuario.isAdmin()}" showOnFocus="false" showIcon="true" value="#{valeView.valeSelecionado.data}"
                                 pattern="dd/MM/yyyy" mask="true" required="true"/>
 
                             <p:outputLabel for="@next" value="Valor:"/>
