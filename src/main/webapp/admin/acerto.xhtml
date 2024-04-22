@@ -256,12 +256,14 @@
 
 					</p:dataTable>
 
+					<!-- <p:graphicImage id="qrcodezap" value="/resources/qrcodes/qrcode.png" width="125" height="125" styleClass="m-5" /> -->
+
 				</h:panelGroup>
 
 				<f:facet name="footer">
 
 					<h:panelGroup id="vale-dialog-footer">
-						<p:commandButton disabled="#{empty acertoView.textoVale}" value="Enviar Mensagem" icon="pi pi-whatsapp" process="@this" actionListener="#{acertoView.sendValeToWhatsapp}" styleClass="ui-button-success"/>
+						<!-- <p:commandButton disabled="#{empty acertoView.textoVale}" async="true" immediate="true" value="Enviar Mensagem" icon="pi pi-whatsapp" process="@this" actionListener="#{acertoView.sendValeToWhatsapp}" styleClass="ui-button-success"/> -->
 
 						<p:commandButton disabled="#{empty acertoView.textoVale}" value="Copiar Recibo" icon="pi pi-copy" process="@this" actionListener="#{acertoView.copyValeToClipboard}"/>
 
@@ -273,9 +275,11 @@
 
 			</p:dialog>
 
-			<p:dialog id="zapDialog" widgetVar="zapDialog" header="ZipZop" resizable="false" showEffect="fade" dynamic="true" modal="true" responsive="true">
+			<!-- <p:dialog visible="#{empty acertoView.was.qrCode}" id="zapDialog" rendered="#{not empty acertoView.was.qrCode}" widgetVar="zapDialog" header="ZipZop" resizable="false" showEffect="fade" dynamic="true" modal="true" responsive="true">
 				<p:graphicImage id="qrcodezap" value="/resources/qrcodes/qrcode.png" />
-			</p:dialog>
+			</p:dialog> -->
+
+			<p:poll id="poll" widgetVar="poll" interval="2" update="@root:@id(qrcodezap)"/>
 
 		</h:form>
 

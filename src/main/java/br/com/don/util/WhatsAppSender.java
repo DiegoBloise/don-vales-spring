@@ -16,7 +16,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.primefaces.PrimeFaces;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -49,17 +48,19 @@ public class WhatsAppSender {
             captureQRCode(browser);
             System.out.println("Scan the QR code to continue...");
 
-            PrimeFaces.current().ajax().update("@root:@id(qrcodezap)");
+           /*  PrimeFaces.current().ajax().update("@root:@id(qrcodezap)");
             PrimeFaces.current().ajax().update("@root:@id(zapDialog)");
-			PrimeFaces.current().executeScript("PF('zapDialog').show()");
+			PrimeFaces.current().executeScript("PF('zapDialog').show()"); */
 
             System.out.println("Loading...");
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("pane-side")));
 
             System.out.println("Success...");
-            Thread.sleep(2000);
+            /* Thread.sleep(2000); */
 
-            PrimeFaces.current().executeScript("PF('zapDialog').hide()");
+            Files.delete(qrCodeImagePath);
+
+            /* PrimeFaces.current().executeScript("PF('zapDialog').hide()"); */
 
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Login efetuado com sucesso.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -80,7 +81,7 @@ public class WhatsAppSender {
 
 
     public void captureQRCode(WebDriver browser) {
-        WebElement qrCodeElement = browser.findElement(By.xpath(qrCodeXPath));
+        WebElement qrCodeElement = browser.findElement(By.xpath("//*[@id=\"app\"]/div/div[2]/div[3]/div[1]/div/div"));
 
         File screenshot = ((TakesScreenshot) qrCodeElement).getScreenshotAs(OutputType.FILE);
 
