@@ -86,7 +86,6 @@ public class ValeView implements Serializable {
 	public void adicionarVale(Colaborador colaborador) {
 		colaboradorSelecionado = colaborador;
 		valeSelecionado = new Vale();
-		valeSelecionado.setData(LocalDate.now());
 	}
 
 

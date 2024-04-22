@@ -3,6 +3,7 @@ package br.com.don.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import br.com.don.enums.TipoVale;
 import br.com.don.util.Util;
@@ -43,6 +44,18 @@ public class Vale implements Serializable {
 
 	public Vale() {
 		this.valor = new BigDecimal(0);
+		this.tipo = TipoVale.SALDO;
+		this.setData(LocalDate.now());
+	}
+
+
+	public void setData(LocalDate data) {
+		LocalTime horaAtual = LocalTime.now();
+		if (horaAtual.isAfter(LocalTime.of(23, 59)) && horaAtual.isBefore(LocalTime.of(3, 0))) {
+			this.data = data.minusDays(1);
+		} else {
+			this.data = data;
+		}
 	}
 
 

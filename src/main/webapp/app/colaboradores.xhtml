@@ -244,7 +244,7 @@
                             <h:outputText styleClass="font-bold" value="#{colaboradorView.colaboradorSelecionado.nome}"/>
 
                             <p:outputLabel for="@next" value="Data do Vale:"/>
-                            <p:datePicker showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
+                            <p:datePicker disabled="true" showOnFocus="false" showIcon="true" value="#{colaboradorView.valeSelecionado.data}"
                                 pattern="dd/MM/yyyy" mask="true" required="true"/>
 
                             <p:outputLabel for="@next" value="Valor:"/>
@@ -255,8 +255,8 @@
                                 <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" pattern="¤ ###,###,##0.00; ¤ -###,###,##0.00"/>
                             </p:inputText>
 
-                            <p:outputLabel for="@next" value="Tipo de Vale:" />
-                            <p:selectOneMenu id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
+                            <p:outputLabel rendered="#{userSession.usuario.isAdmin()}" for="@next" value="Tipo de Vale:" />
+                            <p:selectOneMenu rendered="#{userSession.usuario.isAdmin()}" id="valeTipo" value="#{colaboradorView.valeSelecionado.tipo}" required="true">
                                 <f:selectItem itemLabel="Selecione:" itemValue="" />
                                 <f:selectItems value="#{acertoView.tipoVale}" />
                             </p:selectOneMenu>
