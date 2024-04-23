@@ -1,5 +1,7 @@
 package br.com.don.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,7 +29,6 @@ public class ValeService implements Serializable {
 
 	@Autowired
 	private ValeMapper mapper;
-
 
 	/* public List<Vale> findVales() {
         String jpql = "SELECT NEW br.com.don.model.Vale(v.id, v.nome) FROM Vale v";
@@ -106,5 +107,18 @@ public class ValeService implements Serializable {
 
 	public void deletarValePorId(Long id) {
 		repository.deleteById(id);
+	}
+
+
+	public void prepararValeImpressao(Vale vale) {
+		StringBuilder conteudo = new StringBuilder()
+		.append(vale.getColaborador().getNome())
+		.append(System.lineSeparator())
+		.append(vale.getValor())
+		.append(System.lineSeparator())
+		.append(vale.getDataFormatada());
+
+		@SuppressWarnings("unused")
+		InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
 	}
 }
