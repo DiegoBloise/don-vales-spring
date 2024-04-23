@@ -12,6 +12,10 @@ public class ColaboradorMapper {
     @Autowired
     private PixMapper pixMapper;
 
+    @Autowired
+    private ValeMapper valeMapper;
+
+
     public ColaboradorDto toDto(Colaborador colaborador) {
         return new ColaboradorDto(
             colaborador.getId(),
@@ -20,7 +24,7 @@ public class ColaboradorMapper {
             colaborador.getDataNascimento(),
             colaborador.getTipo(),
             pixMapper.toDto(colaborador.getPix()),
-            colaborador.getVales()
+            valeMapper.toDtos(colaborador.getVales())
         );
     }
 
@@ -33,7 +37,7 @@ public class ColaboradorMapper {
             colaboradorDto.dataNascimento(),
             colaboradorDto.tipo(),
             pixMapper.toPix(colaboradorDto.pix()),
-            colaboradorDto.vales()
+            valeMapper.toVales(colaboradorDto.vales())
         );
     }
 }

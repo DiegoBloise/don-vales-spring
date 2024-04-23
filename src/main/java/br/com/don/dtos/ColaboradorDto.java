@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import br.com.don.enums.TipoColaborador;
-import br.com.don.models.Vale;
 import jakarta.validation.constraints.NotEmpty;
 
 public record ColaboradorDto(
@@ -23,7 +22,7 @@ public record ColaboradorDto(
 
     PixDto pix,
 
-    List<Vale> vales
+    List<ValeDto> vales
 
 ) {
 

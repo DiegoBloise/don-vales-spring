@@ -1,5 +1,8 @@
 package br.com.don.mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import br.com.don.dtos.ValeDto;
@@ -22,5 +25,19 @@ public class ValeMapper {
             valeDto.valor(),
             valeDto.data()
         );
+    }
+
+
+    public List<ValeDto> toDtos(List<Vale> vales) {
+        return vales.stream()
+                    .map(this::toDto)
+                    .collect(Collectors.toList());
+    }
+
+
+    public List<Vale> toVales(List<ValeDto> valesDtos) {
+        return valesDtos.stream()
+                        .map(this::toVale)
+                        .collect(Collectors.toList());
     }
 }
