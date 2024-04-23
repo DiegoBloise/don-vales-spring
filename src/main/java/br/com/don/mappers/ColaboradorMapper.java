@@ -14,21 +14,26 @@ public class ColaboradorMapper {
 
     public ColaboradorDto toDto(Colaborador colaborador) {
         return new ColaboradorDto(
+            colaborador.getId(),
             colaborador.getNome(),
             colaborador.getTelefone(),
             colaborador.getDataNascimento(),
             colaborador.getTipo(),
-            pixMapper.toDto(colaborador.getPix()));
+            pixMapper.toDto(colaborador.getPix()),
+            colaborador.getVales()
+        );
     }
 
 
     public Colaborador toColaborador(ColaboradorDto colaboradorDto) {
         return new Colaborador(
+            colaboradorDto.id(),
             colaboradorDto.nome(),
             colaboradorDto.telefone(),
             colaboradorDto.dataNascimento(),
             colaboradorDto.tipo(),
-            pixMapper.toPix(colaboradorDto.pix())
+            pixMapper.toPix(colaboradorDto.pix()),
+            colaboradorDto.vales()
         );
     }
 }

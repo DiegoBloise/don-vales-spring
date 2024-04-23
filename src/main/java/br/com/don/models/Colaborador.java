@@ -70,12 +70,14 @@ public class Colaborador extends BaseEntity implements Serializable {
 	}
 
 
-	public Colaborador(String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix) {
+	public Colaborador(Long id, String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix, List<Vale> vales) {
+        this.setId(id);
         this.setNome(nome);
 		this.setTelefone(telefone);
 		this.setDataNascimento(dataNascimento);
         this.setTipo(tipo);
         this.setPix(pix);
+        this.setVales(vales);
     }
 
 

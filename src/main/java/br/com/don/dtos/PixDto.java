@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record PixDto(
 
+    Long id,
+
     @NotBlank
     TipoChavePix tipo,
 

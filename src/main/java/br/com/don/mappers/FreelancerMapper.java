@@ -14,6 +14,7 @@ public class FreelancerMapper {
 
     public FreelancerDto toDto(Freelancer freelancer) {
         return new FreelancerDto(
+            freelancer.getId(),
             freelancer.getNome(),
             freelancer.getTelefone(),
             freelancer.getDataNascimento(),
@@ -24,6 +25,7 @@ public class FreelancerMapper {
 
     public Freelancer toFreelancer(FreelancerDto freelancerDto) {
         return new Freelancer(
+            freelancerDto.id(),
             freelancerDto.nome(),
             freelancerDto.telefone(),
             freelancerDto.dataNascimento(),

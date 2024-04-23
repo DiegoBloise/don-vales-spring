@@ -264,6 +264,7 @@ public class EntregadorService implements Serializable {
 	public void copyValeToClipboard(String texto) {
 		texto = texto.replace("\n", "\\n").replace("\r", "\\r").replace("'", "\\'");
 
+		@SuppressWarnings("unused")
 		String script = "navigator.clipboard.writeText('" + texto + "');";
 
 		System.out.println("IMPLEMENTAR LOGICA");

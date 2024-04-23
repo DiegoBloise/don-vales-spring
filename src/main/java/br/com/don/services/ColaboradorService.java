@@ -56,6 +56,17 @@ public class ColaboradorService implements Serializable {
 	}
 
 
+	public Colaborador getById(Long id) {
+		Optional<Colaborador> colaboradorOptional = repository.findById(id);
+
+        if(colaboradorOptional.isEmpty()) {
+            return null;
+        }
+
+        return colaboradorOptional.get();
+	}
+
+
 	public List<Colaborador> buscarPorNome(String nome){
 		return repository.findAllByProperty("nome", nome);
 	}
@@ -67,6 +78,11 @@ public class ColaboradorService implements Serializable {
 				mapper.toColaborador(colaboradorDto)
 			)
 		);
+	}
+
+
+	public Colaborador salvarColaborador(Colaborador colaborador) {
+		return repository.save(colaborador);
 	}
 
 

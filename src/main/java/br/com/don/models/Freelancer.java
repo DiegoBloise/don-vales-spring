@@ -21,7 +21,8 @@ import lombok.experimental.SuperBuilder;
 public class Freelancer extends Colaborador {
 
 
-    public Freelancer(String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix) {
+    public Freelancer(Long id, String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix) {
+        this.setId(id);
         this.setNome(nome);
         this.setTelefone(telefone);
         this.setDataNascimento(dataNascimento);

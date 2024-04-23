@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record FreelancerDto(
 
+    Long id,
+
     @NotEmpty
     String nome,
 

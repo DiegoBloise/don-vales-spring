@@ -14,6 +14,7 @@ public class EntregadorMapper {
 
     public EntregadorDto toDto(Entregador entregador) {
         return new EntregadorDto(
+            entregador.getId(),
             entregador.getNome(),
             entregador.getTelefone(),
             entregador.getDataNascimento(),
@@ -24,6 +25,7 @@ public class EntregadorMapper {
 
     public Entregador toEntregador(EntregadorDto entregadorDto) {
         return new Entregador(
+            entregadorDto.id(),
             entregadorDto.nome(),
             entregadorDto.telefone(),
             entregadorDto.dataNascimento(),

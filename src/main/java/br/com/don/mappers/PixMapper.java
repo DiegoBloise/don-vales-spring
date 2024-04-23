@@ -11,6 +11,7 @@ public class PixMapper {
 
     public PixDto toDto(Pix pix) {
         return new PixDto(
+            pix.getId(),
             pix.getTipo(),
             pix.getChave()
         );
@@ -19,6 +20,7 @@ public class PixMapper {
 
     public Pix toPix(PixDto pixDto) {
         Pix pix = new Pix();
+        pix.setId(pixDto.id());
         pix.setTipo(pixDto.tipo());
         pix.setChave(pixDto.chave());
         return pix;

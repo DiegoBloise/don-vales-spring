@@ -11,6 +11,7 @@ public class ValeMapper {
 
     public ValeDto toDto(Vale vale) {
         return new ValeDto(
+            vale.getColaborador().getId(),
             vale.getValor(),
             vale.getData());
     }

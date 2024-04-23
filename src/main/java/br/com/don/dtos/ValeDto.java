@@ -8,6 +8,9 @@ import jakarta.validation.constraints.PositiveOrZero;
 public record ValeDto(
 
     @PositiveOrZero
+    Long colaboradorId,
+
+    @PositiveOrZero
     BigDecimal valor,
 
     LocalDate data

@@ -34,8 +34,14 @@ public class ValeController {
 
 
     @PostMapping
-    public ResponseEntity<ValeDto> saveVale(@RequestBody @Valid ValeDto colaboradorDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarVale(colaboradorDto));
+    public ResponseEntity<Object> saveVale(@RequestBody @Valid ValeDto valeDto) {
+        ValeDto responseValeDto = service.salvarVale(valeDto);
+
+        if(responseValeDto == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colaborador not found.");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseValeDto);
     }
 
 
@@ -58,7 +64,7 @@ public class ValeController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateVale(@PathVariable(value="id") Long id, @RequestBody @Valid ValeDto colaboradorDto) {
+    public ResponseEntity<Object> updateVale(@PathVariable(value="id") Long id, @RequestBody @Valid ValeDto valeDto) {
         ValeDto responseValeDto = service.buscarPorId(id);
 
         if(responseValeDto == null) {

@@ -30,6 +30,9 @@ public class ValeService implements Serializable {
 	@Autowired
 	private ValeMapper mapper;
 
+	@Autowired
+	private ColaboradorService colaboradorService;
+
 	/* public List<Vale> findVales() {
         String jpql = "SELECT NEW br.com.don.model.Vale(v.id, v.nome) FROM Vale v";
         return findDTOs(jpql, Cliente.class);
@@ -56,12 +59,21 @@ public class ValeService implements Serializable {
 
 
 	public ValeDto salvarVale(ValeDto valeDto) {
-		return mapper.toDto(
-			repository.save(
-				mapper.toVale(valeDto)
-			)
-		);
+		Colaborador colaborador = colaboradorService.getById(valeDto.colaboradorId());
+
+		if (colaborador == null) {
+			return null;
+		}
+
+		Vale vale = mapper.toVale(valeDto);
+
+		colaborador.adicionarVale(vale);
+
+		colaboradorService.salvarColaborador(colaborador);
+
+		return mapper.toDto(vale);
 	}
+
 
 
 	public List<Vale> buscarPorColaborador(Colaborador colaborador){

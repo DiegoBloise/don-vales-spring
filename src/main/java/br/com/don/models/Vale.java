@@ -54,6 +54,8 @@ public class Vale extends BaseEntity implements Serializable {
 	public Vale(BigDecimal valor, LocalDate data) {
 		this.setValor(valor);
 		this.setData(data);
+
+		this.tipo = TipoVale.DINHEIRO;
 	}
 
 
