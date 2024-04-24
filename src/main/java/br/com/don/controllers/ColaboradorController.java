@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.don.dtos.ColaboradorDto;
+import br.com.don.dtos.ValeDto;
 import br.com.don.services.ColaboradorService;
+import br.com.don.services.ValeService;
 import jakarta.validation.Valid;
 
 
@@ -32,6 +34,9 @@ public class ColaboradorController {
     @Autowired
     private ColaboradorService service;
 
+    @Autowired
+    private ValeService valeService;
+
 
     @PostMapping
     public ResponseEntity<Object> saveColaborador(@RequestBody @Valid ColaboradorDto colaboradorDto) {
@@ -42,6 +47,12 @@ public class ColaboradorController {
     @GetMapping
     public ResponseEntity<List<ColaboradorDto>> getAllColaboradores() {
         return ResponseEntity.status(HttpStatus.OK).body(service.listar());
+    }
+
+
+    @GetMapping("/{id}/vales")
+    public ResponseEntity<List<ValeDto>> getAllValesColaborador(@PathVariable(value="id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(valeService.buscarPorColaboradorId(id));
     }
 
 

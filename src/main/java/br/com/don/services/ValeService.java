@@ -83,6 +83,11 @@ public class ValeService implements Serializable {
 	}
 
 
+	public List<ValeDto> buscarPorColaboradorId(Long id){
+		return mapper.toDtos(repository.findAllByColaboradorId(id));
+	}
+
+
 	public List<Vale> buscarPorColaboradorDataTipo(Colaborador colaborador, LocalDate data,TipoVale tipo){
 		return repository.buscarPorColaboradorDataTipo(colaborador, data, tipo);
 	}

@@ -76,7 +76,8 @@ public class Entregador extends Colaborador {
 
 
 	public Entregador(Long id, String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix) {
-        this.setId(id);
+        this.entregas = new ArrayList<>();
+		this.setId(id);
 		this.setNome(nome);
 		this.setTelefone(telefone);
 		this.setDataNascimento(dataNascimento);
