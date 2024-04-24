@@ -1,7 +1,6 @@
 package br.com.don.models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -32,7 +31,7 @@ public class Vale extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private BigDecimal valor;
+	private Double valor;
 
 	private LocalDate data;
 
@@ -45,13 +44,13 @@ public class Vale extends BaseEntity implements Serializable {
 
 
 	public Vale() {
-		this.valor = new BigDecimal(0);
 		this.tipo = TipoVale.DINHEIRO;
 		this.setData(LocalDate.now());
 	}
 
 
-	public Vale(BigDecimal valor, LocalDate data) {
+	public Vale(Long id, Double valor, LocalDate data) {
+		this.setId(id);
 		this.setValor(valor);
 		this.setData(data);
 

@@ -14,15 +14,17 @@ public class ValeMapper {
 
     public ValeDto toDto(Vale vale) {
         return new ValeDto(
+            vale.getId(),
             vale.getColaborador().getId(),
-            vale.getValor(),
+            vale.getValor().floatValue(),
             vale.getData());
     }
 
 
     public Vale toVale(ValeDto valeDto) {
         return new Vale(
-            valeDto.valor(),
+            valeDto.id(),
+            valeDto.valor().doubleValue(),
             valeDto.data()
         );
     }

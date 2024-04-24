@@ -2,7 +2,7 @@ package br.com.don.enums;
 
 public enum TipoColaborador {
 	FIXO("Fixo"),
-	FREE("Freelancer"),
+	FREELANCER("Freelancer"),
 	ENTREGADOR("Entregador");
 
 	private String descricao;

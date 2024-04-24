@@ -67,9 +67,11 @@ public class ValeService implements Serializable {
 
 		Vale vale = mapper.toVale(valeDto);
 
-		colaborador.adicionarVale(vale);
+		vale.setColaborador(colaborador);
 
-		colaboradorService.salvarColaborador(colaborador);
+		repository.save(vale);
+
+		System.out.println(vale.getValor().toString() + " **************************************************** ");
 
 		return mapper.toDto(vale);
 	}

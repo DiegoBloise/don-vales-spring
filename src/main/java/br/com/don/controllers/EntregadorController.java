@@ -65,7 +65,7 @@ public class EntregadorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador not found.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.salvarEntregador(responseEntregadorDto));
+        return ResponseEntity.status(HttpStatus.OK).body(service.salvarEntregador(entregadorDto));
     }
 
 

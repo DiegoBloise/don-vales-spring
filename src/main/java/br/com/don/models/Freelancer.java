@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@DiscriminatorValue("FREE")
+@DiscriminatorValue("FREELANCER")
 public class Freelancer extends Colaborador {
 
 

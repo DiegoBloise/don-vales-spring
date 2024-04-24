@@ -65,7 +65,7 @@ public class FreelancerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Freelancer not found.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.salvarFreelancer(responseFreelancerDto));
+        return ResponseEntity.status(HttpStatus.OK).body(service.salvarFreelancer(freelancerDto));
     }
 
 

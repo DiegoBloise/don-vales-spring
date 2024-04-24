@@ -71,7 +71,7 @@ public class ValeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vale not found.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(service.salvarVale(responseValeDto));
+        return ResponseEntity.status(HttpStatus.OK).body(service.salvarVale(valeDto));
     }
 
 

@@ -1,7 +1,6 @@
 package br.com.don.models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -33,7 +32,7 @@ public class Entrega extends BaseEntity implements Serializable {
 
 	private Integer pedido;
 
-	private BigDecimal valor;
+	private Double valor;
 
 	private LocalDate data;
 

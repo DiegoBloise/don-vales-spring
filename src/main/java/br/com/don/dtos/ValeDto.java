@@ -1,17 +1,18 @@
 package br.com.don.dtos;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record ValeDto(
 
+    Long id,
+
     @PositiveOrZero
     Long colaboradorId,
 
     @PositiveOrZero
-    BigDecimal valor,
+    Float valor,
 
     LocalDate data
 

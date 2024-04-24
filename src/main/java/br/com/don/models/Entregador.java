@@ -1,6 +1,5 @@
 package br.com.don.models;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,31 +43,31 @@ public class Entregador extends Colaborador {
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalEntregas;
+	private Double valorTotalEntregas;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalIfood;
+	private Double valorTotalIfood;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalSemDesconto;
+	private Double valorTotalSemDesconto;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalComDesconto;
+	private Double valorTotalComDesconto;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalDiarias;
+	private Double valorTotalDiarias;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorTotalVales;
+	private Double valorTotalVales;
 
 	@Transient
 	@JsonIgnore
-	private BigDecimal valorSaldo;
+	private Double valorSaldo;
 
 
 	public Entregador() {

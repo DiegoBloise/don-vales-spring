@@ -1,7 +1,6 @@
 package br.com.don.util;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -18,16 +17,16 @@ public class Acerto implements Serializable {
 
 	private Integer qtdeIFood;
 
-	private BigDecimal valorValeDia;
+	private Double valorValeDia;
 
-	private BigDecimal valorDiaria;
+	private Double valorDiaria;
 
 	private final String QUEBRALINHA ="\n";
 
 	private final String TRACEJADO = "--------------------------------";
 
 
-	public BigDecimal getValorDiaria() {
+	public Double getValorDiaria() {
 		boolean isFimDeSemana = false;
 		if(data.getDayOfWeek().equals(DayOfWeek.FRIDAY) ||
 			data.getDayOfWeek().equals(DayOfWeek.SATURDAY)||
@@ -37,21 +36,21 @@ public class Acerto implements Serializable {
 
 		if(isFimDeSemana) {
 			if(qtdeEntregasDia > 40) {
-				this.valorDiaria = new BigDecimal("50.00");
+				this.valorDiaria = 50.00;
 			}else if(qtdeEntregasDia > 30) {
-				this.valorDiaria = new BigDecimal("45.00");
+				this.valorDiaria = 45.00;
 			}else if(qtdeEntregasDia > 20) {
-				this.valorDiaria = new BigDecimal("40.00");
+				this.valorDiaria = 40.00;
 			}else if(qtdeEntregasDia > 9) {
-				this.valorDiaria = new BigDecimal("35.00");
+				this.valorDiaria = 35.00;
 			}else {
-				this.valorDiaria = new BigDecimal("0.00");
+				this.valorDiaria = 0.00;
 			}
 		}else {
 			if(qtdeEntregasDia > 9) {
-				this.valorDiaria = new BigDecimal("35.00");
+				this.valorDiaria = 35.00;
 			}else {
-				this.valorDiaria = new BigDecimal("0.00");
+				this.valorDiaria = 0.00;
 			}
 		}
 
