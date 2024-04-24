@@ -51,7 +51,7 @@ public class Vale implements Serializable {
 
 	public void setData(LocalDate data) {
 		LocalTime horaAtual = LocalTime.now();
-		if (horaAtual.isAfter(LocalTime.of(23, 59)) && horaAtual.isBefore(LocalTime.of(3, 0))) {
+		if (horaAtual.isBefore(LocalTime.of(3, 0))) {
 			this.data = data.minusDays(1);
 		} else {
 			this.data = data;

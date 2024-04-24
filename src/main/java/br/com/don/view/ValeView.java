@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,9 +64,18 @@ public class ValeView implements Serializable {
 		filterBy = new ArrayList<>();
 
 		//.filterValue(new ArrayList<>(Arrays.asList(LocalDate.now().minusDays(7), LocalDate.now().plusDays(7))))
+
+		LocalTime horaAtual = LocalTime.now();
+		LocalDate data;
+		if (horaAtual.isBefore(LocalTime.of(3, 0))) {
+			data = LocalDate.now().minusDays(1);
+		} else {
+			data = LocalDate.now();
+		}
+
         filterBy.add(FilterMeta.builder()
                 .field("data")
-                .filterValue(new ArrayList<>(Arrays.asList(LocalDate.now(), LocalDate.now())))
+                .filterValue(new ArrayList<>(Arrays.asList(data, data)))
                 .matchMode(MatchMode.BETWEEN)
                 .build());
 	}
