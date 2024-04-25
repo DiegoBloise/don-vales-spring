@@ -12,6 +12,10 @@ import lombok.Data;
 @JsonInclude(Include.NON_EMPTY)
 public class ValeDto {
 
+    Long colaboradorId;
+
+    String colaboradorNome;
+
     Long id;
 
     @PositiveOrZero

@@ -53,7 +53,7 @@ public class Pix extends BaseEntity implements Serializable {
 	}
 
 
-	public String getChave() {
+	public String getChaveFormatada() {
 		if(this.chave == null || this.chave.isEmpty()) {
 			return this.chave;
 		}
@@ -83,7 +83,7 @@ public class Pix extends BaseEntity implements Serializable {
 	}
 
 
-	public void setChave(String chavePix) {
+	public void setChaveFormatada(String chavePix) {
 		switch (this.tipo) {
 			case CELULAR:
 				this.chave = "+55" + chavePix.replaceAll("[^0-9]", "");
