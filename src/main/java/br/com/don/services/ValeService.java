@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.don.dtos.ValeDto;
 import br.com.don.enums.TipoVale;
-import br.com.don.mappers.ValeMapper;
 import br.com.don.models.Colaborador;
 import br.com.don.models.Entregador;
 import br.com.don.models.Vale;
@@ -28,21 +28,13 @@ public class ValeService implements Serializable {
 	private ValeRepository repository;
 
 	@Autowired
-	private ValeMapper mapper;
-
-	@Autowired
-	private ColaboradorService colaboradorService;
-
-	/* public List<Vale> findVales() {
-        String jpql = "SELECT NEW br.com.don.model.Vale(v.id, v.nome) FROM Vale v";
-        return findDTOs(jpql, Cliente.class);
-    } */
+	private ModelMapper modelMapper;
 
 
 	public List<ValeDto> listar(){
 		return repository.findAll().stream()
             .map(vale -> {
-                return mapper.toDto(vale);
+                return modelMapper.map(vale, ValeDto.class);
             })
             .collect(Collectors.toList());
 	}
@@ -58,22 +50,31 @@ public class ValeService implements Serializable {
 	}
 
 
+	public Vale salvarVale(Vale vale) {
+		return repository.save(vale);
+	}
+
+
 	public ValeDto salvarVale(ValeDto valeDto) {
-		Colaborador colaborador = colaboradorService.getById(valeDto.colaboradorId());
+		Vale vale;
 
-		if (colaborador == null) {
-			return null;
-		}
+        if (valeDto.getId() != null) {
+            vale = this.getById(valeDto.getId());
+        } else {
+            vale = new Vale();
+        }
 
-		Vale vale = mapper.toVale(valeDto);
+        if (vale == null) {
+            return null;
+        }
 
-		vale.setColaborador(colaborador);
+		modelMapper.map(valeDto, vale);
 
-		repository.save(vale);
+		this.salvarVale(vale);
 
-		System.out.println(vale.getValor().toString() + " **************************************************** ");
+		modelMapper.map(vale, valeDto);
 
-		return mapper.toDto(vale);
+		return valeDto;
 	}
 
 
@@ -84,7 +85,11 @@ public class ValeService implements Serializable {
 
 
 	public List<ValeDto> buscarPorColaboradorId(Long id){
-		return mapper.toDtos(repository.findAllByColaboradorId(id));
+		return repository.findAllByColaboradorId(id).stream()
+            .map(vale -> {
+                return modelMapper.map(vale, ValeDto.class);
+            })
+            .collect(Collectors.toList());
 	}
 
 
@@ -108,14 +113,25 @@ public class ValeService implements Serializable {
 	}
 
 
-	public ValeDto buscarPorId(Long id) {
+	public Vale getById(Long id) {
 		Optional<Vale> valeOptional = repository.findById(id);
 
         if(valeOptional.isEmpty()) {
             return null;
         }
 
-        return mapper.toDto(valeOptional.get());
+        return valeOptional.get();
+	}
+
+
+	public ValeDto getDtoById(Long id) {
+		Optional<Vale> valeOptional = repository.findById(id);
+
+        if(valeOptional.isEmpty()) {
+            return null;
+        }
+
+        return modelMapper.map(valeOptional.get(), ValeDto.class);
 	}
 
 

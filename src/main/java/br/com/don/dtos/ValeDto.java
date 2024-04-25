@@ -2,19 +2,20 @@ package br.com.don.dtos;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
 
-public record ValeDto(
+@Data
+@JsonInclude(Include.NON_EMPTY)
+public class ValeDto {
 
-    Long id,
+    Long id;
 
     @PositiveOrZero
-    Long colaboradorId,
+    Float valor;
 
-    @PositiveOrZero
-    Float valor,
-
-    LocalDate data
-
-) {
+    LocalDate data;
 }

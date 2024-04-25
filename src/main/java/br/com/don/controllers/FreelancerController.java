@@ -47,7 +47,7 @@ public class FreelancerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneFreelancer(@PathVariable(value="id") Long id) {
-        FreelancerDto responseFreelancerDto = service.buscarPorId(id);
+        FreelancerDto responseFreelancerDto = service.getDtoById(id);
 
         if(responseFreelancerDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Freelancer not found.");
@@ -59,7 +59,7 @@ public class FreelancerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateFreelancer(@PathVariable(value="id") Long id, @RequestBody @Valid FreelancerDto freelancerDto) {
-        FreelancerDto responseFreelancerDto = service.buscarPorId(id);
+        FreelancerDto responseFreelancerDto = service.getDtoById(id);
 
         if(responseFreelancerDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Freelancer not found.");
@@ -72,7 +72,7 @@ public class FreelancerController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteFreelancer(@PathVariable(value="id") Long id) {
 
-        FreelancerDto responseFreelancerDto = service.buscarPorId(id);
+        FreelancerDto responseFreelancerDto = service.getDtoById(id);
 
         if(responseFreelancerDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Freelancer not found.");

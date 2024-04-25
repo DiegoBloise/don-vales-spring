@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.don.dtos.FreelancerDto;
-import br.com.don.mappers.FreelancerMapper;
 import br.com.don.models.Freelancer;
 import br.com.don.repositories.FreelancerRepository;
 
@@ -22,41 +22,65 @@ public class FreelancerService implements Serializable {
 	private FreelancerRepository repository;
 
 	@Autowired
-	private FreelancerMapper mapper;
+	private ModelMapper modelMapper;
 
 
 	public List<FreelancerDto> listar(){
 		return repository.findAll().stream()
             .map(freelancer -> {
-                return mapper.toDto(freelancer);
+                return modelMapper.map(freelancer, FreelancerDto.class);
             })
             .collect(Collectors.toList());
 	}
 
 
-	public Freelancer buscar(Freelancer freelancer){
-		Optional<Freelancer> freelancerOptional = repository.findById(freelancer.getId());
-		return freelancerOptional.isPresent() ? freelancerOptional.get() : null;
-	}
-
-
-	public FreelancerDto buscarPorId(Long id) {
+	public Freelancer getById(Long id) {
 		Optional<Freelancer> freelancerOptional = repository.findById(id);
 
         if(freelancerOptional.isEmpty()) {
             return null;
         }
 
-        return mapper.toDto(freelancerOptional.get());
+        return freelancerOptional.get();
+	}
+
+
+	public FreelancerDto getDtoById(Long id) {
+		Optional<Freelancer> freelancerOptional = repository.findById(id);
+
+        if(freelancerOptional.isEmpty()) {
+            return null;
+        }
+
+        return modelMapper.map(freelancerOptional.get(), FreelancerDto.class);
+	}
+
+
+	public Freelancer salvarFreelancer(Freelancer freelancer) {
+		return repository.save(freelancer);
 	}
 
 
 	public FreelancerDto salvarFreelancer(FreelancerDto freelancerDto) {
-		return mapper.toDto(
-			repository.save(
-				mapper.toFreelancer(freelancerDto)
-			)
-		);
+		Freelancer freelancer;
+
+        if (freelancerDto.getId() != null) {
+            freelancer = this.getById(freelancerDto.getId());
+        } else {
+            freelancer = new Freelancer();
+        }
+
+        if (freelancer == null) {
+            return null;
+        }
+
+		modelMapper.map(freelancerDto, freelancer);
+
+		this.salvarFreelancer(freelancer);
+
+		modelMapper.map(freelancer, freelancerDto);
+
+		return freelancerDto;
 	}
 
 
@@ -67,12 +91,5 @@ public class FreelancerService implements Serializable {
 
 	public void deletarFreelancerPorId(Long id) {
 		repository.deleteById(id);
-	}
-
-
-	public void removerFreelanceres(List<Freelancer> freelanceres) {
-		for (Freelancer freelancer : freelanceres) {
-			this.deletarFreelancer(freelancer);
-		}
 	}
 }

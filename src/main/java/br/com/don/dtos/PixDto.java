@@ -1,18 +1,22 @@
 package br.com.don.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.com.don.enums.TipoChavePix;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
-public record PixDto(
+@Data
+@JsonInclude(Include.NON_EMPTY)
+public class PixDto {
 
-    Long id,
+    Long id;
 
     @NotBlank
-    TipoChavePix tipo,
+    TipoChavePix tipo;
 
     @NotEmpty
-    String chave
-
-) {
+    String chave;
 }

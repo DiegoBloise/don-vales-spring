@@ -66,6 +66,7 @@ public class Colaborador extends BaseEntity implements Serializable {
 
 
 	public Colaborador() {
+        this.pix = new Pix();
 		this.vales = new ArrayList<>();
 	}
 

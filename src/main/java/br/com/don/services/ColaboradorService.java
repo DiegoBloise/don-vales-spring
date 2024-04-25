@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.don.dtos.ColaboradorDto;
-import br.com.don.mappers.ColaboradorMapper;
 import br.com.don.models.Colaborador;
 import br.com.don.repositories.ColaboradorRepository;
 
@@ -22,13 +22,13 @@ public class ColaboradorService implements Serializable {
 	private ColaboradorRepository repository;
 
 	@Autowired
-	private ColaboradorMapper mapper;
+	private ModelMapper modelMapper;
 
 
 	public List<ColaboradorDto> listar(){
 		return repository.findAll().stream()
             .map(colaborador -> {
-                return mapper.toDto(colaborador);
+                return modelMapper.map(colaborador, ColaboradorDto.class);
             })
             .collect(Collectors.toList());
 	}
@@ -36,23 +36,6 @@ public class ColaboradorService implements Serializable {
 
 	public List<Colaborador> listarPorNome(){
 		return repository.listarPorNome();
-	}
-
-
-	public Colaborador buscar(Colaborador colaborador){
-		Optional<Colaborador> colaboradorOptional = repository.findById(colaborador.getId());
-		return colaboradorOptional.isPresent() ? colaboradorOptional.get() : null;
-	}
-
-
-	public ColaboradorDto buscarPorId(Long id) {
-		Optional<Colaborador> colaboradorOptional = repository.findById(id);
-
-        if(colaboradorOptional.isEmpty()) {
-            return null;
-        }
-
-        return mapper.toDto(colaboradorOptional.get());
 	}
 
 
@@ -67,22 +50,47 @@ public class ColaboradorService implements Serializable {
 	}
 
 
+	public ColaboradorDto getDtoById(Long id) {
+		Optional<Colaborador> colaboradorOptional = repository.findById(id);
+
+        if(colaboradorOptional.isEmpty()) {
+            return null;
+        }
+
+        return modelMapper.map(colaboradorOptional.get(), ColaboradorDto.class);
+	}
+
+
 	public List<Colaborador> buscarPorNome(String nome){
 		return repository.findAllByProperty("nome", nome);
 	}
 
 
-	public Object salvarColaborador(ColaboradorDto colaboradorDto) {
-		return mapper.toDto(
-			repository.save(
-				mapper.toColaborador(colaboradorDto)
-			)
-		);
+	public Colaborador salvarColaborador(Colaborador colaborador) {
+		return repository.save(colaborador);
 	}
 
 
-	public Colaborador salvarColaborador(Colaborador colaborador) {
-		return repository.save(colaborador);
+	public ColaboradorDto salvarColaborador(ColaboradorDto colaboradorDto) {
+		Colaborador colaborador;
+
+        if (colaboradorDto.getId() != null) {
+            colaborador = this.getById(colaboradorDto.getId());
+        } else {
+            colaborador = new Colaborador();
+        }
+
+        if (colaborador == null) {
+            return null;
+        }
+
+		modelMapper.map(colaboradorDto, colaborador);
+
+		this.salvarColaborador(colaborador);
+
+		modelMapper.map(colaborador, colaboradorDto);
+
+		return colaboradorDto;
 	}
 
 
@@ -93,12 +101,5 @@ public class ColaboradorService implements Serializable {
 
 	public void deletarColaboradorPorId(Long id) {
 		repository.deleteById(id);
-	}
-
-
-	public void deletarColaboradores(List<Colaborador> colaboradores) {
-		for (Colaborador colaborador : colaboradores) {
-			this.deletarColaborador(colaborador);
-		}
 	}
 }

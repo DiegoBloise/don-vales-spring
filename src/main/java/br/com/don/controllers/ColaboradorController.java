@@ -58,7 +58,7 @@ public class ColaboradorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneColaborador(@PathVariable(value="id") Long id) {
-        ColaboradorDto responseColaboradorDto = service.buscarPorId(id);
+        ColaboradorDto responseColaboradorDto = service.getDtoById(id);
 
         if(responseColaboradorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colaborador not found.");
@@ -70,7 +70,7 @@ public class ColaboradorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateColaborador(@PathVariable(value="id") Long id, @RequestBody @Valid ColaboradorDto colaboradorDto) {
-        ColaboradorDto responseColaboradorDto = service.buscarPorId(id);
+        ColaboradorDto responseColaboradorDto = service.getDtoById(id);
 
         if(responseColaboradorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colaborador not found.");
@@ -83,7 +83,7 @@ public class ColaboradorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteColaborador(@PathVariable(value="id") Long id) {
 
-        ColaboradorDto responseColaboradorDto = service.buscarPorId(id);
+        ColaboradorDto responseColaboradorDto = service.getDtoById(id);
 
         if(responseColaboradorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colaborador not found.");

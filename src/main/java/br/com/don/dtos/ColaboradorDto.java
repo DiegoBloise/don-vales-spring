@@ -2,25 +2,28 @@ package br.com.don.dtos;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.com.don.enums.TipoColaborador;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
-public record ColaboradorDto(
+@Data
+@JsonInclude(Include.NON_EMPTY)
+public class ColaboradorDto {
 
-    Long id,
+    Long id;
 
     @NotEmpty
-    String nome,
+    String nome;
 
     @NotEmpty
-    String telefone,
+    String telefone;
 
-    LocalDate dataNascimento,
+    LocalDate dataNascimento;
 
-    TipoColaborador tipo,
+    TipoColaborador tipo;
 
-    PixDto pix
-
-) {
-
+    PixDto pix;
 }

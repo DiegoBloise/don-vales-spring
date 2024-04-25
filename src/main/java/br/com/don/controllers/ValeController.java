@@ -53,7 +53,7 @@ public class ValeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneVale(@PathVariable(value="id") Long id) {
-        ValeDto responseValeDto = service.buscarPorId(id);
+        ValeDto responseValeDto = service.getDtoById(id);
 
         if(responseValeDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vale not found.");
@@ -65,7 +65,7 @@ public class ValeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateVale(@PathVariable(value="id") Long id, @RequestBody @Valid ValeDto valeDto) {
-        ValeDto responseValeDto = service.buscarPorId(id);
+        ValeDto responseValeDto = service.getDtoById(id);
 
         if(responseValeDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vale not found.");
@@ -78,7 +78,7 @@ public class ValeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteVale(@PathVariable(value="id") Long id) {
 
-        ValeDto responseValeDto = service.buscarPorId(id);
+        ValeDto responseValeDto = service.getDtoById(id);
 
         if(responseValeDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vale not found.");

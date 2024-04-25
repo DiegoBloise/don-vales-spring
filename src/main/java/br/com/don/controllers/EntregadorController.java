@@ -47,7 +47,7 @@ public class EntregadorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneEntregador(@PathVariable(value="id") Long id) {
-        EntregadorDto responseEntregadorDto = service.buscarPorId(id);
+        EntregadorDto responseEntregadorDto = service.getDtoById(id);
 
         if(responseEntregadorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador not found.");
@@ -59,7 +59,7 @@ public class EntregadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateEntregador(@PathVariable(value="id") Long id, @RequestBody @Valid EntregadorDto entregadorDto) {
-        EntregadorDto responseEntregadorDto = service.buscarPorId(id);
+        EntregadorDto responseEntregadorDto = service.getDtoById(id);
 
         if(responseEntregadorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador not found.");
@@ -72,7 +72,7 @@ public class EntregadorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteEntregador(@PathVariable(value="id") Long id) {
 
-        EntregadorDto responseEntregadorDto = service.buscarPorId(id);
+        EntregadorDto responseEntregadorDto = service.getDtoById(id);
 
         if(responseEntregadorDto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entregador not found.");

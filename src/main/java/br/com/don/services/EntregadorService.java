@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.don.dtos.EntregadorDto;
 import br.com.don.enums.TipoVale;
-import br.com.don.mappers.EntregadorMapper;
 import br.com.don.models.Entrega;
 import br.com.don.models.Entregador;
 import br.com.don.models.Vale;
@@ -30,7 +30,7 @@ public class EntregadorService implements Serializable {
 	private EntregadorRepository repository;
 
 	@Autowired
-	private EntregadorMapper mapper;
+	private ModelMapper modelMapper;
 
 	@Autowired
 	private EntregaService entregaService;
@@ -42,7 +42,7 @@ public class EntregadorService implements Serializable {
 	public List<EntregadorDto> listar(){
 		return repository.findAll().stream()
             .map(entregaodor -> {
-                return mapper.toDto(entregaodor);
+                return modelMapper.map(entregaodor, EntregadorDto.class);
             })
             .collect(Collectors.toList());
 	}
@@ -58,14 +58,25 @@ public class EntregadorService implements Serializable {
 	}
 
 
-	public EntregadorDto buscarPorId(Long id) {
+	public Entregador getById(Long id) {
 		Optional<Entregador> entregadorOptional = repository.findById(id);
 
         if(entregadorOptional.isEmpty()) {
             return null;
         }
 
-        return mapper.toDto(entregadorOptional.get());
+        return entregadorOptional.get();
+	}
+
+
+	public EntregadorDto getDtoById(Long id) {
+		Optional<Entregador> entregadorOptional = repository.findById(id);
+
+        if(entregadorOptional.isEmpty()) {
+            return null;
+        }
+
+        return modelMapper.map(entregadorOptional.get(), EntregadorDto.class);
 	}
 
 
@@ -74,12 +85,31 @@ public class EntregadorService implements Serializable {
 	}
 
 
+	public Entregador salvarEntregador(Entregador entregador) {
+		return repository.save(entregador);
+	}
+
+
 	public EntregadorDto salvarEntregador(EntregadorDto entregadorDto) {
-		return mapper.toDto(
-			repository.save(
-				mapper.toEntregador(entregadorDto)
-			)
-		);
+		Entregador entregador;
+
+        if (entregadorDto.getId() != null) {
+            entregador = this.getById(entregadorDto.getId());
+        } else {
+            entregador = new Entregador();
+        }
+
+        if (entregador == null) {
+            return null;
+        }
+
+		modelMapper.map(entregadorDto, entregador);
+
+		this.salvarEntregador(entregador);
+
+		modelMapper.map(entregador, entregadorDto);
+
+		return entregadorDto;
 	}
 
 
