@@ -32,6 +32,9 @@ public class ValeService implements Serializable {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private ColaboradorService colaboradorService;
+
 
 	public List<ValeDto> listar(){
 		return repository.findAll().stream()
@@ -62,7 +65,11 @@ public class ValeService implements Serializable {
 			vale.setData(dataAtual.minusDays(1));
 		}
 
-		return repository.save(vale);
+		vale = repository.save(vale);
+
+		atualizarValesByColaboradorId(vale.getColaborador().getId());
+
+		return vale;
 	}
 
 
@@ -147,12 +154,14 @@ public class ValeService implements Serializable {
 
 
 	public void deletarVale(Vale vale) {
+		atualizarValesByColaboradorId(vale.getColaborador().getId());
 		repository.delete(vale);
 	}
 
 
-	public void deletarValePorId(Long id) {
-		repository.deleteById(id);
+	public void deletarVale(ValeDto valeDto) {
+		repository.deleteById(valeDto.getId());
+		atualizarValesByColaboradorId(valeDto.getColaboradorId());
 	}
 
 
@@ -179,5 +188,12 @@ public class ValeService implements Serializable {
 		}
 
 		return total;
+	}
+
+
+	public void atualizarValesByColaboradorId(Long id) {
+		Colaborador colaborador = colaboradorService.getById(id);
+		colaborador.setTotalVales(this.totalDoColaborador(colaborador.getId()));
+		colaboradorService.salvarColaborador(colaborador);
 	}
 }

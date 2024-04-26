@@ -22,9 +22,6 @@ public class ColaboradorService implements Serializable {
 	private ColaboradorRepository repository;
 
 	@Autowired
-	private ValeService valeService;
-
-	@Autowired
 	private ModelMapper modelMapper;
 
 
@@ -70,7 +67,6 @@ public class ColaboradorService implements Serializable {
 
 
 	public Colaborador salvarColaborador(Colaborador colaborador) {
-		colaborador.setTotalVales(valeService.totalDoColaborador(colaborador.getId()));
 		return repository.save(colaborador);
 	}
 

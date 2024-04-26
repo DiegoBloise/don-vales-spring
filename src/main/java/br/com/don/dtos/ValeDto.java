@@ -1,5 +1,6 @@
 package br.com.don.dtos;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,7 +20,7 @@ public class ValeDto {
     Long id;
 
     @PositiveOrZero
-    String valor;
+    BigDecimal valor;
 
     LocalDate data;
 }

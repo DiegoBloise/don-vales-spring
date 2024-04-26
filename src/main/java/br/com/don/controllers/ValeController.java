@@ -84,7 +84,7 @@ public class ValeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vale not found.");
         }
 
-        service.deletarValePorId(id);
+        service.deletarVale(responseValeDto);
 
         return ResponseEntity.status(HttpStatus.OK).body("Vale deleted successfully.");
     }
