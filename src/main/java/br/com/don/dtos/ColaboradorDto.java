@@ -1,5 +1,6 @@
 package br.com.don.dtos;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,4 +31,6 @@ public class ColaboradorDto {
 
     @NotNull
     PixDto pix;
+
+    BigDecimal totalVales;
 }

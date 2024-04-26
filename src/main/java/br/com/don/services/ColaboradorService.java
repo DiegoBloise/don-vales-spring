@@ -22,13 +22,16 @@ public class ColaboradorService implements Serializable {
 	private ColaboradorRepository repository;
 
 	@Autowired
+	private ValeService valeService;
+
+	@Autowired
 	private ModelMapper modelMapper;
 
 
 	public List<ColaboradorDto> listar(){
 		return repository.findAll().stream()
             .map(colaborador -> {
-                return modelMapper.map(colaborador, ColaboradorDto.class);
+				return modelMapper.map(colaborador, ColaboradorDto.class);
             })
             .collect(Collectors.toList());
 	}
@@ -67,6 +70,7 @@ public class ColaboradorService implements Serializable {
 
 
 	public Colaborador salvarColaborador(Colaborador colaborador) {
+		colaborador.setTotalVales(valeService.totalDoColaborador(colaborador.getId()));
 		return repository.save(colaborador);
 	}
 

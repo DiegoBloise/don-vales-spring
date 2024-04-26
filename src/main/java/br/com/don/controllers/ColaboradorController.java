@@ -1,5 +1,6 @@
 package br.com.don.controllers;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,6 +54,12 @@ public class ColaboradorController {
     @GetMapping("/{id}/vales")
     public ResponseEntity<List<ValeDto>> getAllValesColaborador(@PathVariable(value="id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(valeService.buscarPorColaboradorId(id));
+    }
+
+
+    @GetMapping("/{id}/vales/total")
+    public ResponseEntity<BigDecimal> getTotalValesColaborador(@PathVariable(value="id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(valeService.totalDoColaborador(id));
     }
 
 

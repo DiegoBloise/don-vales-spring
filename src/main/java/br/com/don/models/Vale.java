@@ -3,7 +3,6 @@ package br.com.don.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,17 +56,6 @@ public class Vale extends BaseEntity implements Serializable {
 		this.setData(data);
 
 		this.tipo = TipoVale.DINHEIRO;
-	}
-
-
-	public void setData(LocalDate data) {
-		LocalTime horaAtual = LocalTime.now();
-
-		if (horaAtual.isBefore(LocalTime.of(1, 20))) {
-			this.data = data.minusDays(1);
-		} else {
-			this.data = data;
-		}
 	}
 
 

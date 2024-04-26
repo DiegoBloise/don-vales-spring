@@ -3,7 +3,9 @@ package br.com.don.services;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,6 +53,15 @@ public class ValeService implements Serializable {
 
 
 	public Vale salvarVale(Vale vale) {
+		LocalTime horaAtual = LocalTime.now();
+		LocalDate dataAtual = LocalDate.now();
+
+		if (horaAtual.isBefore(LocalTime.of(1, 20))) {
+			vale.setData(dataAtual.minusDays(1));
+		} else {
+			vale.setData(dataAtual.minusDays(1));
+		}
+
 		return repository.save(vale);
 	}
 
@@ -79,8 +90,8 @@ public class ValeService implements Serializable {
 
 
 
-	public List<Vale> buscarPorColaborador(Colaborador colaborador){
-		return repository.findAllByProperty("colaborador", colaborador);
+	public List<Vale> buscarPorColaborador(Long id){
+		return repository.findAllByColaboradorId(id);
 	}
 
 
@@ -155,5 +166,18 @@ public class ValeService implements Serializable {
 
 		@SuppressWarnings("unused")
 		InputStream inputStream = new ByteArrayInputStream(conteudo.toString().getBytes());
+	}
+
+
+	public BigDecimal totalDoColaborador(Long id) {
+		BigDecimal total = new BigDecimal(0);
+
+		List<Vale> vales = this.buscarPorColaborador(id);
+
+		for (Vale vale : vales) {
+			total = vale.getValor().add(total);
+		}
+
+		return total;
 	}
 }

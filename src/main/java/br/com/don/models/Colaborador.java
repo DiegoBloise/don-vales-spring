@@ -1,6 +1,7 @@
 package br.com.don.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class Colaborador extends BaseEntity implements Serializable {
 	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference
     protected List<Vale> vales;
+
+    protected BigDecimal totalVales;
 
     @Column(name = "tipo_colaborador", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
