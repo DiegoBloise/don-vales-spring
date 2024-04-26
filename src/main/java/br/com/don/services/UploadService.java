@@ -2,6 +2,7 @@ package br.com.don.services;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,7 +88,7 @@ public class UploadService implements Serializable {
 
 
 						entrega.setData(dataMovimento);
-						entrega.setValor(row.getCell(13).getNumericCellValue());
+						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
 						listaEntregas.add(entrega);
 					}
 				} catch (Exception e) {
@@ -144,7 +145,7 @@ public class UploadService implements Serializable {
 						}
 
 						entrega.setData(dataMovimento);
-						entrega.setValor(row.getCell(13).getNumericCellValue());
+						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
 
 						checkEntrega(entrega, listaEntregas);
 					}

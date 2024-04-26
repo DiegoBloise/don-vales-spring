@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.don.enums.TipoColaborador;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -21,9 +22,12 @@ public class ColaboradorDto {
     @NotEmpty
     String telefone;
 
+    @NotNull
     LocalDate dataNascimento;
 
+    @NotNull
     TipoColaborador tipo;
 
+    @NotNull
     PixDto pix;
 }

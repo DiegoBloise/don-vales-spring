@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.don.enums.TipoChavePix;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -13,6 +14,7 @@ public class PixDto {
 
     Long id;
 
+    @NotNull
     TipoChavePix tipo;
 
     @NotEmpty

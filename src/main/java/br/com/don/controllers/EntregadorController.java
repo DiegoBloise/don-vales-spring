@@ -1,5 +1,6 @@
 package br.com.don.controllers;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +55,12 @@ public class EntregadorController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(responseEntregadorDto);
+    }
+
+
+    @GetMapping("/{inicio}/{fim}")
+    public ResponseEntity<List<EntregadorDto>> getEntregadoresPorData(@PathVariable(value="inicio") LocalDate inicio, @PathVariable(value="inicio") LocalDate fim) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.listarEntregadoresDtoPorDataInicioFim(inicio, fim));
     }
 
 

@@ -13,21 +13,24 @@ import br.com.don.models.Entregador;
 @Repository
 public interface EntregadorRepository extends JpaRepository<Entregador, Long> {
 
-    @Query(value = "SELECT * FROM Entregador ORDER BY nome", nativeQuery = true)
+   /*  @Query("select u from User u where u.firstname = :firstname or u.lastname = :lastname")
+    User findByLastnameOrFirstname(@Param("lastname") String lastname,@Param("firstname") String firstname); */
+
+    @Query("SELECT e FROM Entregador e ORDER BY e.nome")
     List<Entregador> listarPorNome();
 
-    @Query(value = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data = :data", nativeQuery = true)
+    @Query("SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data = :data")
     List<Entregador> listarEntregadoresPorData(@Param("data") LocalDate data);
 
-    @Query(value = "SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data BETWEEN :dataInicio AND :dataFim ORDER BY e.entregador.nome", nativeQuery = true)
+    @Query("SELECT DISTINCT e.entregador FROM Entrega e WHERE e.data BETWEEN :dataInicio AND :dataFim ORDER BY e.entregador.nome")
     List<Entregador> listarEntregadoresPorDataInicioFim(@Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim);
 
-    @Query(value = "SELECT * FROM Entregador WHERE id = :entregadorId", nativeQuery = true)
+    @Query("SELECT e FROM Entregador e WHERE id = :entregadorId")
     Entregador find(@Param("entregadorId") Long entregadorId);
 
-    @Query(value = "SELECT * FROM Entregador WHERE :propertyName = :value", nativeQuery = true)
+    @Query("SELECT e FROM Entregador e WHERE :propertyName = :value")
     List<Entregador> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
 
-    @Query(value = "SELECT * FROM Entregador WHERE :propertyName = :value", nativeQuery = true)
+    @Query("SELECT e FROM Entregador e WHERE :propertyName = :value")
     Entregador findByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
 }

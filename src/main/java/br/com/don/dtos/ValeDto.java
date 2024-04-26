@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -19,7 +20,8 @@ public class ValeDto {
     Long id;
 
     @PositiveOrZero
-    Float valor;
+    String valor;
 
+    @NotNull
     LocalDate data;
 }

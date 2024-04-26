@@ -1,5 +1,6 @@
 package br.com.don.models;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.don.enums.TipoColaborador;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,31 +45,31 @@ public class Entregador extends Colaborador {
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalEntregas;
+	private BigDecimal valorTotalEntregas;
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalIfood;
+	private BigDecimal valorTotalIfood;
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalSemDesconto;
+	private BigDecimal valorTotalSemDesconto;
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalComDesconto;
+	private BigDecimal valorTotalComDesconto;
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalDiarias;
+	private BigDecimal valorTotalDiarias;
 
 	@Transient
 	@JsonIgnore
-	private Double valorTotalVales;
+	private BigDecimal valorTotalVales;
 
 	@Transient
 	@JsonIgnore
-	private Double valorSaldo;
+	private BigDecimal valorSaldo;
 
 
 	public Entregador() {

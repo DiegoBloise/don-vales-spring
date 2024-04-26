@@ -1,6 +1,7 @@
 package br.com.don.services;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,6 @@ import br.com.don.models.Entrega;
 import br.com.don.models.Entregador;
 import br.com.don.models.Vale;
 import br.com.don.repositories.EntregadorRepository;
-import br.com.don.util.Acerto;
 import br.com.don.util.Util;
 
 @Service
@@ -140,6 +140,15 @@ public class EntregadorService implements Serializable {
 	}
 
 
+	public List<EntregadorDto> listarEntregadoresDtoPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
+		return repository.listarEntregadoresPorDataInicioFim(dataInicio,dataFim).stream()
+			.map(entregaodor -> {
+				return modelMapper.map(entregaodor, EntregadorDto.class);
+			})
+			.collect(Collectors.toList());
+	}
+
+
 	public Entregador cadastrarEntregador(Entregador entregador) {
 		return repository.save(entregador);
 	}
@@ -147,7 +156,7 @@ public class EntregadorService implements Serializable {
 
 	public void realizarAcerto(Entregador entregadorSelecionado) {
 
-		List<Acerto> acertos;
+		List<AcertoService> acertos;
 		List<Entrega> entregas;
 
 		Date dataInicio = new Date();
@@ -177,11 +186,11 @@ public class EntregadorService implements Serializable {
 				int qtdeTotalDias = 0;
 				int qtdeTotalIFood = 0;
 
-				Double valorTotalEntregas = 0.0;
-				Double totalVale = 0.0;
-				Double valorTotalDiarias = 0.0;
-				Double valorTotalVales = 0.0;
-				Double valorSaldo = 0.0;
+				BigDecimal valorTotalEntregas = new BigDecimal(0.0);
+				BigDecimal totalVale = new BigDecimal(0);
+				BigDecimal valorTotalDiarias = new BigDecimal(0);
+				BigDecimal valorTotalVales = new BigDecimal(0);
+				BigDecimal valorSaldo = new BigDecimal(0);
 
 				textoVale = new StringBuffer();
 				textoVale.append("*")
@@ -197,17 +206,17 @@ public class EntregadorService implements Serializable {
 						++qtdeTotalDias;
 					}
 
-					if (ent.getValor() == 0.0) {
+					if (ent.getValor().compareTo(new BigDecimal(0)) == 0) {
 						++qtdeIfoodDia;
 						qtdeTotalIFood++;
 					}
 
 					qtdeEntregaDia++;
 
-					valorTotalEntregas = ent.getValor() + valorTotalEntregas;
+					valorTotalEntregas = ent.getValor().add(valorTotalEntregas);
 
 					if (i == entregas.size() || !dataComparacao.equals(entregas.get(i).getData())) {
-						Acerto acerto = new Acerto();
+						AcertoService acerto = new AcertoService();
 
 						acerto.setData(ent.getData());
 						acerto.setQtdeEntregasDia(qtdeEntregaDia);
@@ -218,8 +227,8 @@ public class EntregadorService implements Serializable {
 
 						if (null != vales) {
 							for (Vale vale : vales) {
-								totalVale = vale.getValor() + totalVale;
-								valorTotalVales = vale.getValor() + valorTotalVales;
+								totalVale = vale.getValor().add(totalVale);
+								valorTotalVales = vale.getValor().add(valorTotalVales);
 
 							}
 						}
@@ -228,11 +237,11 @@ public class EntregadorService implements Serializable {
 						acertos.add(acerto);
 						textoVale.append(acerto.toString());
 
-						valorTotalDiarias = acerto.getValorDiaria() + valorTotalDiarias;
+						valorTotalDiarias = acerto.getValorDiaria().add(valorTotalDiarias);
 						dataComparacao = null;
 						qtdeIfoodDia = 0;
 						qtdeEntregaDia = 0;
-						totalVale = 0.0;
+						totalVale = new BigDecimal(0);
 					}
 				}
 
@@ -241,13 +250,13 @@ public class EntregadorService implements Serializable {
 
 				if (null != vales) {
 					for (Vale vale : vales) {
-						valorSaldo = vale.getValor() + valorSaldo;
+						valorSaldo = vale.getValor().add(valorSaldo);
 					}
 				}
 
-				Double valorTotalIfood = qtdeTotalIFood * 3.00;
-				Double valorTotalSemDesconto = valorTotalDiarias + valorTotalEntregas + valorTotalIfood;
-				Double valorTotalComDesconto = valorTotalSemDesconto - valorTotalVales - valorSaldo;
+				BigDecimal valorTotalIfood = new BigDecimal(qtdeTotalIFood * 3.00);
+				BigDecimal valorTotalSemDesconto = valorTotalDiarias.add(valorTotalEntregas).add(valorTotalIfood);
+				BigDecimal valorTotalComDesconto = valorTotalSemDesconto.subtract(valorTotalVales).subtract(valorSaldo);
 
 				entregadorSelecionado.setQtdTotalDias(qtdeTotalDias);
 				entregadorSelecionado.setQtdEntregas(entregas.size());
