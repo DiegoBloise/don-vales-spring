@@ -140,8 +140,8 @@ public class EntregadorService implements Serializable {
 	}
 
 
-	public List<EntregadorDto> listarEntregadoresDtoPorDataInicioFim(LocalDate dataInicio, LocalDate dataFim ){
-		return repository.listarEntregadoresPorDataInicioFim(dataInicio,dataFim).stream()
+	public List<EntregadorDto> listarEntregadoresDtoPorDataInicioFim(String dataInicio, String dataFim ){
+		return repository.listarEntregadoresPorDataInicioFim(LocalDate.parse(dataInicio), LocalDate.parse(dataFim)).stream()
 			.map(entregaodor -> {
 				return modelMapper.map(entregaodor, EntregadorDto.class);
 			})

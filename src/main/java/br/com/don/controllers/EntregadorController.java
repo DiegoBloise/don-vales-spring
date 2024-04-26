@@ -59,7 +59,7 @@ public class EntregadorController {
 
 
     @GetMapping("/{inicio}/{fim}")
-    public ResponseEntity<List<EntregadorDto>> getEntregadoresPorData(@PathVariable(value="inicio") LocalDate inicio, @PathVariable(value="inicio") LocalDate fim) {
+    public ResponseEntity<List<EntregadorDto>> getEntregadoresPorData(@PathVariable(value="inicio") String inicio, @PathVariable(value="inicio") String fim) {
         return ResponseEntity.status(HttpStatus.OK).body(service.listarEntregadoresDtoPorDataInicioFim(inicio, fim));
     }
 
