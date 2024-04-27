@@ -43,6 +43,11 @@ public class Pix extends BaseEntity implements Serializable {
 	}
 
 
+	public Pix(Colaborador colaborador) {
+		this.colaborador = colaborador;
+	}
+
+
     public String getPayload(String nome, String valor, String cidade, String txtId) {
 		return new Jix(nome, this.chave, valor, cidade, txtId).gerarPayload();
 	}

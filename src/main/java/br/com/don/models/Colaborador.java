@@ -28,11 +28,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
+
 @ToString(callSuper = true)
 @Data
 @AllArgsConstructor
@@ -69,7 +68,8 @@ public class Colaborador extends BaseEntity implements Serializable {
 
 
 	public Colaborador() {
-        this.pix = new Pix();
+        this.pix = new Pix(this);
+        this.totalVales = new BigDecimal(0);
 		this.vales = new ArrayList<>();
 	}
 
@@ -138,5 +138,53 @@ public class Colaborador extends BaseEntity implements Serializable {
 
     public void removerVale(Vale vale) {
         this.vales.remove(vale);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Colaborador other = (Colaborador) obj;
+        if (nome == null) {
+            if (other.nome != null)
+                return false;
+        } else if (!nome.equals(other.nome))
+            return false;
+        if (telefone == null) {
+            if (other.telefone != null)
+                return false;
+        } else if (!telefone.equals(other.telefone))
+            return false;
+        if (dataNascimento == null) {
+            if (other.dataNascimento != null)
+                return false;
+        } else if (!dataNascimento.equals(other.dataNascimento))
+            return false;
+        if (totalVales == null) {
+            if (other.totalVales != null)
+                return false;
+        } else if (!totalVales.equals(other.totalVales))
+            return false;
+        if (tipo != other.tipo)
+            return false;
+        return true;
+    }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+        result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
+        result = prime * result + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+        result = prime * result + ((totalVales == null) ? 0 : totalVales.hashCode());
+        result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+        return result;
     }
 }

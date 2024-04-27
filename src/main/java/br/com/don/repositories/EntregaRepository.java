@@ -15,7 +15,7 @@ import br.com.don.models.Entregador;
 public interface EntregaRepository extends JpaRepository<Entrega, Long> {
 
     @Query("SELECT e FROM Entrega e WHERE e.pedido = :pedido AND e.data = :data AND e.entregador = :entregador")
-    Entrega buscarPorPedidoDataEntregador(@Param("pedido") Integer pedido, @Param("data") LocalDate data, @Param("entregador") Entregador entregador);
+    List<Entrega> buscarPorPedidoDataEntregador(@Param("pedido") Integer pedido, @Param("data") LocalDate data, @Param("entregador") Entregador entregador);
 
     @Query("SELECT e FROM Entrega e WHERE e.entregador = :entregador AND e.data = :data")
     List<Entrega> buscarPorEntregadorData(@Param("entregador") Entregador entregador, @Param("data") LocalDate data);

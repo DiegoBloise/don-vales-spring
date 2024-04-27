@@ -149,11 +149,6 @@ public class EntregadorService implements Serializable {
 	}
 
 
-	public Entregador cadastrarEntregador(Entregador entregador) {
-		return repository.save(entregador);
-	}
-
-
 	public void realizarAcerto(Entregador entregadorSelecionado) {
 
 		List<AcertoService> acertos;

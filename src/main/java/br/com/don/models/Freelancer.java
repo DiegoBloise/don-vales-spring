@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import br.com.don.enums.TipoColaborador;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,11 +13,15 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Data
-@AllArgsConstructor
 @SuperBuilder
 @Entity
 @DiscriminatorValue("FREELANCER")
 public class Freelancer extends Colaborador {
+
+
+    public Freelancer() {
+
+    }
 
 
     public Freelancer(Long id, String nome, String telefone, LocalDate dataNascimento, TipoColaborador tipo, Pix pix) {

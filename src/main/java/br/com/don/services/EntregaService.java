@@ -25,7 +25,7 @@ public class EntregaService implements Serializable {
 	}
 
 
-	public Entrega buscarPorPedidoDataEntregador(Integer pedido, LocalDate data, Entregador entregador) {
+	public List<Entrega> buscarPorPedidoDataEntregador(Integer pedido, LocalDate data, Entregador entregador) {
 		return repository.buscarPorPedidoDataEntregador(pedido, data, entregador);
 	}
 
