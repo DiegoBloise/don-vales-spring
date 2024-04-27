@@ -12,12 +12,12 @@ import br.com.don.models.Colaborador;
 @Repository
 public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> {
 
-    @Query(value = "SELECT * FROM Colaborador ORDER BY nome", nativeQuery = true)
+    @Query("SELECT c FROM Colaborador c ORDER BY c.nome")
     List<Colaborador> listarPorNome();
 
-    @Query(value = "SELECT * FROM Colaborador WHERE :propertyName = :value", nativeQuery = true)
+    @Query("SELECT c FROM Colaborador c WHERE c.:propertyName = :value")
     Colaborador findByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
 
-    @Query(value = "SELECT * FROM Colaborador WHERE :propertyName = :value", nativeQuery = true)
+    @Query("SELECT c FROM Colaborador c WHERE c.:propertyName = :value")
     List<Colaborador> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
 }

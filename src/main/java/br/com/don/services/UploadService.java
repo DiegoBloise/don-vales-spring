@@ -60,7 +60,7 @@ public class UploadService implements Serializable {
 	}
 
 
-	public List<Entrega> trataXML(InputStream inputStream, LocalDate dataMovimento) {
+	/* public List<Entrega> trataXML(InputStream inputStream, LocalDate dataMovimento) {
 
 		List<Entrega> listaEntregas = new ArrayList<Entrega>();
 		try {
@@ -99,7 +99,7 @@ public class UploadService implements Serializable {
 			e.printStackTrace();
 		}
 		return listaEntregas;
-	}
+	} */
 
 
 	public Integer trataXML2(InputStream inputStream) {
@@ -152,14 +152,21 @@ public class UploadService implements Serializable {
 
 				} catch (Exception e) {
 					System.out.println("Erro ao ler xls " +  row.getRowNum() + " \n erro"+ e.getMessage());
+					return null;
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 
-		entregaService.salvarLote(listaEntregas);
+		try {
+			entregaService.salvarLote(listaEntregas);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 		return listaEntregas.size();
 	}

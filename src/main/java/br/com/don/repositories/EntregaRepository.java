@@ -14,24 +14,24 @@ import br.com.don.models.Entregador;
 @Repository
 public interface EntregaRepository extends JpaRepository<Entrega, Long> {
 
-    @Query(value = "SELECT * FROM Entrega WHERE pedido = :pedido AND data = :data AND entregador = :entregador", nativeQuery = true)
+    @Query("SELECT e FROM Entrega e WHERE e.pedido = :pedido AND e.data = :data AND e.entregador = :entregador")
     Entrega buscarPorPedidoDataEntregador(@Param("pedido") Integer pedido, @Param("data") LocalDate data, @Param("entregador") Entregador entregador);
 
-    @Query(value = "SELECT * FROM Entrega WHERE entregador = :entregador AND data = :data", nativeQuery = true)
+    @Query("SELECT e FROM Entrega e WHERE e.entregador = :entregador AND e.data = :data")
     List<Entrega> buscarPorEntregadorData(@Param("entregador") Entregador entregador, @Param("data") LocalDate data);
 
-    @Query(value = "SELECT * FROM Entrega WHERE entregador = :entregador AND data >= :dataInicio AND data <= :dataFim ORDER BY data", nativeQuery = true)
+    @Query("SELECT e FROM Entrega e WHERE e.entregador = :entregador AND e.data >= :dataInicio AND e.data <= :dataFim ORDER BY e.data")
     List<Entrega> buscarPorEntregadorDataInicioDataFim(@Param("entregador") Entregador entregador, @Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim);
 
-    @Query(value = "SELECT * FROM Entrega WHERE data = :data", nativeQuery = true)
+    @Query("SELECT e FROM Entrega e WHERE e.data = :data")
     List<Entrega> buscarPorData(@Param("data") LocalDate data);
 
-    @Query(value = "SELECT COUNT(*) FROM Entrega WHERE data = :data", nativeQuery = true)
+    @Query("SELECT COUNT(e) FROM Entrega e WHERE e.data = :data")
     Long buscarMovimento(@Param("data") LocalDate data);
 
-    @Query(value = "DELETE FROM Entrega WHERE data = :data", nativeQuery = true)
+    @Query("DELETE FROM Entrega e WHERE e.data = :data")
     Integer deletarMovimento(@Param("data") LocalDate data);
 
-    @Query(value = "SELECT * FROM Entrega WHERE :propertyName = :value", nativeQuery = true)
+    @Query("SELECT e FROM Entrega e WHERE e.:propertyName = :value")
     List<Entrega> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
 }
