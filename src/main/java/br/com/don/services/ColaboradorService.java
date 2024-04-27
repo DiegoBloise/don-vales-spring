@@ -62,7 +62,7 @@ public class ColaboradorService implements Serializable {
 
 
 	public List<Colaborador> buscarPorNome(String nome){
-		return repository.findAllByProperty("nome", nome);
+		return repository.findAllByNome(nome);
 	}
 
 

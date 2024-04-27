@@ -28,9 +28,5 @@ public interface EntregadorRepository extends JpaRepository<Entregador, Long> {
     @Query("SELECT e FROM Entregador e WHERE id = :entregadorId")
     Entregador find(@Param("entregadorId") Long entregadorId);
 
-    @Query("SELECT e FROM Entregador e WHERE :propertyName = :value")
-    List<Entregador> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
-
-    @Query("SELECT e FROM Entregador e WHERE :propertyName = :value")
-    Entregador findByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
+    Entregador findByNome(String nome);
 }

@@ -32,6 +32,5 @@ public interface EntregaRepository extends JpaRepository<Entrega, Long> {
     @Query("DELETE FROM Entrega e WHERE e.data = :data")
     Integer deletarMovimento(@Param("data") LocalDate data);
 
-    @Query("SELECT e FROM Entrega e WHERE e.:propertyName = :value")
-    List<Entrega> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
+    List<Entrega> findAllByEntregador(Entregador entregador);
 }

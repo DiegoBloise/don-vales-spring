@@ -34,9 +34,6 @@ public interface ValeRepository extends JpaRepository<Vale, Long> {
     @Query("SELECT v FROM Vale v WHERE v.colaborador = :colaborador AND v.data > :data AND v.tipo = :tipo")
     List<Vale> buscarSaldo(@Param("colaborador") Entregador colaborador, @Param("data") LocalDate data);
 
-    @Query("SELECT v FROM Vale v WHERE v.:propertyName = :value")
-    List<Vale> findAllByProperty(@Param("propertyName") String propertyName, @Param("value") Object value);
-
     @Query("SELECT v FROM Vale v WHERE v.colaborador.id = :id")
     List<Vale> findAllByColaboradorId(@Param("id") Long id);
 }

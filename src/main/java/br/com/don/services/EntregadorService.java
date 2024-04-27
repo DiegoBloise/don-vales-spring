@@ -81,7 +81,7 @@ public class EntregadorService implements Serializable {
 
 
 	public Entregador buscarPorNome(String nome){
-		return repository.findByProperty("nome", nome);
+		return repository.findByNome(nome);
 	}
 
 
