@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import br.com.don.enums.TipoVale;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -21,6 +22,8 @@ public class ValeDto {
 
     @PositiveOrZero
     BigDecimal valor;
+
+    TipoVale tipo;
 
     LocalDate data;
 }
