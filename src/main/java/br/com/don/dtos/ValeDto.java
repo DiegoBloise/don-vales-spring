@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.don.enums.TipoVale;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import lombok.Data;
 @JsonInclude(Include.NON_EMPTY)
 public class ValeDto {
 
+    @NotNull
     Long colaboradorId;
 
     String colaboradorNome;
