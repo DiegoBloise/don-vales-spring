@@ -62,23 +62,17 @@ public class FreelancerService implements Serializable {
 
 
 	public FreelancerDto salvarFreelancer(FreelancerDto freelancerDto) {
-		Freelancer freelancer;
+		Freelancer freelancer = new Freelancer();
 
         if (freelancerDto.getId() != null) {
             freelancer = this.getById(freelancerDto.getId());
-        } else {
-            freelancer = new Freelancer();
         }
 
-        if (freelancer == null) {
-            return null;
-        }
+		modelMapper.map(freelancerDto, freelancer.getClass());
 
-		modelMapper.map(freelancerDto, freelancer);
+		freelancer = this.salvarFreelancer(freelancer);
 
-		this.salvarFreelancer(freelancer);
-
-		modelMapper.map(freelancer, freelancerDto);
+		modelMapper.map(freelancer, freelancerDto.getClass());
 
 		return freelancerDto;
 	}

@@ -72,23 +72,17 @@ public class ColaboradorService implements Serializable {
 
 
 	public ColaboradorDto salvarColaborador(ColaboradorDto colaboradorDto) {
-		Colaborador colaborador;
+		Colaborador colaborador = new Colaborador();
 
         if (colaboradorDto.getId() != null) {
             colaborador = this.getById(colaboradorDto.getId());
-        } else {
-            colaborador = new Colaborador();
         }
 
-        if (colaborador == null) {
-            return null;
-        }
+		modelMapper.map(colaboradorDto, colaborador.getClass());
 
-		modelMapper.map(colaboradorDto, colaborador);
+		colaborador = this.salvarColaborador(colaborador);
 
-		this.salvarColaborador(colaborador);
-
-		modelMapper.map(colaborador, colaboradorDto);
+		modelMapper.map(colaborador, colaboradorDto.getClass());
 
 		return colaboradorDto;
 	}

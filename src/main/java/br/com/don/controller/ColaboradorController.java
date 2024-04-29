@@ -83,6 +83,8 @@ public class ColaboradorController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Colaborador not found.");
         }
 
+        colaboradorDto.setId(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(service.salvarColaborador(colaboradorDto));
     }
 

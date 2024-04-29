@@ -74,23 +74,17 @@ public class ValeService implements Serializable {
 
 
 	public ValeDto salvarVale(ValeDto valeDto) {
-		Vale vale;
+		Vale vale = new Vale();
 
         if (valeDto.getId() != null) {
             vale = this.getById(valeDto.getId());
-        } else {
-            vale = new Vale();
         }
 
-        if (vale == null) {
-            return null;
-        }
+		modelMapper.map(valeDto, vale.getClass());
 
-		modelMapper.map(valeDto, vale);
+		vale = this.salvarVale(vale);
 
-		this.salvarVale(vale);
-
-		modelMapper.map(vale, valeDto);
+		modelMapper.map(vale, valeDto.getClass());
 
 		return valeDto;
 	}

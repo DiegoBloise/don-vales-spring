@@ -161,46 +161,4 @@ public class UploadService implements Serializable {
 			System.out.println("checkEntrega: " + e);
 		}
 	}
-
-
-	/* public List<Entrega> trataXML(InputStream inputStream, LocalDate dataMovimento) {
-
-		List<Entrega> listaEntregas = new ArrayList<Entrega>();
-		try {
-			Workbook workbook = WorkbookFactory.create(inputStream);
-
-			Sheet sheet = workbook.getSheetAt(0);
-			Iterator<Row> iterator = sheet.iterator();
-			Row row = iterator.next();
-
-			while (iterator.hasNext()) {
-				row = iterator.next();
-				try {
-					if (row.getCell(3).getStringCellValue().equals(DELIVERY)
-							&& row.getCell(11).getStringCellValue().equals(NAO)) {
-						Entrega entrega = new Entrega();
-						Double numPedido = row.getCell(0).getNumericCellValue();
-						entrega.setPedido(numPedido.intValue());
-
-
-						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-						// TODO: e se houver mais entregadores com o mesmo nome ? talve uma caixa de seleção para o entregador certo...
-						String nomeDoEntregador = row.getCell(14).getStringCellValue();
-						checkEntregador(nomeDoEntregador, entrega);
-						////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-						entrega.setData(dataMovimento);
-						entrega.setValor(new BigDecimal(row.getCell(13).getNumericCellValue()));
-						listaEntregas.add(entrega);
-					}
-				} catch (Exception e) {
-					System.out.println("Falha ao ler registro: " + row.getRowNum());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return listaEntregas;
-	} */
 }

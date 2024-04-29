@@ -91,23 +91,17 @@ public class EntregadorService implements Serializable {
 
 
 	public EntregadorDto salvarEntregador(EntregadorDto entregadorDto) {
-		Entregador entregador;
+		Entregador entregador = new Entregador();
 
         if (entregadorDto.getId() != null) {
             entregador = this.getById(entregadorDto.getId());
-        } else {
-            entregador = new Entregador();
         }
 
-        if (entregador == null) {
-            return null;
-        }
+		modelMapper.map(entregadorDto, entregador.getClass());
 
-		modelMapper.map(entregadorDto, entregador);
+		entregador = this.salvarEntregador(entregador);
 
-		this.salvarEntregador(entregador);
-
-		modelMapper.map(entregador, entregadorDto);
+		modelMapper.map(entregador, entregadorDto.getClass());
 
 		return entregadorDto;
 	}
