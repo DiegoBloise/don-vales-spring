@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.don.config.infra.security.TokenService;
+import br.com.don.config.security.TokenService;
 import br.com.don.dto.AuthResponseDto;
 import br.com.don.dto.AuthenticationDto;
 import br.com.don.dto.RegisterDto;

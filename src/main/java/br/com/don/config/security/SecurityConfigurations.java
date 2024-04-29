@@ -1,4 +1,4 @@
-package br.com.don.config.infra.security;
+package br.com.don.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package br.com.don.config.infra.security;
+package br.com.don.config.security;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
