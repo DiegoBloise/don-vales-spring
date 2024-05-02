@@ -25,7 +25,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
-                .withIssuer("auth-api")
+                .withIssuer("DBL-Software")
                 .withSubject(user.getUsername())
                 .withClaim("role", user.getRole().toString())
                 .withExpiresAt(genExpirationDate())
@@ -42,11 +42,12 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                .withIssuer("auth-api")
+                .withIssuer("DBL-Software")
                 .build()
                 .verify(token)
                 .getSubject();
         } catch (JWTVerificationException exception) {
+            System.out.println("ERRO!: " + exception.getMessage().toString());
             return "";
         }
     }
