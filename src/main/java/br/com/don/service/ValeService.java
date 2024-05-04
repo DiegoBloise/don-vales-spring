@@ -74,17 +74,21 @@ public class ValeService implements Serializable {
 
 
 	public ValeDto salvarVale(ValeDto valeDto) {
-		Vale vale = new Vale();
+		Vale vale;
 
         if (valeDto.getId() != null) {
             vale = this.getById(valeDto.getId());
-        }
+        } else {
+			vale = new Vale();
+			Colaborador colaborador = colaboradorService.getById(valeDto.getColaboradorId());
+			colaborador.adicionarVale(vale);
+		}
 
-		modelMapper.map(valeDto, vale.getClass());
+		modelMapper.map(valeDto, vale);
 
 		vale = this.salvarVale(vale);
 
-		modelMapper.map(vale, valeDto.getClass());
+		modelMapper.map(vale, valeDto);
 
 		return valeDto;
 	}
@@ -99,7 +103,9 @@ public class ValeService implements Serializable {
 	public List<ValeDto> buscarPorColaboradorId(Long id){
 		return repository.findAllByColaboradorId(id).stream()
             .map(vale -> {
-                return modelMapper.map(vale, ValeDto.class);
+				ValeDto valeDto = modelMapper.map(vale, ValeDto.class);
+				valeDto.setColaboradorId(id);
+                return valeDto;
             })
             .collect(Collectors.toList());
 	}

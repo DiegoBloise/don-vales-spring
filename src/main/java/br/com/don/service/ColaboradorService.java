@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,17 +73,23 @@ public class ColaboradorService implements Serializable {
 
 
 	public ColaboradorDto salvarColaborador(ColaboradorDto colaboradorDto) {
-		Colaborador colaborador = new Colaborador();
+		Colaborador colaborador;
 
         if (colaboradorDto.getId() != null) {
             colaborador = this.getById(colaboradorDto.getId());
-        }
+        } else {
+			colaborador = new Colaborador();
+		}
 
-		modelMapper.map(colaboradorDto, colaborador.getClass());
+		// Evita que troque os ID's
+		modelMapper.getConfiguration()
+  			.setMatchingStrategy(MatchingStrategies.STRICT);
+
+		modelMapper.map(colaboradorDto, colaborador);
 
 		colaborador = this.salvarColaborador(colaborador);
 
-		modelMapper.map(colaborador, colaboradorDto.getClass());
+		modelMapper.map(colaborador, colaboradorDto);
 
 		return colaboradorDto;
 	}
